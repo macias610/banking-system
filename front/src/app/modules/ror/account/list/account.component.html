@@ -1,0 +1,71 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Accounts</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-info btn-round">Add account</button>
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <input type="text" value="" placeholder="Search data" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Number
+                </th>
+                <th>
+                  Owner
+                </th>
+                <th>
+                  Balance
+                </th>
+                <th class="text-right">
+                  Operations
+                </th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let account of accounts$ | async">
+                  <td>
+                    55 1234 1234 1234 1234 1234 1234
+                  </td>
+                  <td>
+                    John Doe
+                  </td>
+                  <td>
+                    $36,738
+                  </td>
+                  <td class="text-right">
+                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
+                      <div ngbDropdownMenu>
+                        <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Remove</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Generate history</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Make transfer</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
