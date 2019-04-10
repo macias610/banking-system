@@ -276,6 +276,7 @@ typings/
 
 #Maven
 chestnut/target
+chestnut/.idea
 
 # CMake
 
