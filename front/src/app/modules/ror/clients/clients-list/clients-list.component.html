@@ -5,10 +5,10 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title">Accounts</h4>
+          <h4 class="card-title">Clients</h4>
           <div class="row">
             <div class="col-md-6">
-              <button class="btn btn-info btn-round">Add account</button>
+              <a class="btn btn-info btn-round" [routerLink]="['/client']">Add client</a>
             </div>
             <div class="col-md-3"></div>
             <div class="col-md-3">
@@ -21,43 +21,39 @@
         </div>
         <div class="card-body">
           <div class="table">
-            <table class="table" *ngIf="(accounts$ | async) as accounts">
+            <table class="table" *ngIf="(clients$ | async) as clients">
               <thead class=" text-primary">
                 <th>
-                  Number
+                  Name
                 </th>
                 <th>
-                  Owner
+                  Birthday
                 </th>
                 <th>
-                  Balance
+                  Country
                 </th>
                 <th class="text-right">
                   Operations
                 </th>
               </thead>
               <tbody>
-                <tr *ngFor="let account of accounts | customFilter: accountFilter : searchString">
+                <tr *ngFor="let client of clients | customFilter: clientsFilter : searchString">
                   <td>
-                    {{ account.number | accountNumber }}
+                    {{ client.info.first_name }} {{ client.info.surname }} ({{ client.info.pesel }})
                   </td>
                   <td>
-                    {{ account.owner.info.first_name }} {{ account.owner.info.surname }}
+                    {{ client.info.birthday }}
                   </td>
                   <td>
-                    ${{ account.balance }}
+                    {{ client.info.country }}
                   </td>
                   <td class="text-right">
                     <div ngbDropdown class="dropdown" placement="bottom-right">
                       <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                       <div ngbDropdownMenu>
-                        <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
+                        <a class="dropdown-item" [routerLink]="['/clients', client.id]">Show</a>
                         <a class="dropdown-item" href="#">Edit</a>
                         <a class="dropdown-item" href="#">Remove</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Generate history</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Make transfer</a>
                       </div>
                     </div>
                   </td>

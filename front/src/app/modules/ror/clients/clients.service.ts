@@ -3,17 +3,18 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Account } from '../../../models/account';
+import { Client } from '../../../models/client/client';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class AccountService {
+export class ClientsService {
 
     constructor(private http: HttpClient) {
     }
 
-    getAccounts(): Observable<Account[]> {
-        return this.http.get<Account[]>(`http://demo0783201.mockable.io/accounts`);
+    getClients(): Observable<Client[]> {
+        return this.http.get<Client[]>(`http://demo0783201.mockable.io/clients`);
     }
 }
