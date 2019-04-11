@@ -274,6 +274,10 @@ typings/
 # .idea/*.iml
 # .idea/modules
 
+#Maven
+chestnut/target
+chestnut/.idea
+
 # CMake
 
 # Mongo Explorer plugin
