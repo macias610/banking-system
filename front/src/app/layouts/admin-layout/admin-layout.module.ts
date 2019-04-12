@@ -5,7 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { AccountComponent } from '../../modules/ror/account/list/account.component';
 import { ChartsModule } from 'ng2-charts';
@@ -23,6 +22,7 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
         CommonModule,
         RouterModule.forChild(AdminLayoutRoutes),
         FormsModule,
+        ReactiveFormsModule,
         ChartsModule,
         NgbModule,
         HttpClientModule,
@@ -30,7 +30,6 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
     ],
     declarations: [
         DashboardComponent,
-        UserProfileComponent,
         NotificationsComponent,
         AccountComponent,
         AccountsingleComponent,

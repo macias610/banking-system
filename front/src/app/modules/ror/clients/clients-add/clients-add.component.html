@@ -8,25 +8,32 @@
           <h5 class="title">Add new client</h5>
         </div>
         <div class="card-body">
-          <form>
+          <div class="alert text-center"
+            [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+            *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <form [formGroup]="createClientForm" (ngSubmit)="createClient()">
             <p class="card-category">Personal info</p>
             <div class="row">
               <div class="col-md-4">
                 <div class="form-group">
                   <label>First name</label>
-                  <input type="text" class="form-control" placeholder="First name" value="">
+                  <input type="text" (click)="createClient()" class="form-control" formControlName="first_name"
+                    placeholder="First name" value="">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Surname</label>
-                  <input type="text" class="form-control" placeholder="Surname" value="">
+                  <input type="text" class="form-control" formControlName="surname" placeholder="Surname" value="">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Pesel</label>
-                  <input type="text" class="form-control" placeholder="Pesel" value="">
+                  <input type="number" step="1" class="form-control" formControlName="pesel" placeholder="Pesel"
+                    value="">
                 </div>
               </div>
             </div>
@@ -36,19 +43,21 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Street</label>
-                  <input type="text" class="form-control" placeholder="Street" value="">
+                  <input type="text" class="form-control" formControlName="street" placeholder="Street" value="">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>House number</label>
-                  <input type="text" class="form-control" placeholder="House number" value="">
+                  <input type="text" class="form-control" formControlName="house_number" placeholder="House number"
+                    value="">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Apartment number</label>
-                  <input type="text" class="form-control" placeholder="Apartment number" value="">
+                  <input type="text" class="form-control" formControlName="apatment_number"
+                    placeholder="Apartment number" value="">
                 </div>
               </div>
             </div>
@@ -56,19 +65,19 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>City</label>
-                  <input type="text" class="form-control" placeholder="City" value="">
+                  <input type="text" class="form-control" formControlName="city" placeholder="City" value="">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Zip code</label>
-                  <input type="text" class="form-control" placeholder="Zip code" value="">
+                  <input type="text" class="form-control" formControlName="zip" placeholder="Zip code" value="">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Country</label>
-                  <select name="" class="form-control">
+                  <select name="" formControlName="country" class="form-control">
                     <option value="">-- Select country --</option>
                     <option value="DE">Germany</option>
                     <option value="PL">Poland</option>
@@ -78,69 +87,85 @@
             </div>
 
             <hr>
-            <p class="card-category">Contacts</p>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Contact type</label>
-                  <select name="" class="form-control">
-                    <option value="">-- Select type --</option>
-                    <option value="PHONE">Phone</option>
-                    <option value="EMAIL">Email</option>
-                    <option value="FAX">Fax</option>
-                  </select>
+            <div class="card-category">
+              Contacts
+              <button (click)="addContact()" type="button" class="btn btn-sm btn-info btn-round ml-2"><i
+                  class="fa fa-plus"></i></button>
+            </div>
+            <div formArrayName="contacts">
+
+              <div class="row" *ngFor="let contact of contactForms.controls; let i = index" [formGroupName]="i">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Contact type</label>
+                    <select name="" formControlName="type" class="form-control">
+                      <option value="">-- Select type --</option>
+                      <option value="PHONE">Phone</option>
+                      <option value="EMAIL">Email</option>
+                      <option value="FAX">Fax</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Contact value</label>
-                  <input type="text" class="form-control" placeholder="Contact value" value="">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Contact value</label>
+                    <input type="text" formControlName="value" class="form-control" placeholder="Contact value"
+                      value="">
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>&nbsp;</label>
-                  <div>
-                    <button type="button" class="btn btn-info btn-round m-0"><i class="fa fa-plus"></i></button>
-                    <button type="button" class="btn btn-danger btn-round mt-0 mb-0 ml-2"><i
-                        class="fa fa-times"></i></button>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div>
+                      <button type="button" (click)="deleteContact(i)"
+                        class="btn btn-danger btn-round mt-0 mb-0 ml-2"><i class="fa fa-times"></i></button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <hr>
-            <p class="card-category">Documents</p>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Document type</label>
-                  <select name="" class="form-control">
-                    <option value="">-- Select type --</option>
-                    <option value="ID">ID</option>
-                    <option value="PASSPORT">Passport</option>
-                  </select>
+            <div class="card-category">
+              Documents
+              <button (click)="addDocument()" type="button" class="btn btn-sm btn-info btn-round ml-2"><i
+                  class="fa fa-plus"></i></button>
+            </div>
+            <div formArrayName="documents">
+
+              <div class="row" *ngFor="let document of documentsForms.controls; let i = index" [formGroupName]="i">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Document type</label>
+                    <select name="" formControlName="type" class="form-control">
+                      <option value="">-- Select type --</option>
+                      <option value="ID">ID</option>
+                      <option value="PASSPORT">Passport</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Document value</label>
-                  <input type="text" class="form-control" placeholder="Document value" value="">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Document value</label>
+                    <input type="text" formControlName="value" class="form-control" placeholder="Document value"
+                      value="">
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>&nbsp;</label>
-                  <div>
-                    <button type="button" class="btn btn-info btn-round m-0"><i class="fa fa-plus"></i></button>
-                    <button type="button" class="btn btn-danger btn-round mt-0 mb-0 ml-2"><i
-                        class="fa fa-times"></i></button>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div>
+                      <button type="button" (click)="deleteDocument(i)"
+                        class="btn btn-danger btn-round mt-0 mb-0 ml-2"><i class="fa fa-times"></i></button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="text-right">
-              <button role="button" class="btn btn-lg btn-info btn-round">Create account</button>
+              <button type="submit" [disabled]="createClientForm.invalid || formInSave"
+                class="btn btn-lg btn-info btn-round">Create
+                account</button>
             </div>
           </form>
         </div>
