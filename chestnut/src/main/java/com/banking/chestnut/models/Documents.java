@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -33,6 +34,9 @@ public class Documents implements Serializable {
     private Integer id;
     @Column(name = "client_id")
     private Integer clientId;
+    @Size(max = 255)
+    @Column(name = "value")
+    private String value;
     @JoinColumn(name = "document_type_id", referencedColumnName = "id")
     @ManyToOne
     private DocumentTypes documentTypeId;
@@ -66,6 +70,14 @@ public class Documents implements Serializable {
 
     public void setDocumentTypeId(DocumentTypes documentTypeId) {
         this.documentTypeId = documentTypeId;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override

@@ -41,11 +41,12 @@ public class Blacklist implements Serializable {
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @Column(name = "created_by")
-    private Integer createdBy;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Clients clientId;
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @ManyToOne
+    private Users createdBy;
 
     public Blacklist() {
     }
@@ -78,20 +79,20 @@ public class Blacklist implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Integer getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
-    }
-
     public Clients getClientId() {
         return clientId;
     }
 
     public void setClientId(Clients clientId) {
         this.clientId = clientId;
+    }
+
+    public Users getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Users createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override
@@ -118,5 +119,5 @@ public class Blacklist implements Serializable {
     public String toString() {
         return "com.banking.chestnut.Blacklist[ id=" + id + " ]";
     }
-    
+
 }

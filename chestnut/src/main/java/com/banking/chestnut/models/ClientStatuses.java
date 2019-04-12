@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class ClientStatuses implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "clientStatusId")
-    private Set<Clients> clientsSet;
+    private transient List<Clients> clientsSet;
 
     public ClientStatuses() {
     }
@@ -61,11 +62,11 @@ public class ClientStatuses implements Serializable {
         this.name = name;
     }
 
-    public Set<Clients> getClientsSet() {
+    public List<Clients> getClientsSet() {
         return clientsSet;
     }
 
-    public void setClientsSet(Set<Clients> clientsSet) {
+    public void setClientsSet(List<Clients> clientsSet) {
         this.clientsSet = clientsSet;
     }
 

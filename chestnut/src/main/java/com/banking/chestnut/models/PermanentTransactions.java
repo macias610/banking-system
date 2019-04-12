@@ -7,19 +7,7 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -41,8 +29,8 @@ public class PermanentTransactions implements Serializable {
     @Column(name = "date_to")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateTo;
-    @Column(name = "interval")
-    private Integer interval;
+    @Column(name = "interval_transaction")
+    private Integer intervalTransaction;
     @Column(name = "next_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date nextDate;
@@ -50,7 +38,7 @@ public class PermanentTransactions implements Serializable {
     @Column(name = "title")
     private String title;
     @Column(name = "amount")
-    private Long amount;
+    private Double amount;
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
     @ManyToOne
     private Accounts senderId;
@@ -89,12 +77,12 @@ public class PermanentTransactions implements Serializable {
         this.dateTo = dateTo;
     }
 
-    public Integer getInterval() {
-        return interval;
+    public Integer getIntervalTransaction() {
+        return intervalTransaction;
     }
 
-    public void setInterval(Integer interval) {
-        this.interval = interval;
+    public void setIntervalTransaction(Integer intervalTransaction) {
+        this.intervalTransaction = intervalTransaction;
     }
 
     public Date getNextDate() {
@@ -113,11 +101,11 @@ public class PermanentTransactions implements Serializable {
         this.title = title;
     }
 
-    public Long getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
@@ -161,5 +149,5 @@ public class PermanentTransactions implements Serializable {
     public String toString() {
         return "com.banking.chestnut.PermanentTransactions[ id=" + id + " ]";
     }
-    
+
 }

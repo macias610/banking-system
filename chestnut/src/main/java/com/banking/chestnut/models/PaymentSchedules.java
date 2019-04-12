@@ -7,6 +7,7 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -42,7 +43,7 @@ public class PaymentSchedules implements Serializable {
     @Column(name = "payment_interest")
     private Long paymentInterest;
     @OneToMany(mappedBy = "paymentScheduleId")
-    private Set<Credits> creditsSet;
+    private transient List<Credits> creditsSet;
 
     public PaymentSchedules() {
     }
@@ -83,11 +84,11 @@ public class PaymentSchedules implements Serializable {
         this.paymentInterest = paymentInterest;
     }
 
-    public Set<Credits> getCreditsSet() {
+    public List<Credits> getCreditsSet() {
         return creditsSet;
     }
 
-    public void setCreditsSet(Set<Credits> creditsSet) {
+    public void setCreditsSet(List<Credits> creditsSet) {
         this.creditsSet = creditsSet;
     }
 

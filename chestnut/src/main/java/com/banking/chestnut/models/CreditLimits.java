@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ public class CreditLimits implements Serializable {
     @Column(name = "level_usage")
     private String levelUsage;
     @OneToMany(mappedBy = "creditLimitId")
-    private Set<CreditLimitClients> creditLimitClientsSet;
+    private transient List<CreditLimitClients> creditLimitClientsSet;
 
     public CreditLimits() {
     }
@@ -72,11 +73,11 @@ public class CreditLimits implements Serializable {
         this.levelUsage = levelUsage;
     }
 
-    public Set<CreditLimitClients> getCreditLimitClientsSet() {
+    public List<CreditLimitClients> getCreditLimitClientsSet() {
         return creditLimitClientsSet;
     }
 
-    public void setCreditLimitClientsSet(Set<CreditLimitClients> creditLimitClientsSet) {
+    public void setCreditLimitClientsSet(List<CreditLimitClients> creditLimitClientsSet) {
         this.creditLimitClientsSet = creditLimitClientsSet;
     }
 
