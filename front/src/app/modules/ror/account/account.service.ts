@@ -2,13 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
+import { Account } from '../../../models/account';
 
-export interface Account {
-    id: number;
-    userId: number;
-    title: string;
-    body: string;
-}
 
 @Injectable({
     providedIn: 'root'
@@ -19,6 +14,6 @@ export class AccountService {
     }
 
     getAccounts(): Observable<Account[]> {
-        return this.http.get<Account[]>(`https://jsonplaceholder.typicode.com/posts`);
+        return this.http.get<Account[]>(`http://demo0783201.mockable.io/accounts`);
     }
 }

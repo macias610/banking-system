@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.form-control:focus {
+  border-color: #80bdff;
+}
+
+.form-control.ng-invalid.ng-touched {
+  border: 1px solid #f96332;
+}
