@@ -17,6 +17,11 @@
 # IDEs and editors
 /.idea
 
+#lokata
+/lokata/target
+/lokata/mvnw
+/lokata/mvnw.cmd
+
 # misc
 /.sass-cache
 /connect.lock
