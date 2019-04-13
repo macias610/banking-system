@@ -1,9 +1,6 @@
-package com.banking.chestnut.models.deposit;
+package com.banking.chestnut.models;
 
-import com.banking.chestnut.models.Accounts;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

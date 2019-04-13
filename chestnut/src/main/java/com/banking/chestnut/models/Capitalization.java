@@ -1,4 +1,4 @@
-package com.banking.chestnut.models.deposit;
+package com.banking.chestnut.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

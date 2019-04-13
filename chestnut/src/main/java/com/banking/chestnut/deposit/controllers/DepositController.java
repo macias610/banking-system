@@ -1,7 +1,7 @@
-package com.banking.chestnut.depositControllers;
+package com.banking.chestnut.deposit.controllers;
 
-import com.banking.chestnut.depositServices.DepositService;
-import com.banking.chestnut.models.deposit.Deposit;
+import com.banking.chestnut.deposit.services.DepositService;
+import com.banking.chestnut.models.Deposit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +47,10 @@ public class DepositController {
         }
     }
     
-    @PostMapping("/stop/{id}")
-    public ResponseEntity<Deposit> stopDepositWithId(@PathVariable Integer id){
+    @PostMapping("/close/{id}")
+    public ResponseEntity<Deposit> closeDepositWithId(@PathVariable Integer id){
         try {
-            Deposit deposit = depositService.stopDepositWithId(id);
+            Deposit deposit = depositService.closeDepositWithId(id);
             return ResponseEntity.ok().body(deposit);
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();

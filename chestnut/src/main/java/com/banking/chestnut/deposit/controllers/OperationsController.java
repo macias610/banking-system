@@ -1,7 +1,7 @@
-package com.banking.chestnut.depositControllers;
+package com.banking.chestnut.deposit.controllers;
 
-import com.banking.chestnut.depositServices.OperationService;
-import com.banking.chestnut.models.deposit.Operation;
+import com.banking.chestnut.deposit.services.OperationService;
+import com.banking.chestnut.models.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

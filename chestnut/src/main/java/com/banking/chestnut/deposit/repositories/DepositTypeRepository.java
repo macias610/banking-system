@@ -1,6 +1,6 @@
-package com.banking.chestnut.depositRepositories;
+package com.banking.chestnut.deposit.repositories;
 
-import com.banking.chestnut.models.deposit.DepositType;
+import com.banking.chestnut.models.DepositType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

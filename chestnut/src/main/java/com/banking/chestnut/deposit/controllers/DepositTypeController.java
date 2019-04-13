@@ -1,8 +1,8 @@
-package com.banking.chestnut.depositControllers;
+package com.banking.chestnut.deposit.controllers;
 
 
-import com.banking.chestnut.depositServices.DepositTypeService;
-import com.banking.chestnut.models.deposit.DepositType;
+import com.banking.chestnut.deposit.services.DepositTypeService;
+import com.banking.chestnut.models.DepositType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.banking.chestnut.models.deposit;
+package com.banking.chestnut.models;
 
 public enum CapitalizationType {
     ANNUAL,

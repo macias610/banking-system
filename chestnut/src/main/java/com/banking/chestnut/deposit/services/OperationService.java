@@ -1,7 +1,7 @@
-package com.banking.chestnut.depositServices;
+package com.banking.chestnut.deposit.services;
 
-import com.banking.chestnut.depositRepositories.OperationRepository;
-import com.banking.chestnut.models.deposit.Operation;
+import com.banking.chestnut.deposit.repositories.OperationRepository;
+import com.banking.chestnut.models.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
