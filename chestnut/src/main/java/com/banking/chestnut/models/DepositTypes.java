@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -50,7 +51,7 @@ public class DepositTypes implements Serializable {
     @ManyToOne(optional = false)
     private Capitalization capitalizationId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "depositTypeId")
-    private Set<Deposits> depositsSet;
+    private transient List<Deposits> depositsSet;
 
     public DepositTypes() {
     }
@@ -115,11 +116,11 @@ public class DepositTypes implements Serializable {
         this.capitalizationId = capitalizationId;
     }
 
-    public Set<Deposits> getDepositsSet() {
+    public List<Deposits> getDepositsSet() {
         return depositsSet;
     }
 
-    public void setDepositsSet(Set<Deposits> depositsSet) {
+    public void setDepositsSet(List<Deposits> depositsSet) {
         this.depositsSet = depositsSet;
     }
 

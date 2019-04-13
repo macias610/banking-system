@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -36,7 +37,7 @@ public class DocumentTypes implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(mappedBy = "documentTypeId")
-    private Set<Documents> documentsSet;
+    private transient List<Documents> documentsSet;
 
     public DocumentTypes() {
     }
@@ -61,11 +62,11 @@ public class DocumentTypes implements Serializable {
         this.type = type;
     }
 
-    public Set<Documents> getDocumentsSet() {
+    public List<Documents> getDocumentsSet() {
         return documentsSet;
     }
 
-    public void setDocumentsSet(Set<Documents> documentsSet) {
+    public void setDocumentsSet(List<Documents> documentsSet) {
         this.documentsSet = documentsSet;
     }
 

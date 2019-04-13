@@ -7,21 +7,7 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
 
 /**
  *
@@ -36,16 +22,15 @@ public class DataHistoryClients implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "client_id")
-    private Integer clientId;
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne
+    private Clients clientId;
     @Lob
-    @Size(max = 65535)
-    @Column(name = "before")
-    private String before;
+    @Column(name = "before_history")
+    private String beforeHistory;
     @Lob
-    @Size(max = 65535)
-    @Column(name = "after")
-    private String after;
+    @Column(name = "after_history")
+    private String afterHistory;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -68,28 +53,28 @@ public class DataHistoryClients implements Serializable {
         this.id = id;
     }
 
-    public Integer getClientId() {
+    public Clients getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(Clients clientId) {
         this.clientId = clientId;
     }
 
-    public String getBefore() {
-        return before;
+    public String getBeforeHistory() {
+        return beforeHistory;
     }
 
-    public void setBefore(String before) {
-        this.before = before;
+    public void setBeforeHistory(String beforeHistory) {
+        this.beforeHistory = beforeHistory;
     }
 
     public String getAfter() {
-        return after;
+        return afterHistory;
     }
 
-    public void setAfter(String after) {
-        this.after = after;
+    public void setAfter(String afterHistory) {
+        this.afterHistory = afterHistory;
     }
 
     public Date getCreatedAt() {
@@ -132,5 +117,5 @@ public class DataHistoryClients implements Serializable {
     public String toString() {
         return "com.banking.chestnut.DataHistoryClients[ id=" + id + " ]";
     }
-    
+
 }

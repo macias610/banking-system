@@ -5,7 +5,10 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,7 +42,7 @@ public class Banks implements Serializable {
     @Column(name = "swift")
     private String swift;
     @OneToMany(mappedBy = "bankId")
-    private Set<Users> usersSet;
+    private transient List<Users> usersList;
 
     public Banks() {
     }
@@ -72,12 +75,12 @@ public class Banks implements Serializable {
         this.swift = swift;
     }
 
-    public Set<Users> getUsersSet() {
-        return usersSet;
+    public List<Users> getUsersList() {
+        return usersList;
     }
 
-    public void setUsersSet(Set<Users> usersSet) {
-        this.usersSet = usersSet;
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 
     @Override
@@ -104,5 +107,5 @@ public class Banks implements Serializable {
     public String toString() {
         return "com.banking.chestnut.Banks[ id=" + id + " ]";
     }
-    
+
 }

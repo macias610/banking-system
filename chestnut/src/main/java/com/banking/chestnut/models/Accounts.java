@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -51,33 +52,11 @@ public class Accounts implements Serializable {
     private Boolean isActive;
     @Column(name = "is_blocked")
     private Boolean isBlocked;
-    @OneToMany(mappedBy = "accountId")
-    private Set<Reports> reportsSet;
-    @OneToMany(mappedBy = "accountId")
-    private Set<AccountHistory> accountHistorySet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
-    private Set<Cards> cardsSet;
-    @OneToMany(mappedBy = "accountId")
-    private Set<Credits> creditsSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "senderId")
-    private Set<Transactions> transactionsSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiverId")
-    private Set<Transactions> transactionsSet1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "accountId")
-    private Set<Deposits> depositsSet;
-    @OneToMany(mappedBy = "senderId")
-    private Set<PermanentTransactions> permanentTransactionsSet;
-    @OneToMany(mappedBy = "receiverId")
-    private Set<PermanentTransactions> permanentTransactionsSet1;
-    @OneToMany(mappedBy = "accountId")
-    private Set<DirectDebits> directDebitsSet;
-    @OneToMany(mappedBy = "providerId")
-    private Set<DirectDebits> directDebitsSet1;
     @JoinColumn(name = "currency_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Currencies currencyId;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Clients clientId;
     @JoinColumn(name = "info_id", referencedColumnName = "id")
     @ManyToOne
@@ -146,94 +125,6 @@ public class Accounts implements Serializable {
         this.isBlocked = isBlocked;
     }
 
-    public Set<Reports> getReportsSet() {
-        return reportsSet;
-    }
-
-    public void setReportsSet(Set<Reports> reportsSet) {
-        this.reportsSet = reportsSet;
-    }
-
-    public Set<AccountHistory> getAccountHistorySet() {
-        return accountHistorySet;
-    }
-
-    public void setAccountHistorySet(Set<AccountHistory> accountHistorySet) {
-        this.accountHistorySet = accountHistorySet;
-    }
-
-    public Set<Cards> getCardsSet() {
-        return cardsSet;
-    }
-
-    public void setCardsSet(Set<Cards> cardsSet) {
-        this.cardsSet = cardsSet;
-    }
-
-    public Set<Credits> getCreditsSet() {
-        return creditsSet;
-    }
-
-    public void setCreditsSet(Set<Credits> creditsSet) {
-        this.creditsSet = creditsSet;
-    }
-
-    public Set<Transactions> getTransactionsSet() {
-        return transactionsSet;
-    }
-
-    public void setTransactionsSet(Set<Transactions> transactionsSet) {
-        this.transactionsSet = transactionsSet;
-    }
-
-    public Set<Transactions> getTransactionsSet1() {
-        return transactionsSet1;
-    }
-
-    public void setTransactionsSet1(Set<Transactions> transactionsSet1) {
-        this.transactionsSet1 = transactionsSet1;
-    }
-
-    public Set<Deposits> getDepositsSet() {
-        return depositsSet;
-    }
-
-    public void setDepositsSet(Set<Deposits> depositsSet) {
-        this.depositsSet = depositsSet;
-    }
-
-    public Set<PermanentTransactions> getPermanentTransactionsSet() {
-        return permanentTransactionsSet;
-    }
-
-    public void setPermanentTransactionsSet(Set<PermanentTransactions> permanentTransactionsSet) {
-        this.permanentTransactionsSet = permanentTransactionsSet;
-    }
-
-    public Set<PermanentTransactions> getPermanentTransactionsSet1() {
-        return permanentTransactionsSet1;
-    }
-
-    public void setPermanentTransactionsSet1(Set<PermanentTransactions> permanentTransactionsSet1) {
-        this.permanentTransactionsSet1 = permanentTransactionsSet1;
-    }
-
-    public Set<DirectDebits> getDirectDebitsSet() {
-        return directDebitsSet;
-    }
-
-    public void setDirectDebitsSet(Set<DirectDebits> directDebitsSet) {
-        this.directDebitsSet = directDebitsSet;
-    }
-
-    public Set<DirectDebits> getDirectDebitsSet1() {
-        return directDebitsSet1;
-    }
-
-    public void setDirectDebitsSet1(Set<DirectDebits> directDebitsSet1) {
-        this.directDebitsSet1 = directDebitsSet1;
-    }
-
     public Currencies getCurrencyId() {
         return currencyId;
     }
@@ -282,5 +173,5 @@ public class Accounts implements Serializable {
     public String toString() {
         return "com.banking.chestnut.Accounts[ id=" + id + " ]";
     }
-    
+
 }

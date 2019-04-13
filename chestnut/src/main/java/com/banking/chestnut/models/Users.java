@@ -43,33 +43,9 @@ public class Users implements Serializable {
     @Size(max = 255)
     @Column(name = "surname")
     private String surname;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<AccountHistory> accountHistorySet;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<Cards> cardsSet;
-    @OneToMany(mappedBy = "introductorId")
-    private Set<Clients> clientsSet;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<Clients> clientsSet1;
-    @OneToMany(mappedBy = "deletedBy")
-    private Set<Clients> clientsSet2;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<Credits> creditsSet;
-    @OneToMany(mappedBy = "deletedBy")
-    private Set<Credits> creditsSet1;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<DepositOperations> depositOperationsSet;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<Transactions> transactionsSet;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<DataHistoryClients> dataHistoryClientsSet;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<Deposits> depositsSet;
     @JoinColumn(name = "bank_id", referencedColumnName = "id")
     @ManyToOne
     private Banks bankId;
-    @OneToMany(mappedBy = "createdBy")
-    private Set<Locations> locationsSet;
 
     public Users() {
     }
@@ -110,108 +86,12 @@ public class Users implements Serializable {
         this.surname = surname;
     }
 
-    public Set<AccountHistory> getAccountHistorySet() {
-        return accountHistorySet;
-    }
-
-    public void setAccountHistorySet(Set<AccountHistory> accountHistorySet) {
-        this.accountHistorySet = accountHistorySet;
-    }
-
-    public Set<Cards> getCardsSet() {
-        return cardsSet;
-    }
-
-    public void setCardsSet(Set<Cards> cardsSet) {
-        this.cardsSet = cardsSet;
-    }
-
-    public Set<Clients> getClientsSet() {
-        return clientsSet;
-    }
-
-    public void setClientsSet(Set<Clients> clientsSet) {
-        this.clientsSet = clientsSet;
-    }
-
-    public Set<Clients> getClientsSet1() {
-        return clientsSet1;
-    }
-
-    public void setClientsSet1(Set<Clients> clientsSet1) {
-        this.clientsSet1 = clientsSet1;
-    }
-
-    public Set<Clients> getClientsSet2() {
-        return clientsSet2;
-    }
-
-    public void setClientsSet2(Set<Clients> clientsSet2) {
-        this.clientsSet2 = clientsSet2;
-    }
-
-    public Set<Credits> getCreditsSet() {
-        return creditsSet;
-    }
-
-    public void setCreditsSet(Set<Credits> creditsSet) {
-        this.creditsSet = creditsSet;
-    }
-
-    public Set<Credits> getCreditsSet1() {
-        return creditsSet1;
-    }
-
-    public void setCreditsSet1(Set<Credits> creditsSet1) {
-        this.creditsSet1 = creditsSet1;
-    }
-
-    public Set<DepositOperations> getDepositOperationsSet() {
-        return depositOperationsSet;
-    }
-
-    public void setDepositOperationsSet(Set<DepositOperations> depositOperationsSet) {
-        this.depositOperationsSet = depositOperationsSet;
-    }
-
-    public Set<Transactions> getTransactionsSet() {
-        return transactionsSet;
-    }
-
-    public void setTransactionsSet(Set<Transactions> transactionsSet) {
-        this.transactionsSet = transactionsSet;
-    }
-
-    public Set<DataHistoryClients> getDataHistoryClientsSet() {
-        return dataHistoryClientsSet;
-    }
-
-    public void setDataHistoryClientsSet(Set<DataHistoryClients> dataHistoryClientsSet) {
-        this.dataHistoryClientsSet = dataHistoryClientsSet;
-    }
-
-    public Set<Deposits> getDepositsSet() {
-        return depositsSet;
-    }
-
-    public void setDepositsSet(Set<Deposits> depositsSet) {
-        this.depositsSet = depositsSet;
-    }
-
     public Banks getBankId() {
         return bankId;
     }
 
     public void setBankId(Banks bankId) {
         this.bankId = bankId;
-    }
-
-    public Set<Locations> getLocationsSet() {
-        return locationsSet;
-    }
-
-    public void setLocationsSet(Set<Locations> locationsSet) {
-        this.locationsSet = locationsSet;
     }
 
     @Override
@@ -238,5 +118,5 @@ public class Users implements Serializable {
     public String toString() {
         return "com.banking.chestnut.Users[ id=" + id + " ]";
     }
-    
+
 }

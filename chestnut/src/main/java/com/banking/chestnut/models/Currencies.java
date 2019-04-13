@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class Currencies implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "currencyId")
-    private Set<Accounts> accountsSet;
+    private transient List<Accounts> accountsSet;
 
     public Currencies() {
     }
@@ -62,11 +63,11 @@ public class Currencies implements Serializable {
         this.name = name;
     }
 
-    public Set<Accounts> getAccountsSet() {
+    public List<Accounts> getAccountsSet() {
         return accountsSet;
     }
 
-    public void setAccountsSet(Set<Accounts> accountsSet) {
+    public void setAccountsSet(List<Accounts> accountsSet) {
         this.accountsSet = accountsSet;
     }
 

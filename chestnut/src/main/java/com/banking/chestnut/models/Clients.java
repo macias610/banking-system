@@ -7,22 +7,9 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -75,31 +62,18 @@ public class Clients implements Serializable {
     @JoinColumn(name = "client_status_id", referencedColumnName = "id")
     @ManyToOne
     private ClientStatuses clientStatusId;
-    @OneToMany(mappedBy = "clientId")
-    private Set<CreditLimitClients> creditLimitClientsSet;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientId")
-    private Set<LoginHistory> loginHistorySet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientId")
-    private Set<Blacklist> blacklistSet;
+    private transient List<Blacklist> blacklistList;
+    @OneToOne(mappedBy = "clientId")
+    private Locations location;
     @OneToMany(mappedBy = "clientId")
-    private Set<ClientTaxes> clientTaxesSet;
-    @OneToMany(mappedBy = "clientId")
-    private Set<Locations> locationsSet;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientId")
-    private Set<Accounts> accountsSet;
-    @OneToMany(mappedBy = "clientId")
-    private Set<Contacts> contactsSet;
+    private transient List<Contacts> contacts;
 
     public Clients() {
     }
 
     public Clients(Integer id) {
         this.id = id;
-    }
-
-    public Clients(Integer id, int bankId) {
-        this.id = id;
-        this.bankId = bankId;
     }
 
     public Integer getId() {
@@ -206,60 +180,36 @@ public class Clients implements Serializable {
         this.clientStatusId = clientStatusId;
     }
 
-    public Set<CreditLimitClients> getCreditLimitClientsSet() {
-        return creditLimitClientsSet;
+    public List<Blacklist> getBlacklistList() {
+        return blacklistList;
     }
 
-    public void setCreditLimitClientsSet(Set<CreditLimitClients> creditLimitClientsSet) {
-        this.creditLimitClientsSet = creditLimitClientsSet;
+    public void setBlacklistList(List<Blacklist> blacklistList) {
+        this.blacklistList = blacklistList;
     }
 
-    public Set<LoginHistory> getLoginHistorySet() {
-        return loginHistorySet;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public void setLoginHistorySet(Set<LoginHistory> loginHistorySet) {
-        this.loginHistorySet = loginHistorySet;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
-    public Set<Blacklist> getBlacklistSet() {
-        return blacklistSet;
+    public Locations getLocation() {
+        return location;
     }
 
-    public void setBlacklistSet(Set<Blacklist> blacklistSet) {
-        this.blacklistSet = blacklistSet;
+    public void setLocation(Locations location) {
+        this.location = location;
     }
 
-    public Set<ClientTaxes> getClientTaxesSet() {
-        return clientTaxesSet;
+    public List<Contacts> getContacts() {
+        return contacts;
     }
 
-    public void setClientTaxesSet(Set<ClientTaxes> clientTaxesSet) {
-        this.clientTaxesSet = clientTaxesSet;
-    }
-
-    public Set<Locations> getLocationsSet() {
-        return locationsSet;
-    }
-
-    public void setLocationsSet(Set<Locations> locationsSet) {
-        this.locationsSet = locationsSet;
-    }
-
-    public Set<Accounts> getAccountsSet() {
-        return accountsSet;
-    }
-
-    public void setAccountsSet(Set<Accounts> accountsSet) {
-        this.accountsSet = accountsSet;
-    }
-
-    public Set<Contacts> getContactsSet() {
-        return contactsSet;
-    }
-
-    public void setContactsSet(Set<Contacts> contactsSet) {
-        this.contactsSet = contactsSet;
+    public void setContacts(List<Contacts> contacts) {
+        this.contacts = contacts;
     }
 
     @Override
@@ -286,5 +236,5 @@ public class Clients implements Serializable {
     public String toString() {
         return "com.banking.chestnut.Clients[ id=" + id + " ]";
     }
-    
+
 }

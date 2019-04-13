@@ -6,6 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -34,7 +35,7 @@ public class AccountInfo implements Serializable {
     @Column(name = "locked_amount")
     private Long lockedAmount;
     @OneToMany(mappedBy = "infoId")
-    private Set<Accounts> accountsSet;
+    private transient List<Accounts> accountsSet;
 
     public AccountInfo() {
     }
@@ -67,11 +68,11 @@ public class AccountInfo implements Serializable {
         this.lockedAmount = lockedAmount;
     }
 
-    public Set<Accounts> getAccountsSet() {
+    public List<Accounts> getAccountsSet() {
         return accountsSet;
     }
 
-    public void setAccountsSet(Set<Accounts> accountsSet) {
+    public void setAccountsSet(List<Accounts> accountsSet) {
         this.accountsSet = accountsSet;
     }
 
