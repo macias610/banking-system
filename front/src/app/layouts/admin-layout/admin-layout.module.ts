@@ -14,6 +14,7 @@ import { AccountService } from '../../modules/ror/account/account.service';
 import { AccountsingleComponent } from '../../modules/ror/account/accountsingle/accountsingle.component';
 import { ClientsListComponent } from '../../modules/ror/clients/clients-list/clients-list.component';
 import { ClientsAddComponent } from '../../modules/ror/clients/clients-add/clients-add.component';
+import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/clients-edit.component';
 import { AccountNumberPipe } from '../../shared/pipes/account-number.pipe';
 import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
 
@@ -35,6 +36,7 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
         AccountsingleComponent,
         ClientsListComponent,
         ClientsAddComponent,
+        ClientsEditComponent,
         AccountNumberPipe,
         CustomFilterPipe
     ],
