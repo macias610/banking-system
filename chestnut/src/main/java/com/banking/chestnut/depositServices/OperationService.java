@@ -14,7 +14,7 @@ public class OperationService {
     @Autowired
     OperationRepository operationRepository;
     
-    public Set<Operation> getOperationsByDepositId(Long id) {
+    public Set<Operation> getOperationsByDepositId(Integer id) {
         return operationRepository.findAllByDepositId(id).orElseThrow(NoSuchElementException::new);
     }
     

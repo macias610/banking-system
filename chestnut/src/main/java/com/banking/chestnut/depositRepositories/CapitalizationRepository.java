@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CapitalizationRepository extends CrudRepository<Capitalization, Long> {
+public interface CapitalizationRepository extends CrudRepository<Capitalization, Integer> {
     Optional<Capitalization> findByType(CapitalizationType type);
 }

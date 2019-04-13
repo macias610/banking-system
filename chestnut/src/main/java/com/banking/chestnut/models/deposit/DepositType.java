@@ -17,7 +17,7 @@ public class DepositType {
     @Id
     @GeneratedValue
     @Column(name = "deposit_type_id")
-    private Long id;
+    private Integer id;
     
     @JsonIgnore
     @OneToMany(mappedBy = "depositType",
@@ -26,7 +26,7 @@ public class DepositType {
     
     private String name;
     
-    private Float amount;
+    private Float maxAmount;
     private Float minAmount;
     private Float interestRate;
     

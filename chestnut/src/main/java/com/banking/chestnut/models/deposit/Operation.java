@@ -14,7 +14,7 @@ public class Operation {
     @Id
     @GeneratedValue
     @Column(name = "operation_id")
-    private Long id;
+    private Integer id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_id")

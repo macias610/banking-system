@@ -18,7 +18,7 @@ public class DepositTypeController {
     DepositTypeService depositTypeService;
     
     @GetMapping("/{id}")
-    ResponseEntity<DepositType> getDepositTypeById(@PathVariable Long id) {
+    ResponseEntity<DepositType> getDepositTypeById(@PathVariable Integer id) {
         try{
             DepositType depositType = depositTypeService.getDepositTypeById(id);
             return ResponseEntity.ok().body(depositType);
@@ -40,7 +40,7 @@ public class DepositTypeController {
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteDepositTypeById(@PathVariable Long id) {
+    public ResponseEntity deleteDepositTypeById(@PathVariable Integer id) {
         try{
             depositTypeService.deleteDepositTypeById(id);
             return ResponseEntity.status(HttpStatus.OK).build();

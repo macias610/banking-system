@@ -14,7 +14,7 @@ public class CapitalizationService {
     @Autowired
     CapitalizationRepository capitalizationRepository;
     
-    public Capitalization getCapitalizationById(Long id) {
+    public Capitalization getCapitalizationById(Integer id) {
         return capitalizationRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
     

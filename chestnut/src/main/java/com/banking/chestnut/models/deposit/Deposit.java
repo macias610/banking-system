@@ -19,7 +19,7 @@ public class Deposit {
     @Id
     @GeneratedValue
     @Column(name = "deposit_id")
-    private Long id;
+    private Integer id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id") //FK
@@ -34,6 +34,8 @@ public class Deposit {
     
     @Temporal(TemporalType.DATE)
     private Date endDate;
+    
+    private Float amount;
     
     @JsonIgnore
     @OneToMany(mappedBy = "deposit",

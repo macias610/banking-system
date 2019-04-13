@@ -14,11 +14,21 @@ public class DepositService {
     @Autowired
     DepositRepository depositRepository;
     
-    public Deposit getDepositById(Long id) {
+    
+    public Deposit getDepositById(Integer id) {
         return depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
     
-    public Set<Deposit> getDepositsByAccountId(Long id){
+    public Deposit stopDepositWithId(Integer id){
+        return null;
+//        Deposit depositToStop = depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
+//        Accounts account = depositToStop.getAccount();
+//        AccountInfo accountInfo = account.getInfoId();
+//        Float depositAmount = depositToStop.getDepositType().getAmount();
+//        accountInfo.setAvailableAmount();
+    }
+    
+    public Set<Deposit> getDepositsByAccountId(Integer id){
         return depositRepository.findAllByAccountId(id).orElseThrow(NoSuchElementException::new);
     }
     
@@ -26,7 +36,7 @@ public class DepositService {
         return depositRepository.save(deposit);
     }
     
-    public void deleteDeposit(Long id) {
+    public void deleteDeposit(Integer id) {
         Deposit deposit = depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
         depositRepository.delete(deposit);
     }

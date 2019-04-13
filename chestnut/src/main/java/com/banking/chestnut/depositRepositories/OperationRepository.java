@@ -8,6 +8,6 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface OperationRepository extends CrudRepository<Operation, Long> {
-    Optional<Set<Operation>> findAllByDepositId(Long id);
+public interface OperationRepository extends CrudRepository<Operation, Integer> {
+    Optional<Set<Operation>> findAllByDepositId(Integer id);
 }

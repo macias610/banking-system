@@ -18,7 +18,7 @@ public class DepositController {
     DepositService depositService;
     
     @GetMapping(value = "/{id}")
-    ResponseEntity<Deposit> getDepositById(@PathVariable Long id) {
+    ResponseEntity<Deposit> getDepositById(@PathVariable Integer id) {
         try {
             Deposit deposit = depositService.getDepositById(id);
             return ResponseEntity.ok().body(deposit);
@@ -28,7 +28,7 @@ public class DepositController {
     }
     
     @GetMapping(value = "/account/{id}")
-    ResponseEntity<Set<Deposit>> getDepositsByAccountId(@PathVariable Long id) {
+    ResponseEntity<Set<Deposit>> getDepositsByAccountId(@PathVariable Integer id) {
         try {
             Set<Deposit> deposits = depositService.getDepositsByAccountId(id);
             return ResponseEntity.ok().body(deposits);
@@ -37,7 +37,7 @@ public class DepositController {
         }
     }
     
-    @PostMapping("")
+    @PostMapping("/add")
     public ResponseEntity<Deposit> addDeposit(@RequestBody Deposit deposit) {
         try {
             Deposit createdDeposit = depositService.addDeposit(deposit);
@@ -47,8 +47,18 @@ public class DepositController {
         }
     }
     
+    @PostMapping("/stop/{id}")
+    public ResponseEntity<Deposit> stopDepositWithId(@PathVariable Integer id){
+        try {
+            Deposit deposit = depositService.stopDepositWithId(id);
+            return ResponseEntity.ok().body(deposit);
+        } catch (NoSuchElementException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteDepositById(@PathVariable Long id) {
+    public ResponseEntity deleteDepositById(@PathVariable Integer id) {
         try {
             depositService.deleteDeposit(id);
             return ResponseEntity.status(HttpStatus.OK).build();

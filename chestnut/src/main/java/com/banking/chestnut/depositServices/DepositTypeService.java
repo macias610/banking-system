@@ -13,7 +13,7 @@ public class DepositTypeService {
     @Autowired
     DepositTypeRepository depositTypeRepository;
     
-    public DepositType getDepositTypeById(Long id) throws NoSuchElementException {
+    public DepositType getDepositTypeById(Integer id) throws NoSuchElementException {
         return depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
     
@@ -21,7 +21,7 @@ public class DepositTypeService {
         return depositTypeRepository.save(depositType);
     }
     
-    public void deleteDepositTypeById(Long id) throws NoSuchElementException {
+    public void deleteDepositTypeById(Integer id) throws NoSuchElementException {
         DepositType depositType = depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
         depositTypeRepository.delete(depositType);
     }

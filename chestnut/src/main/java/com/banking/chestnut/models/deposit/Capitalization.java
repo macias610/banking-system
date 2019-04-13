@@ -17,7 +17,7 @@ public class Capitalization {
     @Id
     @GeneratedValue
     @Column(name = "capitalization_id")
-    private Long id;
+    private Integer id;
     
     @JsonIgnore
     @OneToMany(mappedBy = "capitalization")

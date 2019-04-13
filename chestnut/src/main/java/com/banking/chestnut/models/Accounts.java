@@ -5,6 +5,9 @@
  */
 package com.banking.chestnut.models;
 
+import com.banking.chestnut.models.deposit.Deposit;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +39,13 @@ public class Accounts implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "account",
+                  cascade = CascadeType.ALL,
+                  orphanRemoval = true)
+    private Set<Deposit> deposits;
+    
     @Size(max = 255)
     @Column(name = "type")
     private String type;
