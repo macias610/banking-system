@@ -20,15 +20,12 @@ export class ClientsService {
         return this.http.get<Client[]>(`${environment.api_url}/clients`);
     }
 
+    getClient(clientId: string): Observable<ClientCreateDao> {
+        return this.http.get<ClientCreateDao>(`${environment.api_url}/client/${clientId}`);
+    }
+
     createClient(client: ClientCreateDao): Observable<any> {
         return this.http
             .post(`${environment.api_url}/clients`, client);
-        // .pipe(
-        //     map((response: Response) => response.json()),
-        //     catchError((error: Response) => {
-        //         if (error.status >= 400 || error.status === 0) {
-        //             return Observable.throw(error.json());
-        //         }
-        //     }));
     }
 }
