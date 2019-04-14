@@ -1,9 +1,9 @@
 package com.banking.chestnut.models;
 
-import com.banking.chestnut.models.Capitalization;
-import com.banking.chestnut.models.Deposit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,8 +13,9 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@JsonRootName(value = "depositType")
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public class DepositType {
+public class DepositTypes {
     
     @Id
     @GeneratedValue
@@ -24,7 +25,7 @@ public class DepositType {
     @JsonIgnore
     @OneToMany(mappedBy = "depositType",
             fetch = FetchType.LAZY)
-    private Set<Deposit> deposit;
+    private Set<Deposits> deposits;
     
     private String name;
     
@@ -36,6 +37,7 @@ public class DepositType {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "capitalization_id")
-    private Capitalization capitalization;
+    @JsonProperty("capitalization")
+    private DepositCapitalizations capitalization;
     
 }

@@ -2,6 +2,7 @@ package com.banking.chestnut.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
-public class Capitalization {
+@JsonRootName(value = "capitalization")
+public class DepositCapitalizations {
     
     @Id
     @GeneratedValue
@@ -21,7 +23,7 @@ public class Capitalization {
     
     @JsonIgnore
     @OneToMany(mappedBy = "capitalization")
-    private Set<DepositType> depositTypes;
+    private Set<DepositTypes> depositTypes;
     
     @Enumerated(EnumType.STRING)
     private CapitalizationType type;

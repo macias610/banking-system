@@ -2,9 +2,8 @@ package com.banking.chestnut.deposit.controllers;
 
 
 import com.banking.chestnut.deposit.services.DepositTypeService;
-import com.banking.chestnut.models.DepositType;
+import com.banking.chestnut.models.DepositTypes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
@@ -13,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/depositType")
+@RequestMapping("/depositTypes")
 public class DepositTypeController {
     
     @Autowired
@@ -22,22 +21,22 @@ public class DepositTypeController {
     UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
     
     @GetMapping("/{id}")
-    ResponseEntity<DepositType> getDepositTypeById(@PathVariable Integer id) {
+    ResponseEntity<DepositTypes> getDepositTypeById(@PathVariable Integer id) {
         try{
-            DepositType depositType = depositTypeService.getDepositTypeById(id);
-            return ResponseEntity.ok().body(depositType);
+            DepositTypes depositTypes = depositTypeService.getDepositTypeById(id);
+            return ResponseEntity.ok().body(depositTypes);
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();
         }
     }
     
     @PostMapping()
-    public ResponseEntity<DepositType> createDepositType(@RequestBody DepositType depositType) {
+    public ResponseEntity<DepositTypes> createDepositType(@RequestBody DepositTypes depositTypes) {
         
         try{
-            DepositType createdDepositType = depositTypeService.addDepositType(depositType);
-            UriComponents uriComponents = uriBuilder.fromPath("/depositType/{id}").buildAndExpand(createdDepositType.getId());
-            return ResponseEntity.created(uriComponents.toUri()).body(createdDepositType);
+            DepositTypes createdDepositTypes = depositTypeService.addDepositType(depositTypes);
+            UriComponents uriComponents = uriBuilder.fromPath("/depositTypes/{id}").buildAndExpand(createdDepositTypes.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(createdDepositTypes);
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }

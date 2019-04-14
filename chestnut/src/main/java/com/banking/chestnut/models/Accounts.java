@@ -40,7 +40,7 @@ public class Accounts implements Serializable {
     @OneToMany(mappedBy = "account",
                   cascade = CascadeType.ALL,
                   orphanRemoval = true)
-    private Set<Deposit> deposits;
+    private Set<Deposits> deposits;
     
     @Size(max = 255)
     @Column(name = "type")

@@ -1,7 +1,7 @@
 package com.banking.chestnut.deposit.services;
 
 import com.banking.chestnut.deposit.repositories.CapitalizationRepository;
-import com.banking.chestnut.models.Capitalization;
+import com.banking.chestnut.models.DepositCapitalizations;
 import com.banking.chestnut.models.CapitalizationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,20 +14,20 @@ public class CapitalizationService {
     @Autowired
     CapitalizationRepository capitalizationRepository;
     
-    public Capitalization getCapitalizationById(Integer id) {
+    public DepositCapitalizations getCapitalizationById(Integer id) {
         return capitalizationRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
     
-    public Capitalization getCapitalizationByType(CapitalizationType type) {
+    public DepositCapitalizations getCapitalizationByType(CapitalizationType type) {
         return capitalizationRepository.findByType(type).orElseThrow(NoSuchElementException::new);
     }
     
-    public Capitalization addCapitalization(Capitalization capitalization) {
-        return capitalizationRepository.save(capitalization);
+    public DepositCapitalizations addCapitalization(DepositCapitalizations depositCapitalizations) {
+        return capitalizationRepository.save(depositCapitalizations);
     }
     
-    public void deleteCapitalization(Capitalization capitalization) {
-        capitalizationRepository.delete(capitalization);
+    public void deleteCapitalization(DepositCapitalizations depositCapitalizations) {
+        capitalizationRepository.delete(depositCapitalizations);
     }
     
     

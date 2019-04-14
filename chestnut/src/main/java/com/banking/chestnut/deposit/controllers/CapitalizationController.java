@@ -1,7 +1,7 @@
 package com.banking.chestnut.deposit.controllers;
 
 import com.banking.chestnut.deposit.services.CapitalizationService;
-import com.banking.chestnut.models.Capitalization;
+import com.banking.chestnut.models.DepositCapitalizations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +18,10 @@ public class CapitalizationController {
     CapitalizationService capitalizationService;
     
     @GetMapping("/{id}")
-    public ResponseEntity<Capitalization> getCapitalizationById(Integer id){
+    public ResponseEntity<DepositCapitalizations> getCapitalizationById(Integer id){
         try {
-            Capitalization capitalization =capitalizationService.getCapitalizationById(id);
-            return ResponseEntity.ok().body(capitalization);
+            DepositCapitalizations depositCapitalizations =capitalizationService.getCapitalizationById(id);
+            return ResponseEntity.ok().body(depositCapitalizations);
         } catch (NoSuchElementException e){
             return ResponseEntity.notFound().build();
         }

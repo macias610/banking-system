@@ -1,20 +1,17 @@
 package com.banking.chestnut.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class Operation {
+@JsonRootName(value = "depositOperation")
+public class DepositOperations {
     
     @Id
     @GeneratedValue
@@ -26,7 +23,8 @@ public class Operation {
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_id")
-    private Deposit deposit;
+    @JsonProperty("deposit")
+    private Deposits deposit;
     
     @NonNull
     @Enumerated(EnumType.STRING)

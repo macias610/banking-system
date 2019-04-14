@@ -1,7 +1,6 @@
 package com.banking.chestnut.models;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,7 +11,8 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
-public class Deposit {
+@JsonRootName(value = "deposit")
+public class Deposits {
     
     @Id
     @Getter
@@ -32,7 +32,7 @@ public class Deposit {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_type_id")
-    private DepositType depositType;
+    private DepositTypes depositType;
     
     @Getter
     @Temporal(TemporalType.DATE)
@@ -52,7 +52,7 @@ public class Deposit {
     @OneToMany(mappedBy = "deposit",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private Set<Operation> operations;
+    private Set<DepositOperations> operations;
     
     @Getter
     @Setter

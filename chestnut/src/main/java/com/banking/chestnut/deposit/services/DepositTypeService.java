@@ -1,7 +1,7 @@
 package com.banking.chestnut.deposit.services;
 
 import com.banking.chestnut.deposit.repositories.DepositTypeRepository;
-import com.banking.chestnut.models.DepositType;
+import com.banking.chestnut.models.DepositTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,17 +14,17 @@ public class DepositTypeService {
     @Autowired
     DepositTypeRepository depositTypeRepository;
     
-    public DepositType getDepositTypeById(Integer id) throws NoSuchElementException {
+    public DepositTypes getDepositTypeById(Integer id) throws NoSuchElementException {
         return depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
     
-    public DepositType addDepositType(DepositType depositType) {
-        return depositTypeRepository.save(depositType);
+    public DepositTypes addDepositType(DepositTypes depositTypes) {
+        return depositTypeRepository.save(depositTypes);
     }
     
     @Transactional
     public void deleteDepositTypeById(Integer id) throws NoSuchElementException {
-        DepositType depositType = depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        depositTypeRepository.delete(depositType);
+        DepositTypes depositTypes = depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        depositTypeRepository.delete(depositTypes);
     }
 }
