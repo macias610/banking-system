@@ -19,7 +19,7 @@ public class DatabaseConfig {
     public DatabaseConfig(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         try {
-            File initFile = new ClassPathResource("init.sql").getFile();
+            File initFile = new ClassPathResource("data.sql").getFile();
             for(String line : Files.readAllLines(initFile.toPath(), Charset.defaultCharset())){
                 jdbcTemplate.execute(line);
             }
