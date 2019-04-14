@@ -1,6 +1,6 @@
-package com.banking.chestnut.transfersServices;
+package com.banking.chestnut.moneytrasnfers.services;
 
-import com.banking.chestnut.transfersRepositories.TransactionRepository;
+import com.banking.chestnut.moneytrasnfers.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

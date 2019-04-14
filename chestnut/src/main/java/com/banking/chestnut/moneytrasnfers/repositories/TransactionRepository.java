@@ -1,4 +1,4 @@
-package com.banking.chestnut.transfersRepositories;
+package com.banking.chestnut.moneytrasnfers.repositories;
 
 import com.banking.chestnut.models.Transactions;
 import org.springframework.data.repository.CrudRepository;
