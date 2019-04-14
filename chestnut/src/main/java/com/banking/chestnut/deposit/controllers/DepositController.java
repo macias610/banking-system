@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -16,6 +18,8 @@ public class DepositController {
     
     @Autowired
     DepositService depositService;
+    
+    UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
     
     @GetMapping(value = "/{id}")
     ResponseEntity<Deposit> getDepositById(@PathVariable Integer id) {
@@ -41,7 +45,8 @@ public class DepositController {
     public ResponseEntity<Deposit> addDeposit(@RequestBody Deposit deposit) {
         try {
             Deposit createdDeposit = depositService.addDeposit(deposit);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdDeposit);
+            UriComponents uriComponents = uriBuilder.fromPath("/deposit/{id}").buildAndExpand(createdDeposit.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(createdDeposit);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
 
@@ -16,6 +18,8 @@ public class DepositTypeController {
     
     @Autowired
     DepositTypeService depositTypeService;
+    
+    UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
     
     @GetMapping("/{id}")
     ResponseEntity<DepositType> getDepositTypeById(@PathVariable Integer id) {
@@ -32,9 +36,10 @@ public class DepositTypeController {
         
         try{
             DepositType createdDepositType = depositTypeService.addDepositType(depositType);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdDepositType);
+            UriComponents uriComponents = uriBuilder.fromPath("/depositType/{id}").buildAndExpand(createdDepositType.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(createdDepositType);
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.badRequest().build();
         }
         
     }
@@ -43,9 +48,9 @@ public class DepositTypeController {
     public ResponseEntity deleteDepositTypeById(@PathVariable Integer id) {
         try{
             depositTypeService.deleteDepositTypeById(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.ok().build();
         } catch (NoSuchElementException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.badRequest().build();
         }
     }
 }

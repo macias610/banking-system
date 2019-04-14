@@ -4,6 +4,7 @@ import com.banking.chestnut.deposit.repositories.DepositTypeRepository;
 import com.banking.chestnut.models.DepositType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -21,6 +22,7 @@ public class DepositTypeService {
         return depositTypeRepository.save(depositType);
     }
     
+    @Transactional
     public void deleteDepositTypeById(Integer id) throws NoSuchElementException {
         DepositType depositType = depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
         depositTypeRepository.delete(depositType);

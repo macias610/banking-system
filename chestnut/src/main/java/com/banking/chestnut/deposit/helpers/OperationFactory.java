@@ -4,25 +4,20 @@ import com.banking.chestnut.models.Deposit;
 import com.banking.chestnut.models.Operation;
 import com.banking.chestnut.models.OperationType;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.NoSuchElementException;
+
+import static com.banking.chestnut.deposit.helpers.DateHelper.currentTimestamp;
 
 public class OperationFactory {
     
     public static Operation createOperation(OperationType operationType, Deposit deposit){
         switch (operationType){
             case OPENING:
-                return new Operation(deposit,OperationType.OPENING, currentDate());
+                return new Operation(deposit,OperationType.OPENING, currentTimestamp());
             case CLOSING:
-                return new Operation(deposit,OperationType.CLOSING,currentDate());
+                return new Operation(deposit,OperationType.CLOSING, currentTimestamp());
                 default:
                     throw new NoSuchElementException();
         }
-    }
-    
-    private static Date currentDate(){
-        return Date.valueOf(LocalDate.now(ZoneId.of("Europe/Warsaw")));
     }
 }

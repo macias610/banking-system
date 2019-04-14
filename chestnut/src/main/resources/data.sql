@@ -13,5 +13,3 @@ INSERT INTO `clients_info` (`id`, `birthday`, `country`, `first_name`, `lang`, `
 INSERT INTO `currencies` (`id`, `name`) VALUES(1,	'DOLAR');
 INSERT INTO `deposit`(`deposit_id`,`end_date`,`is_active`,`start_date`,`account_id`,`deposit_type_id`,`amount`) VALUES (1,'2019-04-05',CONV('1', 2, 10) + 0,'2019-04-05',1,1,4000);
 INSERT INTO `deposit_type`(`deposit_type_id`,`max_amount`,`days_period`,`interest_rate`,`min_amount`,`name`,`capitalization_id`) VALUES (1,5000,120,3,1000,'5000+',1);
-INSERT INTO `hibernate_sequence` (`next_val`) VALUES (1),(1),(1),(1),(1),(1),(1),(1),(1),(1);
-INSERT INTO `operation`(`operation_id`,`date`,`type`,`deposit_id`) VALUES (1,'2019-04-05','OPENING',1);
