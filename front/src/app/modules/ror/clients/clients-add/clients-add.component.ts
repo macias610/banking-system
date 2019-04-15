@@ -25,7 +25,7 @@ export class ClientsAddComponent implements OnInit {
             'pesel': ['', [Validators.required]],
             'street': ['', [Validators.required]],
             'house_number': ['', [Validators.required]],
-            'apatment_number': ['', [Validators.required]],
+            'apartment_number': ['', [Validators.required]],
             'city': ['', [Validators.required]],
             'zip': ['', [Validators.required]],
             'country': ['', [Validators.required]],
@@ -99,7 +99,7 @@ export class ClientsAddComponent implements OnInit {
 
         this.service.createClient(formValue).subscribe(
             (data: ResponseData) => {
-                this.formInSave = false;
+                this.formInSave = true;
                 this.createClientForm.reset();
                 this.cleanFormArray(this.contactForms);
                 this.cleanFormArray(this.documentsForms);
@@ -112,7 +112,7 @@ export class ClientsAddComponent implements OnInit {
             (error) => {
                 const errorData: ResponseData = error.error;
                 console.log(errorData);
-                this.formInSave = false;
+                this.formInSave = true;
                 this.addNotification(true, errorData ? errorData.notification : '');
             }
         );
