@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -58,6 +60,17 @@ public class ClientService implements IClientService {
         client.setClientStatusId(clientStatusRepository.findAll().stream().filter(item -> item.getName().equals("client active")).findFirst().get());
         client.setClientTypeId(clientTypeRepository.findAll().stream().filter(item -> item.getValue().equals("basic client")).findFirst().get());
         this.clientRepository.save(client);
+        return client;
+    }
+
+    @Override
+    public List<Client> getAll() {
+        return this.clientRepository.findAllByDeletedAtNullAndDeletedByNull();
+    }
+
+    @Override
+    public Optional<Client> getById(Integer id) {
+        Optional<Client> client = this.clientRepository.findById(id);
         return client;
     }
 

@@ -5,6 +5,7 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -46,6 +47,7 @@ public class Location implements Serializable {
     private Date createdAt;
     @OneToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JsonIgnore
     private Client clientId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne

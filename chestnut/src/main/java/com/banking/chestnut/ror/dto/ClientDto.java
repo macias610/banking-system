@@ -2,6 +2,7 @@ package com.banking.chestnut.ror.dto;
 
 import com.banking.chestnut.models.Contacts;
 import com.banking.chestnut.models.Document;
+import com.banking.chestnut.models.Location;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class SaveClient implements Serializable {
+public class ClientDto implements Serializable {
 
     @JsonProperty("first_name")
     private String firstName;
@@ -44,5 +45,13 @@ public class SaveClient implements Serializable {
 
     @JsonProperty("documents")
     private List<Document> documents = new ArrayList<>();
+
+    public void setLocation(Location location){
+        this.street = location.getStreet();
+        this.houseNumber = location.getHouseNumber();
+        this.apartmentNumber = location.getApartmentNumber();
+        this.city = location.getCity();
+        this.zip = location.getZip();
+    }
 
 }

@@ -5,6 +5,8 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,9 +31,11 @@ public class Document implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @JsonIgnore
     private Integer id;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Client clientId;
     @Size(max = 255)
     @Column(name = "value")

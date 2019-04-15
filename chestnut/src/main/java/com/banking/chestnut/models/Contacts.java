@@ -5,6 +5,8 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -32,6 +34,7 @@ public class Contacts implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @JsonIgnore
     private Integer id;
     @Size(max = 32)
     @Column(name = "type")
@@ -41,11 +44,14 @@ public class Contacts implements Serializable {
     private String value;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private Users createdBy;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date createdAt;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JsonIgnore
     @ManyToOne
     private Client clientId;
 

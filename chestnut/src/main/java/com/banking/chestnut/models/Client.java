@@ -5,6 +5,7 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -68,7 +69,9 @@ public class Client implements Serializable {
     @OneToOne(mappedBy = "clientId")
     private Location location;
     @OneToMany(mappedBy = "clientId")
-    private transient List<Contacts> contacts;
+    private List<Contacts> contacts;
+    @OneToMany(mappedBy = "clientId")
+    private List<Document> documents;
 
     public Client() {
         this.uuid = UUID.randomUUID().toString();
