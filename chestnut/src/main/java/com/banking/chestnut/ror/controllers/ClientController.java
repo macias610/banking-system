@@ -19,10 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping( value = "/client")
@@ -72,6 +74,7 @@ public class ClientController {
             clientInfo.setBirthday(this.clientService.extractBirthdayFromPesel(clientInfo.getPesel()));
             this.clientInfoService.save(clientInfo);
             Client client = new Client();
+            client.setUuid(String.format("%040d", new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16)));
             client.setClientInfoId(clientInfo);
             this.clientService.saveClient(client);
             location.setClientId(client);
@@ -135,4 +138,6 @@ public class ClientController {
             return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }

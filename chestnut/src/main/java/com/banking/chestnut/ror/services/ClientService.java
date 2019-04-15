@@ -58,7 +58,7 @@ public class ClientService implements IClientService {
         client.setCreatedBy(userRepository.findById(cashierId).get());
         client.setBankId(bankRepository.findById(bankId).get());
         client.setClientStatusId(clientStatusRepository.findAll().stream().filter(item -> item.getName().equals("client active")).findFirst().get());
-        client.setClientTypeId(clientTypeRepository.findAll().stream().filter(item -> item.getValue().equals("basic client")).findFirst().get());
+        client.setClientTypeId(clientTypeRepository.findAll().stream().filter(item -> item.getValue().equals("individual client")).findFirst().get());
         this.clientRepository.save(client);
         return client;
     }
