@@ -58,6 +58,9 @@ public class ClientController {
     @ResponseBody
     ResponseEntity saveClientData(@RequestBody ClientDto clientDto){
         try {
+            Optional<Client> check = this.clientService.getByPesel(clientDto.getPesel());
+            if(check.isPresent())
+                return new ResponseEntity("User already exists", HttpStatus.CONFLICT);
             ClientInfo clientInfo =  modelMapper.map(clientDto, ClientInfo.class);
             Location location = modelMapper.map(clientDto, Location.class);
             clientInfo.setBirthday(this.clientService.extractBirthdayFromPesel(clientInfo.getPesel()));

@@ -75,6 +75,12 @@ public class ClientService implements IClientService {
     }
 
     @Override
+    public Optional<Client> getByPesel(Long pesel) {
+        List<Client> clients = this.clientRepository.findAll();
+        return clients.stream().filter(item -> item.getClientInfoId().getPesel().equals(pesel)).findFirst();
+    }
+
+    @Override
     public Date extractBirthdayFromPesel(Long pesel)  {
         String peselTxt = String.valueOf(pesel);
         byte PESEL[] = new byte[11];

@@ -10,5 +10,6 @@ public interface IClientService {
     Client saveClient(Client client);
     List<Client> getAll();
     Optional<Client> getById(Integer id);
+    Optional<Client> getByPesel(Long pesel);
     Date extractBirthdayFromPesel(Long pesel);
 }
