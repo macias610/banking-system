@@ -1,14 +1,10 @@
 package com.banking.chestnut.ror.services;
 
-import com.banking.chestnut.commonrepositories.UserRepository;
-import com.banking.chestnut.models.Documents;
+import com.banking.chestnut.models.Document;
 import com.banking.chestnut.ror.repositories.DocumentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
 
 @Service
 @Transactional
@@ -23,7 +19,7 @@ public class DocumentService implements IDocumentService {
     }
 
     @Override
-    public Documents saveDocument(Documents document) {
+    public Document saveDocument(Document document) {
         this.documentRepository.save(document);
         return document;
     }

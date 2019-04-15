@@ -5,6 +5,8 @@
  */
 package com.banking.chestnut.models;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.Basic;
@@ -27,6 +29,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "users")
+@Data
 public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -54,45 +57,6 @@ public class Users implements Serializable {
         this.id = id;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmployeeNumber() {
-        return employeeNumber;
-    }
-
-    public void setEmployeeNumber(String employeeNumber) {
-        this.employeeNumber = employeeNumber;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Banks getBankId() {
-        return bankId;
-    }
-
-    public void setBankId(Banks bankId) {
-        this.bankId = bankId;
-    }
 
     @Override
     public int hashCode() {

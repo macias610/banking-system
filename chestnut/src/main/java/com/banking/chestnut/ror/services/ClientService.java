@@ -2,15 +2,13 @@ package com.banking.chestnut.ror.services;
 
 import com.banking.chestnut.commonrepositories.BankRepository;
 import com.banking.chestnut.commonrepositories.UserRepository;
-import com.banking.chestnut.models.Clients;
+import com.banking.chestnut.models.Client;
 import com.banking.chestnut.ror.repositories.ClientRepository;
 import com.banking.chestnut.ror.repositories.ClientStatusRepository;
 import com.banking.chestnut.ror.repositories.ClientTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
@@ -52,9 +50,9 @@ public class ClientService implements IClientService {
     }
 
     @Override
-    public Clients saveClient(Clients client) {
+    public Client saveClient(Client client) {
         client.setCreatedAt(new Date());
-        client.setActive(true);
+        client.setIsActive(true);
         client.setCreatedBy(userRepository.findById(cashierId).get());
         client.setBankId(bankRepository.findById(bankId).get());
         client.setClientStatusId(clientStatusRepository.findAll().stream().filter(item -> item.getName().equals("client active")).findFirst().get());

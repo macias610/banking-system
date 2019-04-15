@@ -1,7 +1,7 @@
 package com.banking.chestnut.ror.dto;
 
 import com.banking.chestnut.models.Contacts;
-import com.banking.chestnut.models.Documents;
+import com.banking.chestnut.models.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -43,6 +43,6 @@ public class SaveClient implements Serializable {
     private List<Contacts> contacts = new ArrayList<>();
 
     @JsonProperty("documents")
-    private List<Documents> documents = new ArrayList<>();
+    private List<Document> documents = new ArrayList<>();
 
 }

@@ -1,11 +1,10 @@
 package com.banking.chestnut.ror.services;
 
-import com.banking.chestnut.models.Clients;
+import com.banking.chestnut.models.Client;
 
-import java.text.ParseException;
 import java.util.Date;
 
 public interface IClientService {
-    Clients saveClient(Clients client);
+    Client saveClient(Client client);
     Date extractBirthdayFromPesel(Long pesel);
 }

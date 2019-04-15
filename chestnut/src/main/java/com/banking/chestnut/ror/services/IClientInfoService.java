@@ -1,7 +1,7 @@
 package com.banking.chestnut.ror.services;
 
-import com.banking.chestnut.models.ClientsInfo;
+import com.banking.chestnut.models.ClientInfo;
 
 public interface IClientInfoService {
-    ClientsInfo save(ClientsInfo clientsInfo);
+    ClientInfo save(ClientInfo clientInfo);
 }

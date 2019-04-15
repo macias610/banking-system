@@ -1,7 +1,7 @@
 package com.banking.chestnut.ror.services;
 
-import com.banking.chestnut.models.Documents;
+import com.banking.chestnut.models.Document;
 
 public interface IDocumentService {
-    Documents saveDocument(Documents document);
+    Document saveDocument(Document document);
 }

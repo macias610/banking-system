@@ -5,8 +5,6 @@
  */
 package com.banking.chestnut.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -17,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,7 +47,7 @@ public class Contacts implements Serializable {
     private Date createdAt;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
-    private Clients clientId;
+    private Client clientId;
 
     public Contacts() {
     }
@@ -100,11 +96,11 @@ public class Contacts implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Clients getClientId() {
+    public Client getClientId() {
         return clientId;
     }
 
-    public void setClientId(Clients clientId) {
+    public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
 

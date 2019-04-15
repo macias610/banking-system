@@ -6,17 +6,14 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -25,24 +22,27 @@ import javax.validation.constraints.Size;
  * @author macie
  */
 @Entity
-@Table(name = "client_statuses")
-public class ClientStatuses implements Serializable {
+@Table(name = "documents")
+public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 32)
-    @Column(name = "name")
-    private String name;
-    @OneToMany(mappedBy = "clientStatusId")
-    private transient List<Clients> clientsSet;
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne
+    private Client clientId;
+    @Size(max = 255)
+    @Column(name = "value")
+    private String value;
+    @Column(name = "type")
+    private String type;
 
-    public ClientStatuses() {
+    public Document() {
     }
 
-    public ClientStatuses(Integer id) {
+    public Document(Integer id) {
         this.id = id;
     }
 
@@ -54,20 +54,36 @@ public class ClientStatuses implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Client getClientId() {
+        return clientId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClientId(Client clientId) {
+        this.clientId = clientId;
     }
 
-    public List<Clients> getClientsSet() {
-        return clientsSet;
+    public String getType() {
+        return type;
     }
 
-    public void setClientsSet(List<Clients> clientsSet) {
-        this.clientsSet = clientsSet;
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    //    public DocumentTypes getDocumentTypeId() {
+//        return documentTypeId;
+//    }
+//
+//    public void setDocumentTypeId(DocumentTypes documentTypeId) {
+//        this.documentTypeId = documentTypeId;
+//    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override
@@ -80,10 +96,10 @@ public class ClientStatuses implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClientStatuses)) {
+        if (!(object instanceof Document)) {
             return false;
         }
-        ClientStatuses other = (ClientStatuses) object;
+        Document other = (Document) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -92,7 +108,7 @@ public class ClientStatuses implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.ClientStatuses[ id=" + id + " ]";
+        return "com.banking.chestnut.Document[ id=" + id + " ]";
     }
     
 }

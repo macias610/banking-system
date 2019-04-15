@@ -24,7 +24,7 @@ public class DataHistoryClients implements Serializable {
     private Integer id;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
-    private Clients clientId;
+    private Client clientId;
     @Lob
     @Column(name = "before_history")
     private String beforeHistory;
@@ -53,11 +53,11 @@ public class DataHistoryClients implements Serializable {
         this.id = id;
     }
 
-    public Clients getClientId() {
+    public Client getClientId() {
         return clientId;
     }
 
-    public void setClientId(Clients clientId) {
+    public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
 

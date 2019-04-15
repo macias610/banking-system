@@ -6,10 +6,7 @@
 package com.banking.chestnut.models;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,9 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -57,7 +51,7 @@ public class Accounts implements Serializable {
     private Currencies currencyId;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
-    private Clients clientId;
+    private Client clientId;
     @JoinColumn(name = "info_id", referencedColumnName = "id")
     @ManyToOne
     private AccountInfo infoId;
@@ -133,11 +127,11 @@ public class Accounts implements Serializable {
         this.currencyId = currencyId;
     }
 
-    public Clients getClientId() {
+    public Client getClientId() {
         return clientId;
     }
 
-    public void setClientId(Clients clientId) {
+    public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
 

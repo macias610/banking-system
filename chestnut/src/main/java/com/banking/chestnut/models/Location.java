@@ -5,6 +5,8 @@
  */
 package com.banking.chestnut.models;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
@@ -16,7 +18,8 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "locations")
-public class Locations implements Serializable {
+@Data
+public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,88 +46,16 @@ public class Locations implements Serializable {
     private Date createdAt;
     @OneToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private Clients clientId;
+    private Client clientId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
     private Users createdBy;
 
-    public Locations() {
+    public Location() {
     }
 
-    public Locations(Integer id) {
+    public Location(Integer id) {
         this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getZip() {
-        return zip;
-    }
-
-    public void setZip(String zip) {
-        this.zip = zip;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getApartmentNumber() {
-        return apartmentNumber;
-    }
-
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Clients getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Clients clientId) {
-        this.clientId = clientId;
-    }
-
-    public Users getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Users createdBy) {
-        this.createdBy = createdBy;
     }
 
     @Override
@@ -137,10 +68,10 @@ public class Locations implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Locations)) {
+        if (!(object instanceof Location)) {
             return false;
         }
-        Locations other = (Locations) object;
+        Location other = (Location) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -149,7 +80,7 @@ public class Locations implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Locations[ id=" + id + " ]";
+        return "com.banking.chestnut.Location[ id=" + id + " ]";
     }
     
 }
