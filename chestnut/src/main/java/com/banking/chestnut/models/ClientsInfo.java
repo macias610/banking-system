@@ -44,7 +44,7 @@ public class ClientsInfo implements Serializable {
     @Column(name = "surname")
     private String surname;
     @Column(name = "pesel")
-    private Integer pesel;
+    private Long pesel;
     @Column(name = "birthday")
     @Temporal(TemporalType.DATE)
     private Date birthday;
@@ -91,11 +91,11 @@ public class ClientsInfo implements Serializable {
         this.surname = surname;
     }
 
-    public Integer getPesel() {
+    public Long getPesel() {
         return pesel;
     }
 
-    public void setPesel(Integer pesel) {
+    public void setPesel(Long pesel) {
         this.pesel = pesel;
     }
 

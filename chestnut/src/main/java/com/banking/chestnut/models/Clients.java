@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -29,10 +30,9 @@ public class Clients implements Serializable {
     @Size(max = 255)
     @Column(name = "uuid")
     private String uuid;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "bank_id")
-    private int bankId;
+    @JoinColumn(name = "bank_id", referencedColumnName = "id")
+    @ManyToOne
+    private Banks bankId;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "created_at")
@@ -70,6 +70,7 @@ public class Clients implements Serializable {
     private transient List<Contacts> contacts;
 
     public Clients() {
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public Clients(Integer id) {
@@ -92,11 +93,11 @@ public class Clients implements Serializable {
         this.uuid = uuid;
     }
 
-    public int getBankId() {
+    public Banks getBankId() {
         return bankId;
     }
 
-    public void setBankId(int bankId) {
+    public void setBankId(Banks bankId) {
         this.bankId = bankId;
     }
 

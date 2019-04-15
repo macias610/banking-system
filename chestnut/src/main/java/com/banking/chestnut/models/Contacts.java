@@ -43,8 +43,9 @@ public class Contacts implements Serializable {
     @Size(max = 255)
     @Column(name = "value")
     private String value;
-    @Column(name = "created_by")
-    private Integer createdBy;
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @ManyToOne
+    private Users createdBy;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
@@ -83,11 +84,11 @@ public class Contacts implements Serializable {
         this.value = value;
     }
 
-    public Integer getCreatedBy() {
+    public Users getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(Users createdBy) {
         this.createdBy = createdBy;
     }
 

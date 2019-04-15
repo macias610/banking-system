@@ -32,14 +32,17 @@ public class Documents implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "client_id")
-    private Integer clientId;
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne
+    private Clients clientId;
     @Size(max = 255)
     @Column(name = "value")
     private String value;
-    @JoinColumn(name = "document_type_id", referencedColumnName = "id")
-    @ManyToOne
-    private DocumentTypes documentTypeId;
+    @Column(name = "type")
+    private String type;
+//    @JoinColumn(name = "document_type_id", referencedColumnName = "id")
+//    @ManyToOne
+//    private DocumentTypes documentTypeId;
 
     public Documents() {
     }
@@ -56,21 +59,29 @@ public class Documents implements Serializable {
         this.id = id;
     }
 
-    public Integer getClientId() {
+    public Clients getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(Clients clientId) {
         this.clientId = clientId;
     }
 
-    public DocumentTypes getDocumentTypeId() {
-        return documentTypeId;
+    public String getType() {
+        return type;
     }
 
-    public void setDocumentTypeId(DocumentTypes documentTypeId) {
-        this.documentTypeId = documentTypeId;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    //    public DocumentTypes getDocumentTypeId() {
+//        return documentTypeId;
+//    }
+//
+//    public void setDocumentTypeId(DocumentTypes documentTypeId) {
+//        this.documentTypeId = documentTypeId;
+//    }
 
     public String getValue() {
         return value;
