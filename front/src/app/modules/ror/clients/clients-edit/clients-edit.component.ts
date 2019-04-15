@@ -4,6 +4,7 @@ import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
 import { ActivatedRoute } from '@angular/router';
 import { ClientCreateDao } from '../../../../models/client/clientCreateDao';
+import { ResponseData } from '../../../../models/responseData';
 
 @Component({
     selector: 'app-clients-edit',
@@ -37,9 +38,9 @@ export class ClientsEditComponent implements OnInit {
         });
 
         this.service.getClient(this.clientId).subscribe(
-            (data: ClientCreateDao) => {
-                this.fillForm(data);
-                console.log(data);
+            (d: ResponseData) => {
+                this.fillForm(<ClientCreateDao>d.data);
+                console.log(d);
                 // this.statuses = data.data;
             },
             (error) => {

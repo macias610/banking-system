@@ -1,13 +1,17 @@
 package com.banking.chestnut.ror.controllers;
 
 
+import com.banking.chestnut.helper.Helper;
 import com.banking.chestnut.models.Client;
 import com.banking.chestnut.models.ClientInfo;
 import com.banking.chestnut.models.Location;
+import com.banking.chestnut.models.ResponseObject;
 import com.banking.chestnut.ror.dto.ClientInfoDto;
 import com.banking.chestnut.ror.dto.Info;
 import com.banking.chestnut.ror.dto.ClientDto;
 import com.banking.chestnut.ror.services.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,8 @@ public class ClientController {
     private ILocationService locationService;
 
     private static ModelMapper modelMapper = new ModelMapper();
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     public ClientController(IClientService clientService, IClientInfoService clientInfoService, IContactService contactService,
@@ -78,9 +84,11 @@ public class ClientController {
                 clientDto.getDocuments().forEach(item -> item.setClientId(client));
                 clientDto.getDocuments().forEach(item -> this.documentService.saveDocument(item));
             }
-            return new ResponseEntity("Client saved", HttpStatus.CREATED);
+
+            return new ResponseEntity<>(ResponseObject.createSuccess("Client saved"), HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity("Error during save client", HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during save client"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -88,20 +96,19 @@ public class ClientController {
     @ResponseBody
     ResponseEntity getAllClients(){
         List<ClientInfoDto> clientInfoDtos = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         try {
             List<Client> clients = this.clientService.getAll();
-            if(!clients.isEmpty()){
-                clients.forEach(item -> clientInfoDtos.add(new ClientInfoDto(item.getId(), modelMapper.map(item.getClientInfoId(), Info.class))));
-                for (int i=0; i < clientInfoDtos.size(); i++){
-                    clientInfoDtos.get(i).getInfo().setBirthday(formatter.format(clients.get(i).getClientInfoId().getBirthday()));
-                }
-                return new ResponseEntity(clientInfoDtos, HttpStatus.OK);
-            } else {
-                return new ResponseEntity(clientInfoDtos, HttpStatus.NO_CONTENT);
-            }
+            clients.forEach(item -> clientInfoDtos.add(new ClientInfoDto(item.getId(), modelMapper.map(item.getClientInfoId(), Info.class))));
+
+//            Jak jest wiele danych do wyslania to mozna w ten sposob dodawac
+//            JsonNode json = Helper.createJson();
+//            Helper.addProperty(json, "clients", mapper.valueToTree(clientInfoDtos));
+            JsonNode returnData = mapper.valueToTree(clientInfoDtos);
+
+            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
         } catch (Exception e){
-            return new ResponseEntity("Error during fetching client data", HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -117,12 +124,15 @@ public class ClientController {
                 clientDto.setLocation(result.getLocation());
                 clientDto.setDocuments(result.getDocuments());
                 clientDto.setContacts(result.getContacts());
-                return new ResponseEntity(clientDto, HttpStatus.OK);
+                JsonNode returnData = mapper.valueToTree(clientDto);
+
+                return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
             }
             else
-                return new ResponseEntity("Client not found", HttpStatus.OK);
+                return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
         } catch (Exception e){
-            return new ResponseEntity("Error during fetching client data", HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
         }
     }
 }

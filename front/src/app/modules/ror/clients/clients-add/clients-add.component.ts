@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
+import { ResponseData } from '../../../../models/responseData';
 
 @Component({
     selector: 'app-clients-add',
@@ -97,7 +98,7 @@ export class ClientsAddComponent implements OnInit {
         this.formInSave = true;
 
         this.service.createClient(formValue).subscribe(
-            (data) => {
+            (data: ResponseData) => {
                 this.formInSave = false;
                 this.createClientForm.reset();
                 this.cleanFormArray(this.contactForms);
@@ -109,7 +110,8 @@ export class ClientsAddComponent implements OnInit {
                 this.addNotification(false, data.notification || '');
             },
             (error) => {
-                const errorData = error.error;
+                const errorData: ResponseData = error.error;
+                console.log(errorData);
                 this.formInSave = false;
                 this.addNotification(true, errorData ? errorData.notification : '');
             }
