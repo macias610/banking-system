@@ -4,7 +4,7 @@ export interface ClientCreateDao {
     pesel: number;
     street: string;
     house_number: string;
-    apatment_number: string;
+    apartment_number: string;
     city: string;
     zip: string;
     country: string;

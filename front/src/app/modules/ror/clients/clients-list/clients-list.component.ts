@@ -31,7 +31,6 @@ export class ClientsListComponent implements OnInit {
     }
 
     clientsFilter(item: Client, search: string): boolean {
-        return true;
         const itemString = (item.info.first_name + '' + item.info.surname + '' + item.info.pesel).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
     }

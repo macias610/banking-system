@@ -30,6 +30,8 @@ import java.util.UUID;
 @RequestMapping( value = "/client")
 public class ClientController {
 
+    private final int PESEL_LENGTH = 11;
+
     private IClientService clientService;
 
     private IClientInfoService clientInfoService;
@@ -67,8 +69,12 @@ public class ClientController {
     ResponseEntity saveClientData(@RequestBody ClientDto clientDto){
         try {
             Optional<Client> check = this.clientService.getByPesel(clientDto.getPesel());
-            if(check.isPresent())
-                return new ResponseEntity("User already exists", HttpStatus.CONFLICT);
+            if(check.isPresent()) {
+                return new ResponseEntity<>(ResponseObject.createError("User already exists"), HttpStatus.CONFLICT);
+            }
+            if (clientDto.getPesel().toString().length() < PESEL_LENGTH){
+                return new ResponseEntity<>(ResponseObject.createError("Wrong pesel length"), HttpStatus.BAD_REQUEST);
+            }
             ClientInfo clientInfo =  modelMapper.map(clientDto, ClientInfo.class);
             Location location = modelMapper.map(clientDto, Location.class);
             clientInfo.setBirthday(this.clientService.extractBirthdayFromPesel(clientInfo.getPesel()));
