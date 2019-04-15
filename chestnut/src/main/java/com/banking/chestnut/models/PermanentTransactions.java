@@ -37,14 +37,20 @@ public class PermanentTransactions implements Serializable {
     @Size(max = 255)
     @Column(name = "title")
     private String title;
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "value")
+    private long value;
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
     @ManyToOne
     private Accounts senderId;
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     @ManyToOne
     private Accounts receiverId;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @ManyToOne
+    private Users deletedBy;
 
     public PermanentTransactions() {
     }
@@ -101,12 +107,12 @@ public class PermanentTransactions implements Serializable {
         this.title = title;
     }
 
-    public Double getAmount() {
-        return amount;
+    public long getValue() {
+        return value;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setValue(long value) {
+        this.value = value;
     }
 
     public Accounts getSenderId() {
@@ -123,6 +129,18 @@ public class PermanentTransactions implements Serializable {
 
     public void setReceiverId(Accounts receiverId) {
         this.receiverId = receiverId;
+    }
+
+    public Users getDeletedBy() {return deletedBy; }
+
+    public void setDeletedBy(Users deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public Date getDeletedAt() {return deletedAt; }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override
