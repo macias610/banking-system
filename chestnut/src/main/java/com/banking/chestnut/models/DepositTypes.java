@@ -1,43 +1,54 @@
 package com.banking.chestnut.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
-import lombok.Data;
+import com.banking.chestnut.deposit.dto.DepositTypeDto;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
+
 @Entity
-@Data
 @NoArgsConstructor
-@JsonRootName(value = "depositType")
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class DepositTypes {
     
+    @Getter
     @Id
     @GeneratedValue
     @Column(name = "deposit_type_id")
     private Integer id;
     
-    @JsonIgnore
     @OneToMany(mappedBy = "depositType",
             fetch = FetchType.LAZY)
     private Set<Deposits> deposits;
     
+    @Getter
     private String name;
     
+    @Getter
     private Float maxAmount;
+    
+    @Getter
     private Float minAmount;
+    
+    @Getter
     private Float interestRate;
     
+    @Getter
     private Integer daysPeriod;
     
+    @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "capitalization_id")
-    @JsonProperty("capitalization")
     private DepositCapitalizations capitalization;
     
+    public DepositTypes(DepositTypeDto depositTypeDto, DepositCapitalizations capitalization) {
+        this.id = depositTypeDto.getId();
+        this.name = depositTypeDto.getName();
+        this.maxAmount = depositTypeDto.getMaxAmount();
+        this.minAmount = depositTypeDto.getMinAmount();
+        this.interestRate = depositTypeDto.getInterestRate();
+        this.daysPeriod = depositTypeDto.getDaysPeriod();
+        this.capitalization = capitalization;
+    }
 }

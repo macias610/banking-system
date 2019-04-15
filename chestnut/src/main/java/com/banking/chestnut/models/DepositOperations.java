@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@JsonRootName(value = "depositOperation")
 public class DepositOperations {
     
     @Id
@@ -19,11 +18,9 @@ public class DepositOperations {
     private Integer id;
     
     @NonNull
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_id")
-    @JsonProperty("deposit")
     private Deposits deposit;
     
     @NonNull
@@ -31,6 +28,5 @@ public class DepositOperations {
     private OperationType type;
     
     @NonNull
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp;
 }

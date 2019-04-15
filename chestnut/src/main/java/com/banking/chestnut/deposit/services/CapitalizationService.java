@@ -1,8 +1,8 @@
 package com.banking.chestnut.deposit.services;
 
 import com.banking.chestnut.deposit.repositories.CapitalizationRepository;
-import com.banking.chestnut.models.DepositCapitalizations;
 import com.banking.chestnut.models.CapitalizationType;
+import com.banking.chestnut.models.DepositCapitalizations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.banking.chestnut.deposit.repositories;
 
-import com.banking.chestnut.models.DepositCapitalizations;
 import com.banking.chestnut.models.CapitalizationType;
+import com.banking.chestnut.models.DepositCapitalizations;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

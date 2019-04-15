@@ -1,8 +1,8 @@
 package com.banking.chestnut.deposit.controllers;
 
 
+import com.banking.chestnut.deposit.dto.DepositTypeDto;
 import com.banking.chestnut.deposit.services.DepositTypeService;
-import com.banking.chestnut.models.DepositTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,8 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/depositTypes")
-public class DepositTypeController {
+public class
+DepositTypeController {
     
     @Autowired
     DepositTypeService depositTypeService;
@@ -21,23 +22,23 @@ public class DepositTypeController {
     UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
     
     @GetMapping("/{id}")
-    ResponseEntity<DepositTypes> getDepositTypeById(@PathVariable Integer id) {
-        try{
-            DepositTypes depositTypes = depositTypeService.getDepositTypeById(id);
-            return ResponseEntity.ok().body(depositTypes);
-        } catch (NoSuchElementException e){
+    ResponseEntity<DepositTypeDto> getDepositTypeById(@PathVariable Integer id) {
+        try {
+            DepositTypeDto depositTypeDto = depositTypeService.getDepositTypeById(id);
+            return ResponseEntity.ok().body(depositTypeDto);
+        } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }
     
     @PostMapping()
-    public ResponseEntity<DepositTypes> createDepositType(@RequestBody DepositTypes depositTypes) {
+    public ResponseEntity<DepositTypeDto> createDepositType(@RequestBody DepositTypeDto depositTypeDto) {
         
-        try{
-            DepositTypes createdDepositTypes = depositTypeService.addDepositType(depositTypes);
-            UriComponents uriComponents = uriBuilder.fromPath("/depositTypes/{id}").buildAndExpand(createdDepositTypes.getId());
-            return ResponseEntity.created(uriComponents.toUri()).body(createdDepositTypes);
-        } catch (Exception e){
+        try {
+            DepositTypeDto createdDepositTypeDto = depositTypeService.addDepositType(depositTypeDto);
+            UriComponents uriComponents = uriBuilder.fromPath("/depositTypes/{id}").buildAndExpand(createdDepositTypeDto.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(createdDepositTypeDto);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
         
@@ -45,10 +46,10 @@ public class DepositTypeController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity deleteDepositTypeById(@PathVariable Integer id) {
-        try{
+        try {
             depositTypeService.deleteDepositTypeById(id);
             return ResponseEntity.ok().build();
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().build();
         }
     }

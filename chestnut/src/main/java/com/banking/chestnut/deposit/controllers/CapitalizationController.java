@@ -18,11 +18,11 @@ public class CapitalizationController {
     CapitalizationService capitalizationService;
     
     @GetMapping("/{id}")
-    public ResponseEntity<DepositCapitalizations> getCapitalizationById(Integer id){
+    public ResponseEntity<DepositCapitalizations> getCapitalizationById(Integer id) {
         try {
-            DepositCapitalizations depositCapitalizations =capitalizationService.getCapitalizationById(id);
+            DepositCapitalizations depositCapitalizations = capitalizationService.getCapitalizationById(id);
             return ResponseEntity.ok().body(depositCapitalizations);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }

@@ -1,17 +1,17 @@
 package com.banking.chestnut.models;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.banking.chestnut.deposit.dto.DepositDto;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+import static com.banking.chestnut.deposit.helpers.DateHelper.currentDate;
+
+
 @Entity
 @NoArgsConstructor
-@JsonRootName(value = "deposit")
 public class Deposits {
     
     @Id
@@ -21,34 +21,28 @@ public class Deposits {
     private Integer id;
     
     @Getter
-    @Setter
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id") //FK
     private Accounts account;
     
     @Getter
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_type_id")
     private DepositTypes depositType;
     
     @Getter
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
     
     @Getter
     @Setter
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
     
     @Getter
     private Float amount;
     
-    @JsonIgnore
+    @Getter
     @OneToMany(mappedBy = "deposit",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
@@ -58,5 +52,17 @@ public class Deposits {
     @Setter
     private Boolean isActive;
     
-    
+    public Deposits(DepositDto depositDto, Accounts account, DepositTypes depositType){
+        this.id = depositDto.getId();
+        this.account = account;
+        this.depositType = depositType;
+        if (depositDto.getStartDate() != null){
+            this.startDate = depositDto.getStartDate();
+        } else {
+            this.startDate = currentDate();
+        }
+        this.endDate = depositDto.getEndDate();
+        this.amount = depositDto.getAmount();
+        this.isActive = depositDto.getIsActive();
+    }
 }
