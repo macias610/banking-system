@@ -1,7 +1,6 @@
 package com.banking.chestnut.ror.controllers;
 
 
-import com.banking.chestnut.helper.Helper;
 import com.banking.chestnut.models.Client;
 import com.banking.chestnut.models.ClientInfo;
 import com.banking.chestnut.models.Location;
@@ -20,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +70,7 @@ public class ClientController {
             if(check.isPresent()) {
                 return new ResponseEntity<>(ResponseObject.createError("User already exists"), HttpStatus.CONFLICT);
             }
-            if (clientDto.getPesel().toString().length() < PESEL_LENGTH){
+            if (clientDto.getPesel().toString().length() < PESEL_LENGTH || !this.clientService.isValidPesel(clientDto.getPesel())){
                 return new ResponseEntity<>(ResponseObject.createError("Wrong pesel length"), HttpStatus.BAD_REQUEST);
             }
             ClientInfo clientInfo =  modelMapper.map(clientDto, ClientInfo.class);

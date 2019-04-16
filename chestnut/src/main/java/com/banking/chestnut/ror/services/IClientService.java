@@ -12,4 +12,5 @@ public interface IClientService {
     Optional<Client> getById(Integer id);
     Optional<Client> getByPesel(Long pesel);
     Date extractBirthdayFromPesel(Long pesel);
+    boolean isValidPesel(Long pesel);
 }

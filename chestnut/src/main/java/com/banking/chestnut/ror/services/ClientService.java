@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -84,17 +81,35 @@ public class ClientService implements IClientService {
     public Date extractBirthdayFromPesel(Long pesel)  {
         String peselTxt = String.valueOf(pesel);
         byte PESEL[] = new byte[11];
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "yyyyMMdd");
         for (int i = 0; i < 11; i++){
             PESEL[i] = Byte.parseByte(peselTxt.substring(i, i+1));
         }
         Date birthDate = null;
         try {
-            birthDate = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).
-                    parse(getBirthYear(PESEL) + "" + getBirthMonth(PESEL) + "" + getBirthDay(PESEL));
+            Date dd = new GregorianCalendar(getBirthYear(PESEL), getBirthMonth(PESEL), getBirthDay(PESEL)).getTime();
+            birthDate = formatter.parse(formatter.format(dd));
         } catch (ParseException e) {
+            e.printStackTrace();
             return null;
         }
         return birthDate;
+    }
+
+    @Override
+    public boolean isValidPesel(Long pesel) {
+        String peselTxt = String.valueOf(pesel);
+        byte PESEL[] = new byte[11];
+        for (int i = 0; i < 11; i++){
+            PESEL[i] = Byte.parseByte(peselTxt.substring(i, i+1));
+        }
+        if (checkSum(PESEL) && checkMonth(PESEL) && checkDay(PESEL)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private int getBirthYear(byte[] PESEL) {
@@ -146,5 +161,70 @@ public class ClientService implements IClientService {
         day = 10 * PESEL[4];
         day += PESEL[5];
         return day;
+    }
+
+    private boolean checkSum(byte[] PESEL) {
+        int sum = 1 * PESEL[0] +
+                3 * PESEL[1] +
+                7 * PESEL[2] +
+                9 * PESEL[3] +
+                1 * PESEL[4] +
+                3 * PESEL[5] +
+                7 * PESEL[6] +
+                9 * PESEL[7] +
+                1 * PESEL[8] +
+                3 * PESEL[9];
+        sum %= 10;
+        sum = 10 - sum;
+        sum %= 10;
+
+        if (sum == PESEL[10]) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean checkMonth(byte[] PESEL) {
+        int month = getBirthMonth(PESEL);
+        int day = getBirthDay(PESEL);
+        if (month > 0 && month < 13) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean checkDay(byte[] PESEL) {
+        int year = getBirthYear(PESEL);
+        int month = getBirthMonth(PESEL);
+        int day = getBirthDay(PESEL);
+        if ((day >0 && day < 32) &&
+                (month == 1 || month == 3 || month == 5 ||
+                        month == 7 || month == 8 || month == 10 ||
+                        month == 12)) {
+            return true;
+        }
+        else if ((day >0 && day < 31) &&
+                (month == 4 || month == 6 || month == 9 ||
+                        month == 11)) {
+            return true;
+        }
+        else if ((day >0 && day < 30 && leapYear(year)) ||
+                (day >0 && day < 29 && !leapYear(year))) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    private boolean leapYear(int year) {
+        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+            return true;
+        else
+            return false;
     }
 }
