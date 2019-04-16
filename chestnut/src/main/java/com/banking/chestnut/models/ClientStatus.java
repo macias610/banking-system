@@ -33,7 +33,7 @@ public class ClientStatus implements Serializable {
     @Size(max = 32)
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "clientStatusId")
+    @OneToMany(mappedBy = "clientStatus")
     private transient List<Client> clientSet;
 
     public ClientStatus() {

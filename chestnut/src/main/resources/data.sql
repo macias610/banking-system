@@ -53,4 +53,4 @@ INSERT IGNORE INTO `documents` (`id`, `type`, `value`, `client_id`) VALUES
 
 INSERT IGNORE INTO `locations` (`id`, `apartment_number`, `city`, `created_at`, `house_number`, `street`, `zip`, `client_id`, `created_by`) VALUES
 (1, '9', 'Poznań', '2019-04-16 06:24:37', '2', 'Discordowa', '98-999', 1, 1),
-(2, NULL, 'Warszawa', '2019-04-16 06:25:22', '12', 'Uliczna', '98-123', 2, 1);
+(2, '12', 'Warszawa', '2019-04-16 06:25:22', '12', 'Uliczna', '98-123', 2, 1);

@@ -58,6 +58,11 @@ public class Contacts implements Serializable {
     public Contacts() {
     }
 
+    public void assignNewValues(Contacts contacts){
+        this.type = contacts.getType();
+        this.value = contacts.getValue();
+    }
+
     public Contacts(Integer id) {
         this.id = id;
     }

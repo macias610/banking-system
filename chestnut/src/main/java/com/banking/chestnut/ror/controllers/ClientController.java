@@ -1,13 +1,11 @@
 package com.banking.chestnut.ror.controllers;
 
 
-import com.banking.chestnut.models.Client;
-import com.banking.chestnut.models.ClientInfo;
-import com.banking.chestnut.models.Location;
-import com.banking.chestnut.models.ResponseObject;
+import com.banking.chestnut.models.*;
 import com.banking.chestnut.ror.dto.ClientInfoDto;
 import com.banking.chestnut.ror.dto.Info;
 import com.banking.chestnut.ror.dto.ClientDto;
+import com.banking.chestnut.ror.dto.RawClientInfoDto;
 import com.banking.chestnut.ror.services.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping( value = "/client")
@@ -40,18 +39,21 @@ public class ClientController {
 
     private ILocationService locationService;
 
+    private IDataHistoryClientService dataHistoryClientService;
+
     private static ModelMapper modelMapper = new ModelMapper();
 
     private static ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     public ClientController(IClientService clientService, IClientInfoService clientInfoService, IContactService contactService,
-                            IDocumentService documentService, ILocationService locationService) {
+                            IDocumentService documentService, ILocationService locationService, IDataHistoryClientService dataHistoryClientService) {
         this.clientService = clientService;
         this.clientInfoService = clientInfoService;
         this.contactService = contactService;
         this.documentService = documentService;
         this.locationService = locationService;
+        this.dataHistoryClientService = dataHistoryClientService;
         PropertyMap<ClientDto, ClientInfo> personMap = new PropertyMap<ClientDto, ClientInfo>() {
             protected void configure() {
                 map().setNationality(source.getCountry());
@@ -109,7 +111,7 @@ public class ClientController {
 
 //            Jak jest wiele danych do wyslania to mozna w ten sposob dodawac
 //            JsonNode json = Helper.createJson();
-//            Helper.addProperty(json, "clients", mapper.valueToTree(clientInfoDtos));
+//            Helper.addProperty(json, "clients", mapper.valueToTree(clientInfoDtos));cf
             JsonNode returnData = mapper.valueToTree(clientInfoDtos);
 
             return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
@@ -125,21 +127,120 @@ public class ClientController {
     ResponseEntity getClientById(@PathVariable Integer id){
         try {
             Optional<Client> client = this.clientService.getById(id);
-            if(client.isPresent()){
-                Client result = client.get();
-                ClientDto clientDto = modelMapper.map(result.getClientInfoId(), ClientDto.class);
-                clientDto.setLocation(result.getLocation());
-                clientDto.setDocuments(result.getDocuments());
-                clientDto.setContacts(result.getContacts());
-                JsonNode returnData = mapper.valueToTree(clientDto);
-
-                return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
-            }
-            else
-                return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
+            return getClientResponseEntity(client);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/pesel/{pesel}")
+    @ResponseBody
+    ResponseEntity getClientByPesel(@PathVariable Long pesel){
+        try {
+            Optional<Client> client = this.clientService.getByPesel(pesel);
+            return getClientResponseEntity(client);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/all")
+    @ResponseBody
+    ResponseEntity getAll(){
+        List<RawClientInfoDto> rawClientInfoDtos = new ArrayList<>();
+        try {
+            List<Client> clients = this.clientService.getAll();
+            clients.forEach(item -> rawClientInfoDtos.add(modelMapper.map(item.getClientInfoId(), RawClientInfoDto.class)));
+            for(Client client : clients){
+                rawClientInfoDtos.stream().filter(item -> item.getPesel().equals(client.getClientInfoId().getPesel())).findFirst().get().setId(client.getId());
+            }
+
+            JsonNode returnData = mapper.valueToTree(rawClientInfoDtos);
+
+            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    private ResponseEntity getClientResponseEntity(Optional<Client> client) {
+        if(client.isPresent()){
+            Client result = client.get();
+            ClientDto clientDto = modelMapper.map(result.getClientInfoId(), ClientDto.class);
+            clientDto.setLocation(result.getLocation());
+            clientDto.setDocuments(result.getDocuments());
+            clientDto.setContacts(result.getContacts());
+            JsonNode returnData = mapper.valueToTree(clientDto);
+
+            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping(value = "/edit")
+    @ResponseBody
+    ResponseEntity editClient(@RequestBody ClientDto clientDto){
+        try {
+            Optional<Client> originalClient = this.clientService.getByPesel(clientDto.getPesel());
+            if(!originalClient.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
+            else{
+                DataHistoryClient dataHistoryClient = new DataHistoryClient();
+                dataHistoryClient.setClientId(originalClient.get());
+                dataHistoryClient.setBeforeHistory(mapper.writeValueAsString(originalClient.get().prepare()));
+
+                ClientInfo clientInfo =  modelMapper.map(clientDto, ClientInfo.class);
+                originalClient.get().getClientInfoId().assignNewValues(clientInfo);
+                this.clientInfoService.save(originalClient.get().getClientInfoId());
+                Location location = modelMapper.map(clientDto, Location.class);
+                originalClient.get().getLocation().assignNewValues(location);
+                this.locationService.saveLocation(originalClient.get().getLocation());
+
+                if(!clientDto.getContacts().isEmpty()){
+                    List<Contacts> newContacs = clientDto.getContacts().stream().filter(item -> item.getId() == null).collect(Collectors.toList());
+                    List<Integer> frontIds = clientDto.getContacts().stream()
+                            .filter(item -> item.getId() != null).map(item -> item.getId()).collect(Collectors.toList());
+                    for(Contacts contact : originalClient.get().getContacts()){
+                        if(frontIds.contains(contact.getId())){
+                            contact.assignNewValues(clientDto.getContacts().stream().filter(item -> item.getId().equals(contact.getId())).findFirst().get());
+                            this.contactService.saveContact(contact);
+                        }
+                        else
+                            this.contactService.deleteContact(contact);
+                    }
+                    final Client tmp = originalClient.get();
+                    newContacs.forEach(item -> item.setClientId(tmp));
+                    newContacs.forEach(item -> this.contactService.saveContact(item));
+                }
+                if(!clientDto.getDocuments().isEmpty()){
+                    List<Document> newDocuments = clientDto.getDocuments().stream().filter(item -> item.getId() == null).collect(Collectors.toList());
+                    List<Integer> frontIds = clientDto.getDocuments().stream()
+                            .filter(item -> item.getId() != null).map(item -> item.getId()).collect(Collectors.toList());
+                    for(Document document : originalClient.get().getDocuments()){
+                        if(frontIds.contains(document.getId())){
+                            document.assignNewValues(clientDto.getDocuments().stream().filter(item -> item.getId().equals(document.getId())).findFirst().get());
+                            this.documentService.saveDocument(document);
+                        }
+                        else
+                            this.documentService.deleteDocument(document);
+                    }
+                    final Client tmp = originalClient.get();
+                    newDocuments.forEach(item -> item.setClientId(tmp));
+                    newDocuments.forEach(item -> this.documentService.saveDocument(item));
+                }
+                originalClient = this.clientService.getByPesel(clientDto.getPesel());
+                dataHistoryClient.setAfterHistory(mapper.writeValueAsString(originalClient.get().prepare()));
+                this.dataHistoryClientService.saveDataHistoryClient(dataHistoryClient);
+                return new ResponseEntity<>(ResponseObject.createSuccess("Client updated"), HttpStatus.OK);
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during update client"), HttpStatus.BAD_REQUEST);
         }
     }
 
