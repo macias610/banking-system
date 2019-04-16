@@ -14,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -37,7 +35,7 @@ public class ClientTaxes implements Serializable {
     private String info;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
-    private Clients clientId;
+    private Client clientId;
 
     public ClientTaxes() {
     }
@@ -62,11 +60,11 @@ public class ClientTaxes implements Serializable {
         this.info = info;
     }
 
-    public Clients getClientId() {
+    public Client getClientId() {
         return clientId;
     }
 
-    public void setClientId(Clients clientId) {
+    public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
 

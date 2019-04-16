@@ -7,15 +7,12 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -26,7 +23,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "client_statuses")
-public class ClientStatuses implements Serializable {
+public class ClientStatus implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,12 +34,12 @@ public class ClientStatuses implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "clientStatusId")
-    private transient List<Clients> clientsSet;
+    private transient List<Client> clientSet;
 
-    public ClientStatuses() {
+    public ClientStatus() {
     }
 
-    public ClientStatuses(Integer id) {
+    public ClientStatus(Integer id) {
         this.id = id;
     }
 
@@ -62,12 +59,12 @@ public class ClientStatuses implements Serializable {
         this.name = name;
     }
 
-    public List<Clients> getClientsSet() {
-        return clientsSet;
+    public List<Client> getClientSet() {
+        return clientSet;
     }
 
-    public void setClientsSet(List<Clients> clientsSet) {
-        this.clientsSet = clientsSet;
+    public void setClientSet(List<Client> clientSet) {
+        this.clientSet = clientSet;
     }
 
     @Override
@@ -80,10 +77,10 @@ public class ClientStatuses implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClientStatuses)) {
+        if (!(object instanceof ClientStatus)) {
             return false;
         }
-        ClientStatuses other = (ClientStatuses) object;
+        ClientStatus other = (ClientStatus) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -92,7 +89,7 @@ public class ClientStatuses implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.ClientStatuses[ id=" + id + " ]";
+        return "com.banking.chestnut.ClientStatus[ id=" + id + " ]";
     }
     
 }

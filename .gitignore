@@ -340,3 +340,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/node,linux,macos,angular,windows,intellij,webstorm,visualstudiocode
+
+chestnut/src/main/resources/application\.properties

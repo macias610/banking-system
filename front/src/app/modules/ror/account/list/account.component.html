@@ -36,7 +36,7 @@
                   Operations
                 </th>
               </thead>
-              <tbody>
+              <tbody *ngIf="accounts.length > 0">
                 <tr *ngFor="let account of accounts | customFilter: accountFilter : searchString">
                   <td>
                     {{ account.number | accountNumber }}
@@ -60,6 +60,13 @@
                         <a class="dropdown-item" href="#">Make transfer</a>
                       </div>
                     </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="accounts.length === 0">
+                <tr>
+                  <td colspan="4">
+                    No results
                   </td>
                 </tr>
               </tbody>
