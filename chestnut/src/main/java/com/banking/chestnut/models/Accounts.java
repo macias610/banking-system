@@ -5,7 +5,12 @@
  */
 package com.banking.chestnut.models;
 
+import com.banking.chestnut.models.dto.AccountNumber;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,8 +27,11 @@ import javax.validation.constraints.Size;
  * @author macie
  */
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "accounts")
 public class Accounts implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,116 +64,11 @@ public class Accounts implements Serializable {
     @ManyToOne
     private AccountInfo infoId;
 
-    public Accounts() {
-    }
-
-    public Accounts(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getNumberClientAccount() {
-        return numberClientAccount;
-    }
-
-    public void setNumberClientAccount(String numberClientAccount) {
-        this.numberClientAccount = numberClientAccount;
-    }
-
-    public String getNumberBankingAccount() {
-        return numberBankingAccount;
-    }
-
-    public void setNumberBankingAccount(String numberBankingAccount) {
-        this.numberBankingAccount = numberBankingAccount;
-    }
-
-    public String getIban() {
-        return iban;
-    }
-
-    public void setIban(String iban) {
-        this.iban = iban;
-    }
-
-    public Boolean getIsActive() {
-        return isActive;
-    }
-
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public Boolean getIsBlocked() {
-        return isBlocked;
-    }
-
-    public void setIsBlocked(Boolean isBlocked) {
-        this.isBlocked = isBlocked;
-    }
-
-    public Currencies getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Currencies currencyId) {
-        this.currencyId = currencyId;
-    }
-
-    public Client getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Client clientId) {
-        this.clientId = clientId;
-    }
-
-    public AccountInfo getInfoId() {
-        return infoId;
-    }
-
-    public void setInfoId(AccountInfo infoId) {
-        this.infoId = infoId;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Accounts)) {
-            return false;
-        }
-        Accounts other = (Accounts) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public String toString() {
         return "com.banking.chestnut.Accounts[ id=" + id + " ]";
     }
+
+
 
 }

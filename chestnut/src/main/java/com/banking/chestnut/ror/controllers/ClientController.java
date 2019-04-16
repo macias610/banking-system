@@ -1,11 +1,8 @@
 package com.banking.chestnut.ror.controllers;
 
 
-import com.banking.chestnut.helper.Helper;
-import com.banking.chestnut.models.Client;
-import com.banking.chestnut.models.ClientInfo;
-import com.banking.chestnut.models.Location;
-import com.banking.chestnut.models.ResponseObject;
+import com.banking.chestnut.helper.AccountNumberHelper;
+import com.banking.chestnut.models.*;
 import com.banking.chestnut.ror.dto.ClientInfoDto;
 import com.banking.chestnut.ror.dto.Info;
 import com.banking.chestnut.ror.dto.ClientDto;
@@ -20,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -129,6 +125,7 @@ public class ClientController {
             Optional<Client> client = this.clientService.getById(id);
             if(client.isPresent()){
                 Client result = client.get();
+
                 ClientDto clientDto = modelMapper.map(result.getClientInfoId(), ClientDto.class);
                 clientDto.setLocation(result.getLocation());
                 clientDto.setDocuments(result.getDocuments());
