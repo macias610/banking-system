@@ -1,16 +1,15 @@
 INSERT IGNORE INTO banks (id, name, swift) VALUES (1, 'Chestnut bank', '20879576');
 INSERT IGNORE INTO users (id, employee_number, first_name, surname, bank_id) VALUES (1, UUID(), 'Nikola', 'Kowalska', 1);
 INSERT IGNORE INTO users (id, employee_number, first_name, surname, bank_id) VALUES (2, UUID(), 'Użytkownik', 'Systemowy', 1);
-INSERT IGNORE INTO client_statuses(id, name) VALUES (1, 'client active');
 INSERT IGNORE INTO client_types(id, value) VALUES (1, 'individual client');
 INSERT IGNORE INTO client_types(id, value) VALUES (1, 'commercial client');
 --
 -- Zrzut danych tabeli `clients`
 --
 
-INSERT IGNORE INTO `clients` (`id`, `created_at`, `deleted_at`, `is_active`, `uuid`, `bank_id`, `client_info_id`, `client_status_id`, `client_type_id`, `created_by`, `credit_category_id`, `deleted_by`, `introductor_id`) VALUES
-(1, '2019-04-16 06:24:37', NULL, b'1', '0013571228849587694472263648613518347956', 1, 1, 1, 1, 1, NULL, NULL, NULL),
-(2, '2019-04-16 06:25:22', NULL, b'1', '0280984408403301778819565455426516977997', 1, 2, 1, 1, 1, NULL, NULL, NULL);
+INSERT IGNORE INTO `clients` (`id`, `created_at`, `deleted_at`, `is_active`, `uuid`, `bank_id`, `client_info_id`, `client_status`, `client_type_id`, `created_by`, `credit_category_id`, `deleted_by`, `introductor_id`) VALUES
+(1, '2019-04-16 06:24:37', NULL, b'1', '0013571228849587694472263648613518347956', 1, 1, 'client active', 1, 1, NULL, NULL, NULL),
+(2, '2019-04-16 06:25:22', NULL, b'1', '0280984408403301778819565455426516977997', 1, 2, 'client active', 1, 1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

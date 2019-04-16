@@ -9,6 +9,7 @@ import com.banking.chestnut.ror.dto.RawClientInfoDto;
 import com.banking.chestnut.ror.services.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.simple.JSONObject;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,7 +166,7 @@ public class ClientController {
             return new ResponseEntity<>(ResponseObject.createError("Error during fetching client data"), HttpStatus.BAD_REQUEST);
         }
     }
-    
+
     private ResponseEntity getClientResponseEntity(Optional<Client> client) {
         if(client.isPresent()){
             Client result = client.get();
@@ -241,6 +242,30 @@ public class ClientController {
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Error during update client"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PatchMapping(value = "/{id}/status")
+    @ResponseBody
+    ResponseEntity deleteLockClient(@PathVariable Integer id, @RequestBody JSONObject param){
+        Optional<Client> client = this.clientService.getById(id);
+        if(!client.isPresent())
+            return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
+        try {
+            if(String.valueOf(param.get("type")).toLowerCase().equals("lock")){
+                client.get().setIsActive(false);
+                this.clientService.saveClient(client.get());
+                return new ResponseEntity<>(ResponseObject.createSuccess("Client locked"), HttpStatus.OK);
+            }
+            else if(String.valueOf(param.get("type")).toLowerCase().equals("delete")){
+                this.clientService.deleteClient(client.get());
+                return new ResponseEntity<>(ResponseObject.createSuccess("Client deleted"), HttpStatus.OK);
+            }
+            else
+                return new ResponseEntity<>(ResponseObject.createError("Invalid param"), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during " + param +" client"), HttpStatus.BAD_REQUEST);
         }
     }
 

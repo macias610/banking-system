@@ -1,6 +1,5 @@
 package com.banking.chestnut.ror.dto;
 
-import com.banking.chestnut.models.ClientStatus;
 import com.banking.chestnut.models.Contacts;
 import com.banking.chestnut.models.Document;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,7 +40,7 @@ public class ClientUpdateDto implements Serializable {
     private String country;
 
     @JsonProperty("clientStatus")
-    private ClientStatus clientStatus;
+    private String clientStatus;
 
     @JsonProperty("contacts")
     private List<Contacts> contacts = new ArrayList<>();

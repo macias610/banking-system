@@ -3,8 +3,8 @@ package com.banking.chestnut.ror.services;
 import com.banking.chestnut.commonrepositories.BankRepository;
 import com.banking.chestnut.commonrepositories.UserRepository;
 import com.banking.chestnut.models.Client;
+import com.banking.chestnut.models.ClientStatus;
 import com.banking.chestnut.ror.repositories.ClientRepository;
-import com.banking.chestnut.ror.repositories.ClientStatusRepository;
 import com.banking.chestnut.ror.repositories.ClientTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -25,8 +25,6 @@ public class ClientService implements IClientService {
 
     private BankRepository bankRepository;
 
-    private ClientStatusRepository clientStatusRepository;
-
     private ClientTypeRepository clientTypeRepository;
 
     private Environment env;
@@ -37,14 +35,13 @@ public class ClientService implements IClientService {
 
     @Autowired
     public ClientService(ClientRepository clientRepository, UserRepository userRepository, BankRepository bankRepository,
-                         ClientStatusRepository clientStatusRepository, ClientTypeRepository clientTypeRepository, Environment env) {
+                         ClientTypeRepository clientTypeRepository, Environment env) {
         this.env = env;
         this.cashierId = Integer.parseInt(env.getProperty("app.cashier.user.id"));
         this.bankId = Integer.parseInt(env.getProperty("app.bank.id"));
         this.clientRepository = clientRepository;
         this.userRepository = userRepository;
         this.bankRepository = bankRepository;
-        this.clientStatusRepository = clientStatusRepository;
         this.clientTypeRepository = clientTypeRepository;
     }
 
@@ -54,8 +51,17 @@ public class ClientService implements IClientService {
         client.setIsActive(true);
         client.setCreatedBy(userRepository.findById(cashierId).get());
         client.setBankId(bankRepository.findById(bankId).get());
-        client.setClientStatus(clientStatusRepository.findAll().stream().filter(item -> item.getName().equals("client active")).findFirst().get());
+        client.setClientStatus(ClientStatus.statuses.get("active"));
         client.setClientTypeId(clientTypeRepository.findAll().stream().filter(item -> item.getValue().equals("individual client")).findFirst().get());
+        this.clientRepository.save(client);
+        return client;
+    }
+
+    @Override
+    public Client deleteClient(Client client) {
+        client.setDeletedAt(new Date());
+        client.setDeletedBy(userRepository.findById(cashierId).get());
+        client.setClientStatus(ClientStatus.statuses.get("nonactive"));
         this.clientRepository.save(client);
         return client;
     }

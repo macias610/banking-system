@@ -61,9 +61,8 @@ public class Client implements Serializable {
     @JoinColumn(name = "deleted_by", referencedColumnName = "id")
     @ManyToOne
     private Users deletedBy;
-    @JoinColumn(name = "client_status_id", referencedColumnName = "id")
-    @ManyToOne
-    private ClientStatus clientStatus;
+    @Column(name = "client_status")
+    private String clientStatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientId")
     private transient List<Blacklist> blacklistList;
     @OneToOne(mappedBy = "clientId")
