@@ -7,15 +7,12 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -37,7 +34,7 @@ public class CreditCategories implements Serializable {
     @Column(name = "type")
     private String type;
     @OneToMany(mappedBy = "creditCategoryId")
-    private transient List<Clients> clientsSet;
+    private transient List<Client> clientSet;
 
     public CreditCategories() {
     }
@@ -62,12 +59,12 @@ public class CreditCategories implements Serializable {
         this.type = type;
     }
 
-    public List<Clients> getClientsSet() {
-        return clientsSet;
+    public List<Client> getClientSet() {
+        return clientSet;
     }
 
-    public void setClientsSet(List<Clients> clientsSet) {
-        this.clientsSet = clientsSet;
+    public void setClientSet(List<Client> clientSet) {
+        this.clientSet = clientSet;
     }
 
     @Override

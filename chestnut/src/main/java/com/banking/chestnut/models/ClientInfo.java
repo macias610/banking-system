@@ -8,7 +8,6 @@ package com.banking.chestnut.models;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,8 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,7 +27,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "clients_info")
-public class ClientsInfo implements Serializable {
+public class ClientInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,7 +41,7 @@ public class ClientsInfo implements Serializable {
     @Column(name = "surname")
     private String surname;
     @Column(name = "pesel")
-    private Integer pesel;
+    private Long pesel;
     @Column(name = "birthday")
     @Temporal(TemporalType.DATE)
     private Date birthday;
@@ -58,12 +55,12 @@ public class ClientsInfo implements Serializable {
     @Column(name = "lang")
     private String lang;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientInfoId")
-    private transient List<Clients> clientsSet;
+    private transient List<Client> clientSet;
 
-    public ClientsInfo() {
+    public ClientInfo() {
     }
 
-    public ClientsInfo(Integer id) {
+    public ClientInfo(Integer id) {
         this.id = id;
     }
 
@@ -91,11 +88,11 @@ public class ClientsInfo implements Serializable {
         this.surname = surname;
     }
 
-    public Integer getPesel() {
+    public Long getPesel() {
         return pesel;
     }
 
-    public void setPesel(Integer pesel) {
+    public void setPesel(Long pesel) {
         this.pesel = pesel;
     }
 
@@ -131,12 +128,12 @@ public class ClientsInfo implements Serializable {
         this.lang = lang;
     }
 
-    public List<Clients> getClientsSet() {
-        return clientsSet;
+    public List<Client> getClientSet() {
+        return clientSet;
     }
 
-    public void setClientsSet(List<Clients> clientsSet) {
-        this.clientsSet = clientsSet;
+    public void setClientSet(List<Client> clientSet) {
+        this.clientSet = clientSet;
     }
 
     @Override
@@ -149,10 +146,10 @@ public class ClientsInfo implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ClientsInfo)) {
+        if (!(object instanceof ClientInfo)) {
             return false;
         }
-        ClientsInfo other = (ClientsInfo) object;
+        ClientInfo other = (ClientInfo) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -161,7 +158,7 @@ public class ClientsInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.ClientsInfo[ id=" + id + " ]";
+        return "com.banking.chestnut.ClientInfo[ id=" + id + " ]";
     }
     
 }

@@ -6,7 +6,7 @@ import { Account } from '../../../models/account';
 import { Client } from '../../../models/client/client';
 import { environment } from '../../../../environments/environment';
 import { ClientCreateDao } from '../../../models/client/clientCreateDao';
-
+import { ResponseData } from '../../../models/responseData';
 
 @Injectable({
     providedIn: 'root'
@@ -16,16 +16,16 @@ export class ClientsService {
     constructor(private http: HttpClient) {
     }
 
-    getClients(): Observable<Client[]> {
-        return this.http.get<Client[]>(`${environment.api_url}/clients`);
+    getClients(): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/client/clients`);
     }
 
-    getClient(clientId: string): Observable<ClientCreateDao> {
-        return this.http.get<ClientCreateDao>(`${environment.api_url}/client/${clientId}`);
+    getClient(clientId: string): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/client/${clientId}`);
     }
 
-    createClient(client: ClientCreateDao): Observable<any> {
+    createClient(client: ClientCreateDao): Observable<ResponseData> {
         return this.http
-            .post(`${environment.api_url}/clients`, client);
+            .post<ResponseData>(`${environment.api_url}/client/save`, client);
     }
 }
