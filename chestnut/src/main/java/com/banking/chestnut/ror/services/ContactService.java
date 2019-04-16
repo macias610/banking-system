@@ -37,4 +37,9 @@ public class ContactService implements IContactService {
         this.contactRepository.save(contact);
         return contact;
     }
+
+    @Override
+    public void deleteContact(Contacts contact) {
+        this.contactRepository.delete(contact);
+    }
 }

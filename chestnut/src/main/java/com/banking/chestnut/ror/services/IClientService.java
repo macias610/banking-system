@@ -8,8 +8,10 @@ import java.util.Optional;
 
 public interface IClientService {
     Client saveClient(Client client);
+    Client deleteClient(Client client);
     List<Client> getAll();
     Optional<Client> getById(Integer id);
     Optional<Client> getByPesel(Long pesel);
     Date extractBirthdayFromPesel(Long pesel);
+    boolean isValidPesel(Long pesel);
 }
