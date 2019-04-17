@@ -44,7 +44,7 @@ public class AccountHistory implements Serializable {
     private Date createdAt;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
-    private Accounts accountId;
+    private Account accountId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
     private Users createdBy;
@@ -88,11 +88,11 @@ public class AccountHistory implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Accounts getAccountId() {
+    public Account getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Accounts accountId) {
+    public void setAccountId(Account accountId) {
         this.accountId = accountId;
     }
 
