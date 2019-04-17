@@ -4,6 +4,7 @@ import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
 import { ActivatedRoute } from '@angular/router';
 import { ClientCreateDao } from '../../../../models/client/clientCreateDao';
+import { ResponseData } from '../../../../models/responseData';
 
 @Component({
     selector: 'app-clients-edit',
@@ -28,7 +29,7 @@ export class ClientsEditComponent implements OnInit {
             'pesel': ['', [Validators.required]],
             'street': ['', [Validators.required]],
             'house_number': ['', [Validators.required]],
-            'apatment_number': ['', [Validators.required]],
+            'apartment_number': ['', [Validators.required]],
             'city': ['', [Validators.required]],
             'zip': ['', [Validators.required]],
             'country': ['', [Validators.required]],
@@ -37,9 +38,9 @@ export class ClientsEditComponent implements OnInit {
         });
 
         this.service.getClient(this.clientId).subscribe(
-            (data: ClientCreateDao) => {
-                this.fillForm(data);
-                console.log(data);
+            (d: ResponseData) => {
+                this.fillForm(<ClientCreateDao>d.data);
+                console.log(d);
                 // this.statuses = data.data;
             },
             (error) => {
@@ -63,7 +64,7 @@ export class ClientsEditComponent implements OnInit {
             'pesel': client.pesel,
             'street': client.street,
             'house_number': client.house_number,
-            'apatment_number': client.apatment_number,
+            'apartment_number': client.apartment_number,
             'city': client.city,
             'zip': client.zip,
             'country': client.country,

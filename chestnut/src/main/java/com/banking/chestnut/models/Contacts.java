@@ -17,8 +17,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +34,7 @@ public class Contacts implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @JsonIgnore
     private Integer id;
     @Size(max = 32)
     @Column(name = "type")
@@ -43,14 +42,18 @@ public class Contacts implements Serializable {
     @Size(max = 255)
     @Column(name = "value")
     private String value;
-    @Column(name = "created_by")
-    private Integer createdBy;
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @ManyToOne
+    @JsonIgnore
+    private Users createdBy;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
+    @JsonIgnore
     private Date createdAt;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @JsonIgnore
     @ManyToOne
-    private Clients clientId;
+    private Client clientId;
 
     public Contacts() {
     }
@@ -83,11 +86,11 @@ public class Contacts implements Serializable {
         this.value = value;
     }
 
-    public Integer getCreatedBy() {
+    public Users getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Integer createdBy) {
+    public void setCreatedBy(Users createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -99,11 +102,11 @@ public class Contacts implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Clients getClientId() {
+    public Client getClientId() {
         return clientId;
     }
 
-    public void setClientId(Clients clientId) {
+    public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
 
