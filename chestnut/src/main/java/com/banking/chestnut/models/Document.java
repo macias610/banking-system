@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.print.Doc;
 import javax.validation.constraints.Size;
 
 /**
@@ -44,6 +45,11 @@ public class Document implements Serializable {
     private String type;
 
     public Document() {
+    }
+
+    public void assignNewValues(Document document){
+        this.type = document.getType();
+        this.value = document.getValue();
     }
 
     public Document(Integer id) {

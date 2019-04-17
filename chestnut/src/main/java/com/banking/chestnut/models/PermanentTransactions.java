@@ -41,10 +41,10 @@ public class PermanentTransactions implements Serializable {
     private Double amount;
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
     @ManyToOne
-    private Accounts senderId;
+    private Account senderId;
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     @ManyToOne
-    private Accounts receiverId;
+    private Account receiverId;
 
     public PermanentTransactions() {
     }
@@ -109,19 +109,19 @@ public class PermanentTransactions implements Serializable {
         this.amount = amount;
     }
 
-    public Accounts getSenderId() {
+    public Account getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(Accounts senderId) {
+    public void setSenderId(Account senderId) {
         this.senderId = senderId;
     }
 
-    public Accounts getReceiverId() {
+    public Account getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(Accounts receiverId) {
+    public void setReceiverId(Account receiverId) {
         this.receiverId = receiverId;
     }
 

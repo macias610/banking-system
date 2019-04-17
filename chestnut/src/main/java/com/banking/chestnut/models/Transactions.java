@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,10 +58,10 @@ public class Transactions implements Serializable {
     private Users createdBy;
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Accounts senderId;
+    private Account senderId;
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Accounts receiverId;
+    private Account receiverId;
 
     public Transactions() {
     }
@@ -152,19 +150,19 @@ public class Transactions implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public Accounts getSenderId() {
+    public Account getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(Accounts senderId) {
+    public void setSenderId(Account senderId) {
         this.senderId = senderId;
     }
 
-    public Accounts getReceiverId() {
+    public Account getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(Accounts receiverId) {
+    public void setReceiverId(Account receiverId) {
         this.receiverId = receiverId;
     }
 

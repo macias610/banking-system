@@ -16,6 +16,10 @@ export class ClientsService {
     constructor(private http: HttpClient) {
     }
 
+    getAllClients(): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/client/all`);
+    }
+
     getClients(): Observable<ResponseData> {
         return this.http.get<ResponseData>(`${environment.api_url}/client/clients`);
     }

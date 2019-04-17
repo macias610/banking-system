@@ -8,7 +8,7 @@
           <h4 class="card-title">Accounts</h4>
           <div class="row">
             <div class="col-md-6">
-              <button class="btn btn-info btn-round">Add account</button>
+              <button class="btn btn-info btn-round" [routerLink]="['/account']">Add account</button>
             </div>
             <div class="col-md-3"></div>
             <div class="col-md-3">
@@ -39,13 +39,13 @@
               <tbody *ngIf="accounts.length > 0">
                 <tr *ngFor="let account of accounts | customFilter: accountFilter : searchString">
                   <td>
-                    {{ account.number | accountNumber }}
+                    {{ account.number_banking_account | accountNumber }}
                   </td>
                   <td>
-                    {{ account.owner.info.first_name }} {{ account.owner.info.surname }}
+                    {{ account.first_name }} {{ account.surname }} ({{ account.pesel }})
                   </td>
                   <td>
-                    ${{ account.balance }}
+                    {{ account.available_amount }} {{ account.currency }}
                   </td>
                   <td class="text-right">
                     <div ngbDropdown class="dropdown" placement="bottom-right">
