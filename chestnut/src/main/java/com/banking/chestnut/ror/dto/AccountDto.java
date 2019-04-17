@@ -13,6 +13,9 @@ import java.io.Serializable;
 @Data
 public class AccountDto implements Serializable {
 
+    @JsonProperty("id")
+    private Integer id;
+
     @JsonProperty("number_client_account")
     private String numberClientAccount;
 
@@ -61,6 +64,7 @@ public class AccountDto implements Serializable {
     }
 
     public void assignAccountData(Account account, AccountInfo accountInfo){
+        this.id = account.getId();
         this.currency = account.getCurrency();
         this.iban = account.getIban();
         this.numberClientAccount = account.getNumberClientAccount();
