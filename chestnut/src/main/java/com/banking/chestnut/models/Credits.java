@@ -1,196 +1,59 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.banking.chestnut.models;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.Set;
 
-/**
- *
- * @author macie
- */
 @Entity
-@Table(name = "credits")
-public class Credits implements Serializable {
-    private static final long serialVersionUID = 1L;
+@NoArgsConstructor
+@Data
+@JsonRootName(value = "credit")
+public class Credits {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "credit_balance_id")
-    private Integer creditBalanceId;
-    @Column(name = "value")
-    private Long value;
-    @Column(name = "is_active")
-    private Boolean isActive;
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-    @Column(name = "expiration_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expirationAt;
-    @Column(name = "deleted_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedAt;
+    @GeneratedValue
+    @Column(name = "credit_id")
+    private Long id;
+
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    @ManyToOne
-    private Accounts accountId;
-    @JoinColumn(name = "credit_type_id", referencedColumnName = "id")
-    @ManyToOne
-    private CreditTypes creditTypeId;
-    @JoinColumn(name = "payment_schedule_id", referencedColumnName = "id")
-    @ManyToOne
-    private PaymentSchedules paymentScheduleId;
-    @JoinColumn(name = "created_by", referencedColumnName = "id")
-    @ManyToOne
-    private Users createdBy;
-    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
-    @ManyToOne
-    private Users deletedBy;
+    private Accounts account;
 
-    public Credits() {
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credit_type_id")
+    private CreditType creditType;
 
-    public Credits(Integer id) {
-        this.id = id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_schedule_id")
+    private PaymentSchedule paymentSchedule;
 
-    public Integer getId() {
-        return id;
-    }
+    private Float value;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    private boolean is_active;
 
-    public Integer getCreditBalanceId() {
-        return creditBalanceId;
-    }
+    @Temporal(TemporalType.DATE)
+    private Date created_at;
 
-    public void setCreditBalanceId(Integer creditBalanceId) {
-        this.creditBalanceId = creditBalanceId;
-    }
+    @Temporal(TemporalType.DATE)
+    private Date expiration_at;
 
-    public Long getValue() {
-        return value;
-    }
+    @Temporal(TemporalType.DATE)
+    private Date deleted_at;
 
-    public void setValue(Long value) {
-        this.value = value;
-    }
+    private Long created_by;
 
-    public Boolean getIsActive() {
-        return isActive;
-    }
+    private Long deleted_by;
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "credit",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Set<CreditBalance> creditBalance;
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getExpirationAt() {
-        return expirationAt;
-    }
-
-    public void setExpirationAt(Date expirationAt) {
-        this.expirationAt = expirationAt;
-    }
-
-    public Date getDeletedAt() {
-        return deletedAt;
-    }
-
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
-    }
-
-    public Accounts getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Accounts accountId) {
-        this.accountId = accountId;
-    }
-
-    public CreditTypes getCreditTypeId() {
-        return creditTypeId;
-    }
-
-    public void setCreditTypeId(CreditTypes creditTypeId) {
-        this.creditTypeId = creditTypeId;
-    }
-
-    public PaymentSchedules getPaymentScheduleId() {
-        return paymentScheduleId;
-    }
-
-    public void setPaymentScheduleId(PaymentSchedules paymentScheduleId) {
-        this.paymentScheduleId = paymentScheduleId;
-    }
-
-    public Users getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Users createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Users getDeletedBy() {
-        return deletedBy;
-    }
-
-    public void setDeletedBy(Users deletedBy) {
-        this.deletedBy = deletedBy;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Credits)) {
-            return false;
-        }
-        Credits other = (Credits) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.banking.chestnut.Credits[ id=" + id + " ]";
-    }
-    
 }
