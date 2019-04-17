@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/account")
@@ -70,6 +71,25 @@ public class AccountController {
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Error during fetch accounts data"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/client/{id}")
+    @ResponseBody
+    ResponseEntity getAccountsPerClient(@PathVariable Integer id){
+        try {
+            Optional<Client> client = this.clientService.getById(id);
+            if(!client.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
+            List<AccountDto> clientAccountDtos = new ArrayList<>();
+            List<Account> accounts = this.accountService.getAll();
+            accounts = accounts.stream().filter(item -> item.getClientId().getId().equals(id)).collect(Collectors.toList());
+            accounts.forEach(item -> clientAccountDtos.add(new AccountDto(item)));
+            JsonNode returnData = mapper.valueToTree(clientAccountDtos);
+            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetch client accounts"), HttpStatus.BAD_REQUEST);
         }
     }
 }
