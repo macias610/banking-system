@@ -17,8 +17,6 @@
 # IDEs and editors
 /.idea
 
-/chestnut/src/main/resources/application.properties
-
 # misc
 /.sass-cache
 /connect.lock
