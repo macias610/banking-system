@@ -31,11 +31,13 @@ public class AccountService implements IAccountService {
         String accountNumber;
         List<Account> accounts = this.accountRepository.findAll();
         List<String> clientAccountNumers = accounts.stream().map(item -> item.getNumberClientAccount()).collect(Collectors.toList());
+        AccountNumber generatedAccountNumber= null;
         do{
             accountNumber = NumericStringGenerator.getAlphaNumericString(16);
-        }while (clientAccountNumers.contains(accountNumber));
+            generatedAccountNumber = AccountNumberHelper.generateAccountNumber(client, accountNumber);
+        }while (clientAccountNumers.contains(accountNumber) || !AccountNumberHelper.checkIban(generatedAccountNumber.getIban()));
 
-        AccountNumber generatedAccountNumber = AccountNumberHelper.generateAccountNumber(client, accountNumber);
+
         account.setIban(generatedAccountNumber.getIban());
         account.setNumberBankingAccount(generatedAccountNumber.getNumber());
         account.setNumberClientAccount(accountNumber);
