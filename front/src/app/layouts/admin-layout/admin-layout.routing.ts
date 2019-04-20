@@ -9,10 +9,12 @@ import {ClientsEditComponent} from '../../modules/ror/clients/clients-edit/clien
 import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
 import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/transfer-send.component';
 import {TransferDetailComponent} from '../../modules/moneytransfers/transfer-detail/transfer-detail.component';
+import {AccountAddComponent} from '../../modules/ror/account/account-add/account-add.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'accounts', component: AccountComponent },
+    { path: 'account', component: AccountAddComponent },
     { path: 'accounts/:id', component: AccountsingleComponent },
     { path: 'clients', component: ClientsListComponent },
     { path: 'client', component: ClientsAddComponent },

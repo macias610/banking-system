@@ -1,0 +1,51 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Add new account</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert text-center"
+            [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+            *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <form [formGroup]="createAccountForm" (ngSubmit)="createAccount()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Select client</label>
+                  <input type="text" class="form-control" [ngbTypeahead]="searchClient"
+                    [resultFormatter]="searchClientFormat" [inputFormatter]="searchClientFormat"
+                    (selectItem)="selectClient($event.item)" formControlName="client" placeholder="Search client ..."
+                    value="">
+                  <input type="hidden" formControlName="client_id">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Currency</label>
+                  <select name="" formControlName="currency" class="form-control">
+                    <option value="">-- Select currency --</option>
+                    <option value="PLN">PLN</option>
+                    <option value="EUR">EUR</option>
+                    <option value="USD">USD</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div><label>&nbsp;</label></div>
+                  <button type="submit" [disabled]="createAccountForm.invalid || formInSave"
+                    class="btn btn-info btn-round m-0">Create account</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

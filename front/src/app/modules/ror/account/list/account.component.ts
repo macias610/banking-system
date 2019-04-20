@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Observable } from 'rxjs';
-import { catchError, map, switchMap, filter, flatMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, filter, flatMap, tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../../../../models/account';
-
+import { AccountListItem } from '../../../../models/account/accountListItem';
 @Component({
     selector: 'app-account',
     templateUrl: './account.component.html',
@@ -13,13 +13,15 @@ import { Account } from '../../../../models/account';
 export class AccountComponent implements OnInit {
 
     searchString: string;
-    accounts$: Observable<Account[]>;
+    accounts$: Observable<AccountListItem[]>;
 
     constructor(private service: AccountService, private http: HttpClient) { }
 
     ngOnInit() {
         this.searchString = '';
-        this.accounts$ = this.service.getAccounts();
+        this.accounts$ = this.service.getAccounts().pipe(
+            map(item => item.data)
+        );
     }
 
     searchInTable(searchItem: string) {
@@ -28,8 +30,8 @@ export class AccountComponent implements OnInit {
         this.searchString = searchItem;
     }
 
-    accountFilter(item: Account, search: string): boolean {
-        const itemString = (item.number + '' + item.owner.info.first_name + '' + item.owner.info.surname).toLocaleLowerCase();
+    accountFilter(item: AccountListItem, search: string): boolean {
+        const itemString = (item.number_banking_account + '' + item.first_name + '' + item.surname).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
     }
 

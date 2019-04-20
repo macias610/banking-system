@@ -8,50 +8,40 @@ package com.banking.chestnut.models;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author macie
  */
 @Entity
-@Table(name = "locations")
-public class Locations implements Serializable {
+@Table(name = "data_history_clients")
+public class DataHistoryClient implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 10)
-    @Column(name = "zip")
-    private String zip;
-    @Size(max = 64)
-    @Column(name = "street")
-    private String street;
-    @Size(max = 64)
-    @Column(name = "city")
-    private String city;
-    @Size(max = 32)
-    @Column(name = "house_number")
-    private String houseNumber;
-    @Size(max = 32)
-    @Column(name = "apartment_number")
-    private String apartmentNumber;
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne
+    private Client clientId;
+    @Lob
+    @Column(name = "before_history")
+    private String beforeHistory;
+    @Lob
+    @Column(name = "after_history")
+    private String afterHistory;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-    @OneToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private Clients clientId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
     private Users createdBy;
 
-    public Locations() {
+    public DataHistoryClient() {
     }
 
-    public Locations(Integer id) {
+    public DataHistoryClient(Integer id) {
         this.id = id;
     }
 
@@ -63,44 +53,28 @@ public class Locations implements Serializable {
         this.id = id;
     }
 
-    public String getZip() {
-        return zip;
+    public Client getClientId() {
+        return clientId;
     }
 
-    public void setZip(String zip) {
-        this.zip = zip;
+    public void setClientId(Client clientId) {
+        this.clientId = clientId;
     }
 
-    public String getStreet() {
-        return street;
+    public String getBeforeHistory() {
+        return beforeHistory;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setBeforeHistory(String beforeHistory) {
+        this.beforeHistory = beforeHistory;
     }
 
-    public String getCity() {
-        return city;
+    public String getAfterHistory() {
+        return afterHistory;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getApartmentNumber() {
-        return apartmentNumber;
-    }
-
-    public void setApartmentNumber(String apartmentNumber) {
-        this.apartmentNumber = apartmentNumber;
+    public void setAfterHistory(String afterHistory) {
+        this.afterHistory = afterHistory;
     }
 
     public Date getCreatedAt() {
@@ -109,14 +83,6 @@ public class Locations implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Clients getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Clients clientId) {
-        this.clientId = clientId;
     }
 
     public Users getCreatedBy() {
@@ -137,10 +103,10 @@ public class Locations implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Locations)) {
+        if (!(object instanceof DataHistoryClient)) {
             return false;
         }
-        Locations other = (Locations) object;
+        DataHistoryClient other = (DataHistoryClient) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -149,7 +115,7 @@ public class Locations implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Locations[ id=" + id + " ]";
+        return "com.banking.chestnut.DataHistoryClientService[ id=" + id + " ]";
     }
-    
+
 }

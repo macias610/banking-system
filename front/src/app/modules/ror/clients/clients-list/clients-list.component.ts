@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { ClientsService } from '../clients.service';
 import { HttpClient } from '@angular/common/http';
 import { Client } from '../../../../models/client/client';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-clients-list',
@@ -18,7 +19,9 @@ export class ClientsListComponent implements OnInit {
 
     ngOnInit() {
         this.searchString = '';
-        this.clients$ = this.service.getClients();
+        this.clients$ = this.service.getClients().pipe(
+            map(item => item.data)
+        );
     }
 
     searchInTable(searchItem: string) {

@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,7 +46,7 @@ public class Cards implements Serializable {
     private Date createdAt;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Accounts accountId;
+    private Account accountId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
     private Users createdBy;
@@ -100,11 +98,11 @@ public class Cards implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Accounts getAccountId() {
+    public Account getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Accounts accountId) {
+    public void setAccountId(Account accountId) {
         this.accountId = accountId;
     }
 

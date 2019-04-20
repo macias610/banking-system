@@ -5,6 +5,8 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,9 +16,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.print.Doc;
 import javax.validation.constraints.Size;
 
 /**
@@ -25,26 +26,33 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "documents")
-public class Documents implements Serializable {
+public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
+    @JsonIgnore
     private Integer id;
-    @Column(name = "client_id")
-    private Integer clientId;
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @ManyToOne
+    @JsonIgnore
+    private Client clientId;
     @Size(max = 255)
     @Column(name = "value")
     private String value;
-    @JoinColumn(name = "document_type_id", referencedColumnName = "id")
-    @ManyToOne
-    private DocumentTypes documentTypeId;
+    @Column(name = "type")
+    private String type;
 
-    public Documents() {
+    public Document() {
     }
 
-    public Documents(Integer id) {
+    public void assignNewValues(Document document){
+        this.type = document.getType();
+        this.value = document.getValue();
+    }
+
+    public Document(Integer id) {
         this.id = id;
     }
 
@@ -56,21 +64,29 @@ public class Documents implements Serializable {
         this.id = id;
     }
 
-    public Integer getClientId() {
+    public Client getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(Client clientId) {
         this.clientId = clientId;
     }
 
-    public DocumentTypes getDocumentTypeId() {
-        return documentTypeId;
+    public String getType() {
+        return type;
     }
 
-    public void setDocumentTypeId(DocumentTypes documentTypeId) {
-        this.documentTypeId = documentTypeId;
+    public void setType(String type) {
+        this.type = type;
     }
+
+    //    public DocumentTypes getDocumentTypeId() {
+//        return documentTypeId;
+//    }
+//
+//    public void setDocumentTypeId(DocumentTypes documentTypeId) {
+//        this.documentTypeId = documentTypeId;
+//    }
 
     public String getValue() {
         return value;
@@ -90,10 +106,10 @@ public class Documents implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Documents)) {
+        if (!(object instanceof Document)) {
             return false;
         }
-        Documents other = (Documents) object;
+        Document other = (Document) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -102,7 +118,7 @@ public class Documents implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Documents[ id=" + id + " ]";
+        return "com.banking.chestnut.Document[ id=" + id + " ]";
     }
     
 }

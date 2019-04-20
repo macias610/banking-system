@@ -20,6 +20,7 @@ import {CustomFilterPipe} from '../../shared/pipes/custom-filter.pipe';
 import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
 import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/transfer-send.component';
 import {TransferDetailComponent} from '../../modules/moneytransfers/transfer-detail/transfer-detail.component';
+import {AccountAddComponent} from '../../modules/ror/account/account-add/account-add.component';
 
 @NgModule({
     imports: [
@@ -36,6 +37,7 @@ import {TransferDetailComponent} from '../../modules/moneytransfers/transfer-det
         DashboardComponent,
         NotificationsComponent,
         AccountComponent,
+        AccountAddComponent,
         AccountsingleComponent,
         ClientsListComponent,
         ClientsAddComponent,

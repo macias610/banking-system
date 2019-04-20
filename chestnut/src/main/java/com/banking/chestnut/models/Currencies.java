@@ -5,9 +5,10 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,8 +16,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -37,8 +36,9 @@ public class Currencies implements Serializable {
     @Size(max = 255)
     @Column(name = "name")
     private String name;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "currencyId")
-    private transient List<Accounts> accountsSet;
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "currencyId")
+//    @JsonIgnore
+//    private  List<Account> accountSet;
 
     public Currencies() {
     }
@@ -63,13 +63,13 @@ public class Currencies implements Serializable {
         this.name = name;
     }
 
-    public List<Accounts> getAccountsSet() {
-        return accountsSet;
-    }
-
-    public void setAccountsSet(List<Accounts> accountsSet) {
-        this.accountsSet = accountsSet;
-    }
+//    public List<Account> getAccountSet() {
+//        return accountSet;
+//    }
+//
+//    public void setAccountSet(List<Account> accountSet) {
+//        this.accountSet = accountSet;
+//    }
 
     @Override
     public int hashCode() {

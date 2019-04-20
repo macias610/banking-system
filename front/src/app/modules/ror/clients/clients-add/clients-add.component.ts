@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
+import { ResponseData } from '../../../../models/responseData';
 
 @Component({
     selector: 'app-clients-add',
@@ -24,7 +25,7 @@ export class ClientsAddComponent implements OnInit {
             'pesel': ['', [Validators.required]],
             'street': ['', [Validators.required]],
             'house_number': ['', [Validators.required]],
-            'apatment_number': ['', [Validators.required]],
+            'apartment_number': ['', [Validators.required]],
             'city': ['', [Validators.required]],
             'zip': ['', [Validators.required]],
             'country': ['', [Validators.required]],
@@ -97,8 +98,8 @@ export class ClientsAddComponent implements OnInit {
         this.formInSave = true;
 
         this.service.createClient(formValue).subscribe(
-            (data) => {
-                this.formInSave = false;
+            (data: ResponseData) => {
+                this.formInSave = true;
                 this.createClientForm.reset();
                 this.cleanFormArray(this.contactForms);
                 this.cleanFormArray(this.documentsForms);
@@ -109,8 +110,9 @@ export class ClientsAddComponent implements OnInit {
                 this.addNotification(false, data.notification || '');
             },
             (error) => {
-                const errorData = error.error;
-                this.formInSave = false;
+                const errorData: ResponseData = error.error;
+                console.log(errorData);
+                this.formInSave = true;
                 this.addNotification(true, errorData ? errorData.notification : '');
             }
         );
