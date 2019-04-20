@@ -19,6 +19,7 @@ import {AccountNumberPipe} from '../../shared/pipes/account-number.pipe';
 import {CustomFilterPipe} from '../../shared/pipes/custom-filter.pipe';
 import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
 import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/transfer-send.component';
+import {TransferDetailComponent} from '../../modules/moneytransfers/transfer-detail/transfer-detail.component';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/
         AccountNumberPipe,
         CustomFilterPipe,
         TransferHistoryComponent,
-        TransferSendComponent
+        TransferSendComponent,
+        TransferDetailComponent
     ],
     providers: [
         AccountService

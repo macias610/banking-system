@@ -1,7 +1,9 @@
 export interface Transfer {
-    id: number;
-    title: string;
-    date: Date;
-    value: number;
+  id: number;
+  title: string;
+  transactionDate: Date;
+  value: number;
+  senderAccNumber: number;
+  receiverAccNumber: number;
 }
 

@@ -36,7 +36,7 @@
               <tbody>
               <tr *ngFor="let transfer of transfers | customFilter: transfersFilter : searchString">
                 <td>
-                  {{ transfer.date }}
+                  {{ transfer.transactionDate }}
                 </td>
                 <td>
                   {{ transfer.title }}
@@ -48,7 +48,7 @@
                   <div ngbDropdown class="dropdown" placement="bottom-right">
                     <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                     <div ngbDropdownMenu>
-                      <a class="dropdown-item" [routerLink]="['/client', transfer.id]">Show</a>
+                      <a class="dropdown-item" [routerLink]="['/transfer', transfer.id]">Show</a>
                     </div>
                   </div>
                 </td>

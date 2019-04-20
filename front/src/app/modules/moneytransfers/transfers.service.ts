@@ -16,6 +16,10 @@ export class TransfersService {
     return this.http.get<Transfer[]>(`${environment.api_url}/transactions/clients/` + id);
   }
 
+  getTransfer(id: String): Observable<Transfer> {
+    return this.http.get<Transfer>(`${environment.api_url}/transactions/` + id);
+  }
+
   sendTransfer(transfer: TransferSendDao): Observable<any> {
     return this.http
       .post(`${environment.api_url}/transactions`, transfer);
