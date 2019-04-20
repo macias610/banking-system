@@ -4,6 +4,6 @@ import com.banking.chestnut.models.Account;
 import org.springframework.data.repository.CrudRepository;
 
 public interface TransfersAccountRepository extends CrudRepository<Account, Integer> {
-    Account findByClientId(int clientId);
+    Account findByClientId_Id(int clientId);
     Account findById(int id);
 }

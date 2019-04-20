@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface PermanentTransactionRepository extends CrudRepository<PermanentTransactions, Integer> {
-    List<PermanentTransactions> findAllBySenderIdOrReceiverId(int accountId);
+    List<PermanentTransactions> findByReceiverId_IdOrSenderId_Id(int receiverId, int senderId);
     PermanentTransactions findById(int id);
 }

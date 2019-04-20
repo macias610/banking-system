@@ -33,7 +33,7 @@ public class TransactionService {
     }
 
     public List<TransactionDTO> findAllByReceiverIdOrSenderId(int accountId){
-        List<Transactions> transactions = transactionRepository.findAllBySenderIdOrReceiverId(accountId);
+        List<Transactions> transactions = transactionRepository.findBySenderId_IdOrReceiverId_Id(accountId, accountId);
         List<TransactionDTO> transactionsDTO = new ArrayList<>();
         for (Transactions t: transactions) {
             transactionsDTO.add(prepareModel(t));
