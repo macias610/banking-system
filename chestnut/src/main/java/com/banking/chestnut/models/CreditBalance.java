@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -13,9 +14,9 @@ import javax.persistence.*;
 public class CreditBalance {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "credit_balance_id")
-    private Long id;
+    private Integer id;
 
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
@@ -33,5 +34,8 @@ public class CreditBalance {
     private Long payments_left;
 
 
+    public Integer getId() {
+        return id;
+    }
 }
 

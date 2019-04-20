@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CreditTypeRepository extends CrudRepository<CreditType,Long> {
+public interface CreditTypeRepository extends CrudRepository<CreditType,Integer> {
 }

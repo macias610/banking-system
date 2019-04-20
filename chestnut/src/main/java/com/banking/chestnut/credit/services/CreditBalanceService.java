@@ -13,7 +13,7 @@ public class CreditBalanceService {
     @Autowired
     CreditBalanceRepository creditBalanceRepository;
 
-    public CreditBalance getById(Long id){
+    public CreditBalance getById(Integer id){
         return creditBalanceRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 

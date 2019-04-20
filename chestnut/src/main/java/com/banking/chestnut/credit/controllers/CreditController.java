@@ -19,7 +19,7 @@ public class CreditController {
     UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Credits> getCreditById(@PathVariable Long id){
+    public ResponseEntity<Credits> getCreditById(@PathVariable Integer id){
         try {
             Credits credits = creditService.getById(id);
             return ResponseEntity.ok().body(credits);
@@ -27,4 +27,17 @@ public class CreditController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //do poprawy
+    @PostMapping("/add")
+    public ResponseEntity<Credits> addCredit(@RequestBody Credits credit) {
+        try {
+            Credits createdCredits = creditService.addCredit(credit);
+            UriComponents uriComponents = uriBuilder.fromPath("/credit/{id}").buildAndExpand(createdCredits.getId());
+            return ResponseEntity.created(uriComponents.toUri()).body(createdCredits);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

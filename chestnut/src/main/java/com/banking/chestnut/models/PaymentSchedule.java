@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -17,10 +19,11 @@ import java.util.Set;
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class PaymentSchedule {
 
+
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "payment_schedule_id")
-    private Long id;
+    private Integer id;
 
     @JsonIgnore
     @OneToMany(mappedBy = "paymentSchedule",
@@ -34,5 +37,8 @@ public class PaymentSchedule {
 
     private Float payment_interest;
 
+    public Integer getId() {
+        return id;
+    }
 }
 

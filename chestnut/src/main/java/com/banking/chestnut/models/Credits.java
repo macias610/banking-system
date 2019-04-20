@@ -1,8 +1,12 @@
 package com.banking.chestnut.models;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,10 +19,13 @@ import java.util.Set;
 public class Credits {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @Getter
     @Column(name = "credit_id")
-    private Long id;
+    private Integer id;
 
+    @Getter
+    @Setter
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,7 +42,7 @@ public class Credits {
 
     private Float value;
 
-    private boolean is_active;
+    private Boolean is_active;
 
     @Temporal(TemporalType.DATE)
     private Date created_at;
@@ -44,6 +51,7 @@ public class Credits {
     private Date expiration_at;
 
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deleted_at;
 
     private Long created_by;
@@ -56,4 +64,7 @@ public class Credits {
             orphanRemoval = true)
     private Set<CreditBalance> creditBalance;
 
+    public Integer getId() {
+        return id;
+    }
 }

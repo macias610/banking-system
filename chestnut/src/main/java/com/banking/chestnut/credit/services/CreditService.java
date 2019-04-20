@@ -4,6 +4,7 @@ import com.banking.chestnut.credit.repositories.CreditRepository;
 import com.banking.chestnut.models.Credits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -13,7 +14,7 @@ public class CreditService {
     @Autowired
     CreditRepository creditRepository;
 
-    public Credits getById(Long id){
+    public Credits getById(Integer id){
         return creditRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 

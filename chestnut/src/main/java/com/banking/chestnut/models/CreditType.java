@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,9 +17,9 @@ import java.util.Set;
 public class CreditType {
 
     @Id
-    @GeneratedValue
+    @GenericGenerator(name = "increment", strategy = "increment")
     @Column(name = "credit_type_id")
-    private Long id;
+    private Integer id;
 
     @JsonIgnore
     @OneToMany(mappedBy = "creditType",
@@ -37,5 +38,8 @@ public class CreditType {
 
     private Float interest_rate;
 
+    public Integer getId() {
+        return id;
+    }
 }
 

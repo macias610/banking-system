@@ -14,7 +14,7 @@ public class PaymentScheduleService {
     PaymentScheduleRepository paymentScheduleRepository;
 
 
-    public PaymentSchedule getById(Long id){
+    public PaymentSchedule getById(Integer id){
        return paymentScheduleRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 

@@ -13,7 +13,7 @@ public class CreditTypeService {
     @Autowired
     CreditTypeRepository creditTypeRepository;
 
-    public CreditType getById(Long id){
+    public CreditType getById(Integer id){
         return creditTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
