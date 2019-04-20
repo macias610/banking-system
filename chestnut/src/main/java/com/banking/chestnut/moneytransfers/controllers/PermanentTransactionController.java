@@ -1,9 +1,12 @@
 package com.banking.chestnut.moneytransfers.controllers;
 
 import com.banking.chestnut.models.PermanentTransactions;
+import com.banking.chestnut.models.ResponseObject;
 import com.banking.chestnut.moneytransfers.DTO.PermanentTransactionDTO;
 import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
 import com.banking.chestnut.moneytransfers.services.PermanentTransactionService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,26 +23,30 @@ public class PermanentTransactionController {
     private final PermanentTransactionService permanentTransactionService;
     private final TransfersAccountService transfersAccountService;
 
-    @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<PermanentTransactionDTO>> findByClientId(@PathVariable("clientId") final int clientId) {
-        List<PermanentTransactionDTO> transactionsDTO = permanentTransactionService.findBySenderIdOrReceiverId(transfersAccountService.findByClientId(clientId).getId());
-        if (transactionsDTO.isEmpty())
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+    private static ObjectMapper mapper = new ObjectMapper();
 
-        return new ResponseEntity<>(transactionsDTO, HttpStatus.OK);
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity findByClientId(@PathVariable("clientId") final int clientId) {
+        List<PermanentTransactionDTO> transactionsDTO = permanentTransactionService.findBySenderIdOrReceiverId(transfersAccountService.findByClientId(clientId).getId());
+        JsonNode returnData = mapper.valueToTree(transactionsDTO);
+        if (transactionsDTO.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PermanentTransactionDTO> findById(@PathVariable("id") final int id) {
+    public ResponseEntity findById(@PathVariable("id") final int id) {
         PermanentTransactionDTO dto = permanentTransactionService.findById(id);
+        JsonNode returnData = mapper.valueToTree(dto);
         if (dto == null)
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(dto, HttpStatus.OK);
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
     }
 
     @PostMapping("")
-    public ResponseEntity<PermanentTransactions> createPermanentTransaction(@RequestBody PermanentTransactionDTO dto) {
-        return new ResponseEntity<>(permanentTransactionService.addPermanentTransaction(dto), HttpStatus.CREATED);
+    public ResponseEntity createPermanentTransaction(@RequestBody PermanentTransactionDTO dto) {
+        return new ResponseEntity<>(ResponseObject.createSuccess("Permanent transaction created"), HttpStatus.CREATED);
     }
 }
