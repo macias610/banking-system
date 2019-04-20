@@ -12,6 +12,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/clients', title: 'Clients', icon: 'users_single-02', class: '' },
     { path: '/accounts', title: 'Accounts', icon: 'business_money-coins', class: '' },
     { path: '/transferhistory', title: 'transfer history', icon: 'business_money-coins', class: '' },
+    { path: '/transfersend', title: 'send transfer', icon: 'business_money-coins', class: '' },
 ];
 
 @Component({

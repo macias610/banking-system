@@ -26,7 +26,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
     ],
     declarations: [
         AppComponent,
-        AdminLayoutComponent
+        AdminLayoutComponent,
     ],
     providers: [],
     bootstrap: [AppComponent]

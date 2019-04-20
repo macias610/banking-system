@@ -18,6 +18,7 @@ import {ClientsEditComponent} from '../../modules/ror/clients/clients-edit/clien
 import {AccountNumberPipe} from '../../shared/pipes/account-number.pipe';
 import {CustomFilterPipe} from '../../shared/pipes/custom-filter.pipe';
 import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
+import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/transfer-send.component';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-hi
         ClientsEditComponent,
         AccountNumberPipe,
         CustomFilterPipe,
-        TransferHistoryComponent
+        TransferHistoryComponent,
+        TransferSendComponent
     ],
     providers: [
         AccountService

@@ -7,6 +7,7 @@ import {ClientsListComponent} from '../../modules/ror/clients/clients-list/clien
 import {ClientsAddComponent} from '../../modules/ror/clients/clients-add/clients-add.component';
 import {ClientsEditComponent} from '../../modules/ror/clients/clients-edit/clients-edit.component';
 import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
+import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/transfer-send.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -16,4 +17,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'client', component: ClientsAddComponent },
     { path: 'client/:id', component: ClientsEditComponent },
     { path: 'transferhistory', component: TransferHistoryComponent},
+    { path: 'transfersend', component: TransferSendComponent},
 ];
