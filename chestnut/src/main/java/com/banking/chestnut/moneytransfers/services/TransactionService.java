@@ -3,7 +3,7 @@ package com.banking.chestnut.moneytransfers.services;
 import com.banking.chestnut.commonrepositories.UserRepository;
 import com.banking.chestnut.models.Transactions;
 import com.banking.chestnut.moneytransfers.DTO.TransactionDTO;
-import com.banking.chestnut.moneytransfers.repositories.AccountRepository;
+import com.banking.chestnut.moneytransfers.repositories.TransfersAccountRepository;
 import com.banking.chestnut.moneytransfers.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.List;
 public class TransactionService {
 
     private final TransactionRepository transactionRepository;
-    private final AccountRepository accountRepository;
+    private final TransfersAccountRepository transfersAccountRepository;
     private final UserRepository userRepository;
 
     @Value("${app.cashier.user.id}")
@@ -46,8 +46,8 @@ public class TransactionService {
         Transactions transaction = new Transactions();
         transaction.setTitle(transactionDTO.getTitle());
         transaction.setValue(transactionDTO.getValue());
-        transaction.setSenderId(accountRepository.findById(transactionDTO.getSenderId()));
-        transaction.setReceiverId(accountRepository.findById(transactionDTO.getReceiverId()));
+        transaction.setSenderId(transfersAccountRepository.findById(transactionDTO.getSenderId()));
+        transaction.setReceiverId(transfersAccountRepository.findById(transactionDTO.getReceiverId()));
         transaction.setTransactionDate(transactionDTO.getTransactionDate());
         transaction.setCreatedAt(new Date());
         transaction.setCreatedBy(userRepository.findById(systemId));

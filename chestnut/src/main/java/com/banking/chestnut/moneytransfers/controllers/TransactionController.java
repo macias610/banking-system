@@ -2,7 +2,7 @@ package com.banking.chestnut.moneytransfers.controllers;
 
 import com.banking.chestnut.models.Transactions;
 import com.banking.chestnut.moneytransfers.DTO.TransactionDTO;
-import com.banking.chestnut.moneytransfers.services.AccountService;
+import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
 import com.banking.chestnut.moneytransfers.services.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,11 @@ import java.util.List;
 public class TransactionController {
 
     private final TransactionService transactionService;
-    private final AccountService accountService;
+    private final TransfersAccountService transfersAccountService;
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<TransactionDTO>> findByClientId(@PathVariable("clientId") final int clientId) {
-        List<TransactionDTO> transactionsDTO = transactionService.findAllByReceiverIdOrSenderId(accountService.findByClientId(clientId).getId());
+        List<TransactionDTO> transactionsDTO = transactionService.findAllByReceiverIdOrSenderId(transfersAccountService.findByClientId(clientId).getId());
         if (transactionsDTO.isEmpty())
             return new ResponseEntity(HttpStatus.NO_CONTENT);
 
@@ -43,8 +43,8 @@ public class TransactionController {
     public ResponseEntity<Transactions> createTransactions(@RequestBody TransactionDTO transactionDTO) {
         Transactions outgoing = transactionService.addTransaction(transactionDTO, "outgoing");
         Transactions incoming = transactionService.addTransaction(transactionDTO, "incoming");
-        accountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
-        accountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
+        transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
+        transfersAccountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
         return new ResponseEntity<>(outgoing, HttpStatus.CREATED);
     }
 }

@@ -2,7 +2,7 @@ package com.banking.chestnut.moneytransfers.controllers;
 
 import com.banking.chestnut.models.PermanentTransactions;
 import com.banking.chestnut.moneytransfers.DTO.PermanentTransactionDTO;
-import com.banking.chestnut.moneytransfers.services.AccountService;
+import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
 import com.banking.chestnut.moneytransfers.services.PermanentTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ import java.util.List;
 public class PermanentTransactionController {
 
     private final PermanentTransactionService permanentTransactionService;
-    private final AccountService accountService;
+    private final TransfersAccountService transfersAccountService;
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<PermanentTransactionDTO>> findByClientId(@PathVariable("clientId") final int clientId) {
-        List<PermanentTransactionDTO> transactionsDTO = permanentTransactionService.findBySenderIdOrReceiverId(accountService.findByClientId(clientId).getId());
+        List<PermanentTransactionDTO> transactionsDTO = permanentTransactionService.findBySenderIdOrReceiverId(transfersAccountService.findByClientId(clientId).getId());
         if (transactionsDTO.isEmpty())
             return new ResponseEntity(HttpStatus.NO_CONTENT);
 

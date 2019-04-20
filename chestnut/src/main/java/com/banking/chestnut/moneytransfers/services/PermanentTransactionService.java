@@ -1,10 +1,8 @@
 package com.banking.chestnut.moneytransfers.services;
 
 import com.banking.chestnut.models.PermanentTransactions;
-import com.banking.chestnut.models.Transactions;
 import com.banking.chestnut.moneytransfers.DTO.PermanentTransactionDTO;
-import com.banking.chestnut.moneytransfers.DTO.TransactionDTO;
-import com.banking.chestnut.moneytransfers.repositories.AccountRepository;
+import com.banking.chestnut.moneytransfers.repositories.TransfersAccountRepository;
 import com.banking.chestnut.moneytransfers.repositories.PermanentTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ import java.util.List;
 public class PermanentTransactionService {
 
     private final PermanentTransactionRepository permanentTransactionRepository;
-    private final AccountRepository accountRepository;
+    private final TransfersAccountRepository transfersAccountRepository;
 
     public PermanentTransactionDTO findById(int id) {
         return prepareModel(permanentTransactionRepository.findById(id));
@@ -42,8 +40,8 @@ public class PermanentTransactionService {
         PermanentTransactions permanentTransaction = new PermanentTransactions();
         permanentTransaction.setTitle(dto.getTitle());
         permanentTransaction.setValue(dto.getValue());
-        permanentTransaction.setSenderId(accountRepository.findById(dto.getSenderId()));
-        permanentTransaction.setReceiverId(accountRepository.findById(dto.getReceiverId()));
+        permanentTransaction.setSenderId(transfersAccountRepository.findById(dto.getSenderId()));
+        permanentTransaction.setReceiverId(transfersAccountRepository.findById(dto.getReceiverId()));
         permanentTransaction.setDateFrom(dto.getDateFrom());
         permanentTransaction.setDateTo(dto.getDateTo());
         permanentTransaction.setIntervalTransaction(dto.getInterval());
