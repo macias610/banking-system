@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {TransfersService} from '../transfers.service';
 import {Transfer} from '../../../models/transfer/transfer';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-transfer-history',
@@ -14,11 +14,13 @@ export class TransferHistoryComponent implements OnInit {
   searchString: string;
   transfers: Observable<Transfer[]>;
 
-  constructor(private service: TransfersService, private http: HttpClient) { }
+  constructor(private service: TransfersService) { }
 
   ngOnInit() {
     this.searchString = '';
-    this.transfers = this.service.getTransfers('1');
+    this.transfers = this.service.getTransfers('1').pipe(
+      map(item => item.data)
+    );
   }
 
   searchInTable(searchItem: string) {

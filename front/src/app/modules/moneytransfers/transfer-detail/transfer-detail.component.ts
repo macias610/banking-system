@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {TransfersService} from '../transfers.service';
 import {Transfer} from '../../../models/transfer/transfer';
+import {ResponseData} from '../../../models/responseData';
 
 @Component({
   selector: 'app-transfer-detail',
@@ -29,12 +30,9 @@ export class TransferDetailComponent implements OnInit {
     });
 
     this.service.getTransfer(this.transferId).subscribe(
-      (data: Transfer) => {
-        this.fillForm(data);
-        console.log(data);
+      (d: ResponseData) => {
+        this.fillForm(<Transfer>d.data);
       },
-      (error) => {
-      }
     );
   }
 

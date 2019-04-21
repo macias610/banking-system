@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TransfersService} from '../transfers.service';
 import {Notification} from '../../../models/notification';
+import {ResponseData} from '../../../models/responseData';
 
 @Component({
   selector: 'app-transfer-send',
@@ -33,13 +34,14 @@ export class TransferSendComponent implements OnInit {
     this.formInSave = true;
 
     this.service.sendTransfer(formValue).subscribe(
-      (data) => {
+      (data: ResponseData) => {
         this.formInSave = false;
         this.sendTransferForm.reset();
         this.addNotification(false, data.notification || '');
       },
       (error) => {
-        const errorData = error.error;
+        const errorData: ResponseData = error.error;
+        console.log(errorData);
         this.formInSave = false;
         this.addNotification(true, errorData ? errorData.notification : '');
       }
