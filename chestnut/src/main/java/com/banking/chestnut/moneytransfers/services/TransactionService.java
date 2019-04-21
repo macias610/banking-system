@@ -46,8 +46,8 @@ public class TransactionService {
         Transactions transaction = new Transactions();
         transaction.setTitle(transactionDTO.getTitle());
         transaction.setValue(transactionDTO.getValue());
-        transaction.setSenderId(transfersAccountRepository.findById(transactionDTO.getSenderId()));
-        transaction.setReceiverId(transfersAccountRepository.findById(transactionDTO.getReceiverId()));
+        transaction.setSenderId(transfersAccountRepository.findByNumberClientAccount(transactionDTO.getSenderAccNumber()));
+        transaction.setReceiverId(transfersAccountRepository.findByNumberClientAccount(transactionDTO.getReceiverAccNumber()));
         transaction.setTransactionDate(transactionDTO.getTransactionDate());
         transaction.setCreatedAt(new Date());
         transaction.setCreatedBy(userRepository.findById(systemId));

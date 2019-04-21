@@ -26,4 +26,8 @@ public class TransfersAccountService {
         account.setInfoId(accountInfo);
         return transfersAccountRepository.save(account);
     }
+
+    public Account findByClientNumber(String number) {
+        return transfersAccountRepository.findByNumberClientAccount(number);
+    }
 }
