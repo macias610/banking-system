@@ -1,10 +1,9 @@
 package com.banking.chestnut.moneytransfers.controllers;
 
-import com.banking.chestnut.models.PermanentTransactions;
 import com.banking.chestnut.models.ResponseObject;
-import com.banking.chestnut.moneytransfers.DTO.PermanentTransactionDTO;
+import com.banking.chestnut.moneytransfers.DTO.DirectDebitDTO;
+import com.banking.chestnut.moneytransfers.services.DirectDebitService;
 import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
-import com.banking.chestnut.moneytransfers.services.PermanentTransactionService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +16,20 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@RequestMapping(path="/permanentTransactions")
-public class PermanentTransactionController {
+@RequestMapping(path="/directDebits")
+public class DirectDebitController {
 
-    private final PermanentTransactionService permanentTransactionService;
+    private final DirectDebitService directDebitService;
     private final TransfersAccountService transfersAccountService;
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-    @GetMapping("/client/{clientId}")
-    public ResponseEntity findByClientId(@PathVariable("clientId") final int clientId) {
-        List<PermanentTransactionDTO> transactionsDTO = permanentTransactionService.findBySenderIdOrReceiverId(transfersAccountService.findByClientId(clientId).getId());
-        JsonNode returnData = mapper.valueToTree(transactionsDTO);
-        if (transactionsDTO.isEmpty())
+    //providerID means clientId (assuming provider is bank's client)
+    @GetMapping("/provider/{providerId}")
+    public ResponseEntity findByProviderId(@PathVariable("providerId") final int providerId) {
+        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByProviderId(transfersAccountService.findByClientId(providerId).getId());
+        JsonNode returnData = mapper.valueToTree(directDebitsDTO);
+        if (directDebitsDTO.isEmpty())
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
@@ -37,7 +37,7 @@ public class PermanentTransactionController {
 
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable("id") final int id) {
-        PermanentTransactionDTO dto = permanentTransactionService.findById(id);
+        DirectDebitDTO dto = directDebitService.findById(id);
         JsonNode returnData = mapper.valueToTree(dto);
         if (dto == null)
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
@@ -46,8 +46,8 @@ public class PermanentTransactionController {
     }
 
     @PostMapping("")
-    public ResponseEntity createPermanentTransaction(@RequestBody PermanentTransactionDTO dto) {
-        permanentTransactionService.addPermanentTransaction(dto);
-        return new ResponseEntity<>(ResponseObject.createSuccess("Permanent transaction created"), HttpStatus.CREATED);
+    public ResponseEntity addDirectDebit(@RequestBody DirectDebitDTO directDebitDTO) {
+        directDebitService.addDirectDebit(directDebitDTO);
+        return new ResponseEntity<>(ResponseObject.createSuccess("Direct debit created"), HttpStatus.CREATED);
     }
 }
