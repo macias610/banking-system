@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +47,11 @@ public class AccountService implements IAccountService {
         account.setIsBlocked(false);
         this.accountRepository.save(account);
         return account;
+    }
+
+    @Override
+    public Optional<Account> getById(Integer id) {
+        return this.accountRepository.findById(id);
     }
 
     @Override

@@ -72,6 +72,10 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "clientId")
     private List<Document> documents;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "clientId")
+    private List<Account> accounts;
+
     public Client() {
         this.uuid = UUID.randomUUID().toString();
     }
