@@ -53,6 +53,8 @@ public class CardController {
             Optional<Account> account =  this.accountService.getById(cardDto.getAccountId());
             if(!account.isPresent())
                 return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
+            if(account.get().getIsBlocked())
+                return new ResponseEntity<>(ResponseObject.createError("Account locked"), HttpStatus.OK);
             Card card = new Card();
             card.setAccountId(account.get());
             this.cardService.saveCard(card);
@@ -70,6 +72,8 @@ public class CardController {
             Optional<Card> card = this.cardService.getById(editCardDto.getId());
             if(!card.isPresent())
                 return new ResponseEntity<>(ResponseObject.createError("Card not found"), HttpStatus.NOT_FOUND);
+            if(card.get().getAccountId().getIsBlocked())
+                return new ResponseEntity<>(ResponseObject.createError("Account locked"), HttpStatus.OK);
             BCryptUtility bCryptUtility = new BCryptUtility(5);
             if(editCardDto.getType().toLowerCase().equals("pin"))
                 card.get().setPin(bCryptUtility.hash(editCardDto.getValue()));

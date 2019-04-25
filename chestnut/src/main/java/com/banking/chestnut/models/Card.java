@@ -56,7 +56,7 @@ public class Card implements Serializable {
     private Account accountId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
     public Card() {
     }
@@ -113,11 +113,11 @@ public class Card implements Serializable {
         this.accountId = accountId;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

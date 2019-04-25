@@ -58,10 +58,10 @@ public class Credits implements Serializable {
     private PaymentSchedules paymentScheduleId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
     @JoinColumn(name = "deleted_by", referencedColumnName = "id")
     @ManyToOne
-    private Users deletedBy;
+    private User deletedBy;
 
     public Credits() {
     }
@@ -150,19 +150,19 @@ public class Credits implements Serializable {
         this.paymentScheduleId = paymentScheduleId;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Users getDeletedBy() {
+    public User getDeletedBy() {
         return deletedBy;
     }
 
-    public void setDeletedBy(Users deletedBy) {
+    public void setDeletedBy(User deletedBy) {
         this.deletedBy = deletedBy;
     }
 

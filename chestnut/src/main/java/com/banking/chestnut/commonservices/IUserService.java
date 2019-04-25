@@ -1,9 +1,9 @@
 package com.banking.chestnut.commonservices;
 
-import com.banking.chestnut.models.Users;
+import com.banking.chestnut.models.User;
 
 import java.util.Optional;
 
 public interface IUserService {
-    Optional<Users> findById(Integer id);
+    Optional<User> findById(Integer id);
 }
