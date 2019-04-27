@@ -30,6 +30,10 @@ export class DepositsService {
   }
 
   getDeposits(accountId: number): Observable<Deposit[]> {
-    return this.http.get<Deposit[]>(`${environment.api_url}/deposit/account/` + accountId);
+    return this.http.get<Deposit[]>(`${environment.api_url}/deposit/account/${accountId}`);
+  }
+
+  closeDeposit(depositId: number): Observable<Deposit> {
+    return this.http.post<Deposit>(`${environment.api_url}/deposit/close/${depositId}`, {});
   }
 }

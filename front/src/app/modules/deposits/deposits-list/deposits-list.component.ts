@@ -56,4 +56,12 @@ export class DepositsListComponent implements OnInit {
   getDepositTypeInterestRate(depositTypeId: number): number {
     return this.depositTypes.filter(depositType => depositType.id === depositTypeId)[0].interestRate;
   }
+
+  closeDeposit(depositId: number): void {
+    this.service.closeDeposit(depositId).subscribe(
+      (deposit) => {
+        this.getDeposits();
+      }
+    )
+  }
 }

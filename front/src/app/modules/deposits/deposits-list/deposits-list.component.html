@@ -31,6 +31,9 @@
               <th>
                 Amount
               </th>
+              <th>
+                Active
+              </th>
               <th class="text-right">
                 Operations
               </th>
@@ -52,17 +55,20 @@
                 <td>
                   {{ deposit.amount }}
                 </td>
+                <td>
+                  {{ deposit.isActive }}
+                </td>
                 <td class="text-right">
                   <div ngbDropdown class="dropdown" placement="bottom-right">
                     <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                     <div ngbDropdownMenu>
-
+                      <a *ngIf="deposit.isActive" class="dropdown-item" [routerLink]='' (click)="closeDeposit(deposit.id)">Cancel deposit</a>
                     </div>
                   </div>
                 </td>
               </tr>
               </tbody>
-              <tbody *ngIf="deposits.length < 1">
+              <tbody *ngIf="deposits.length === 0">
               <tr>
                 <td colspan="6">
                   No results
