@@ -50,4 +50,15 @@ public class DirectDebitController {
         directDebitService.addDirectDebit(directDebitDTO);
         return new ResponseEntity<>(ResponseObject.createSuccess("Direct debit created"), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity cancelDirectDebit(@PathVariable("id") final int id, @RequestBody DirectDebitDTO directDebitDTO) {
+        try {
+            directDebitService.cancelDirectDebit(id);
+            return new ResponseEntity<>(ResponseObject.createSuccess(""), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during canceling direct debit"), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

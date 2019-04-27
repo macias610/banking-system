@@ -50,4 +50,15 @@ public class PermanentTransactionController {
         permanentTransactionService.addPermanentTransaction(dto);
         return new ResponseEntity<>(ResponseObject.createSuccess("Permanent transaction created"), HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity cancelPermanentTransaction(@PathVariable("id") final int id, @RequestBody PermanentTransactionDTO dto) {
+        try {
+            permanentTransactionService.cancelPermanentTransaction(id);
+            return new ResponseEntity<>(ResponseObject.createSuccess(""), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during canceling permanent transaction"), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

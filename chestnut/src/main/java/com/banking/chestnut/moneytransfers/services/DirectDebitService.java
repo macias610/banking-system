@@ -19,7 +19,7 @@ public class DirectDebitService {
     private final TransfersAccountRepository transfersAccountRepository;
 
     public List<DirectDebitDTO> findByProviderId(int providerId){
-        List<DirectDebits> directDebits = directDebitRepository.findByProviderId_Id(providerId);
+        List<DirectDebits> directDebits = directDebitRepository.findByProviderId_IdAndIsEnabled(providerId, true);
         List<DirectDebitDTO> directDebitsDTO = new ArrayList<>();
         for (DirectDebits t: directDebits) {
             directDebitsDTO.add(prepareModel(t));
@@ -37,6 +37,12 @@ public class DirectDebitService {
         directDebit.setAccountId(transfersAccountRepository.findByNumberClientAccount(directDebitDTO.getClientAccNumber()));
         directDebit.setProviderId(transfersAccountRepository.findByNumberClientAccount(directDebitDTO.getProviderAccNumber()));
         return directDebitRepository.save(directDebit);
+    }
+
+    public void cancelDirectDebit(int id) {
+        DirectDebits directDebit = directDebitRepository.findById(id);
+        directDebit.setIsEnabled(false);
+        directDebitRepository.save(directDebit);
     }
 
     private DirectDebitDTO prepareModel(DirectDebits directDebit) {

@@ -49,6 +49,13 @@ public class PermanentTransactionService {
         return permanentTransactionRepository.save(permanentTransaction);
     }
 
+    public void cancelPermanentTransaction(int id) {
+        PermanentTransactions permanentTransaction = permanentTransactionRepository.findById(id);
+        permanentTransaction.setNextDate(new Date());
+        permanentTransaction.setDateTo(new Date());
+        permanentTransactionRepository.save(permanentTransaction);
+    }
+
     private PermanentTransactionDTO prepareModel(PermanentTransactions permanentTransaction) {
         PermanentTransactionDTO dto = new PermanentTransactionDTO();
         dto.setId(permanentTransaction.getId());
