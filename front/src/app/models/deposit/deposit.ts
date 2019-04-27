@@ -1,4 +1,4 @@
-export class DepositCreateDao {
+export class Deposit {
   constructor(public id: number,
               public accountId: number,
               public depositTypeId: number,

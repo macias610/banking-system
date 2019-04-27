@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DepositsService} from "../deposits.service";
 import {AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 import {ActivatedRoute} from '@angular/router';
-import {DepositCreateDao} from "../../../models/deposit/depositCreateDao";
+import {Deposit} from "../../../models/deposit/deposit";
 import {DepositType} from "../../../models/deposit/depositType";
 import {formatDate} from "@angular/common";
 
@@ -18,8 +18,7 @@ export class DepositsAddComponent implements OnInit {
   accountId: number;
   depositTypes: DepositType[] = [];
 
-  constructor(private fb: FormBuilder, private service: DepositsService, private route: ActivatedRoute) {
-  }
+  constructor(private fb: FormBuilder, private service: DepositsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.getDepositTypes();
@@ -85,7 +84,7 @@ export class DepositsAddComponent implements OnInit {
     this.formInSave = true;
     console.log(formValue);
     this.service.addDeposit(this.prepareDepositCreateDaoForRequest(formValue)).subscribe(
-      (data: DepositCreateDao) => {
+      (data: Deposit) => {
         this.createDepositForm.reset();
         console.log(data);
       },
@@ -97,12 +96,12 @@ export class DepositsAddComponent implements OnInit {
     );
   }
 
-  prepareDepositCreateDaoForRequest(formValue: any): DepositCreateDao {
+  prepareDepositCreateDaoForRequest(formValue: any): Deposit {
     const todayDate: Date = new Date();
     const format = 'yyyy-MM-dd';
     const locale = 'en-US';
     const depositEndDate = new Date().setDate(todayDate.getDate() + formValue['daysPeriod']);
-    const depositCreateDao = new DepositCreateDao(3, this.accountId, formValue['depositType'],
+    const depositCreateDao = new Deposit(3, this.accountId, formValue['depositType'],
       formatDate(todayDate, format, locale), formatDate(depositEndDate, format, locale),
       Number.parseFloat(formValue['amount']), true);
     console.log(depositCreateDao);

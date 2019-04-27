@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {environment} from "../../../environments/environment";
-import {DepositCreateDao} from "../../models/deposit/depositCreateDao";
+import {Deposit} from "../../models/deposit/deposit";
 import {DepositType} from '../../models/deposit/depositType';
 
 @Injectable({
@@ -13,9 +13,9 @@ export class DepositsService {
   constructor(private http: HttpClient) {
   }
 
-  addDeposit(deposit: DepositCreateDao): Observable<DepositCreateDao> {
+  addDeposit(deposit: Deposit): Observable<Deposit> {
     return this.http
-      .post<DepositCreateDao>(`${environment.api_url}/deposit/add`, deposit);
+      .post<Deposit>(`${environment.api_url}/deposit/add`, deposit);
   }
 
   getDepositTypes(): Observable<DepositType[]> {
@@ -27,5 +27,9 @@ export class DepositsService {
     ]);
     // return this.http
     //   .get<DepositType[]>(`${environment.api_url}/deposit/types`);
+  }
+
+  getDeposits(accountId: number): Observable<Deposit[]> {
+    return this.http.get<Deposit[]>(`${environment.api_url}/deposit/account/` + accountId);
   }
 }

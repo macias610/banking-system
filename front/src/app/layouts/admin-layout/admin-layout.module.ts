@@ -18,6 +18,7 @@ import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/cli
 import { AccountNumberPipe } from '../../shared/pipes/account-number.pipe';
 import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
 import {DepositsAddComponent} from "../../modules/deposits/deposits-add/deposits-add.component";
+import {DepositsListComponent} from "../../modules/deposits/deposits-list/deposits-list.component";
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import {DepositsAddComponent} from "../../modules/deposits/deposits-add/deposits
         ClientsEditComponent,
         AccountNumberPipe,
         CustomFilterPipe,
-        DepositsAddComponent
+        DepositsAddComponent,
+        DepositsListComponent
     ],
     providers: [
         AccountService
