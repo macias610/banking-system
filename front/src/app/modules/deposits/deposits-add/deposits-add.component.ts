@@ -24,6 +24,7 @@ export class DepositsAddComponent implements OnInit {
     this.getDepositTypes();
     this.setAccountId();
     this.createAddDepositForm();
+    //TODO add balance checking
   }
 
   getDepositTypes(): void {
@@ -101,7 +102,7 @@ export class DepositsAddComponent implements OnInit {
     const format = 'yyyy-MM-dd';
     const locale = 'en-US';
     const depositEndDate = new Date().setDate(todayDate.getDate() + formValue['daysPeriod']);
-    const depositCreateDao = new Deposit(3, this.accountId, formValue['depositType'],
+    const depositCreateDao = new Deposit(null, this.accountId, formValue['depositType'],
       formatDate(todayDate, format, locale), formatDate(depositEndDate, format, locale),
       Number.parseFloat(formValue['amount']), true);
     console.log(depositCreateDao);
