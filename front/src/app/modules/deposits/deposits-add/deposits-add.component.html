@@ -1,0 +1,74 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Add new deposit</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="createDepositForm" (ngSubmit)="addDeposit()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Deposit</label>
+                  <select name="" formControlName="depositType" class="form-control" (change)="onChange($event.target.value)" >
+                    <option value="">-- Select deposit type--</option>
+                    <option *ngFor="let type of depositTypes" [value]="type.id">{{type.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Min amount</label>
+                  <input name="" formControlName="minAmount" class="form-control" disabled="disabled">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Max amount</label>
+                  <input name="" formControlName="maxAmount" class="form-control" disabled="disabled">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Interest rate</label>
+                  <input name="" formControlName="interestRate" class="form-control" disabled="disabled">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Days period</label>
+                  <input name="" formControlName="daysPeriod" class="form-control" disabled="disabled">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Amount</label>
+                  <input name="" formControlName="amount" class="form-control">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="text-right">
+              <button type="submit" [disabled]="createDepositForm.invalid || formInSave"
+                      class="btn btn-lg btn-info btn-round">Add deposit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

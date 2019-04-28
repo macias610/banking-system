@@ -8,6 +8,8 @@ import { AccountsingleComponent } from '../../modules/ror/account/accountsingle/
 import { ClientsListComponent } from '../../modules/ror/clients/clients-list/clients-list.component';
 import { ClientsAddComponent } from '../../modules/ror/clients/clients-add/clients-add.component';
 import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/clients-edit.component';
+import {DepositsAddComponent} from "../../modules/deposits/deposits-add/deposits-add.component";
+import {DepositsListComponent} from "../../modules/deposits/deposits-list/deposits-list.component";
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -17,4 +19,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'clients', component: ClientsListComponent },
     { path: 'client', component: ClientsAddComponent },
     { path: 'client/:id', component: ClientsEditComponent },
+    { path: 'deposits/add/:id', component: DepositsAddComponent },
+    { path: 'deposits/:id', component: DepositsListComponent }
 ];
