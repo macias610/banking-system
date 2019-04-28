@@ -6,3 +6,17 @@
 .form-control.ng-invalid.ng-touched {
   border: 1px solid #f96332;
 }
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff !important;
+  text-decoration: none;
+  background-color: #007bff;
+}
+
+
+.dropdown-item:hover {
+  color: #212529 !important;
+  text-decoration: none;
+  background-color: #86c1ff !important;
+}

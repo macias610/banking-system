@@ -60,6 +60,14 @@ public class Location implements Serializable {
         this.id = id;
     }
 
+    public void assignNewValues(Location location){
+        this.apartmentNumber = location.getApartmentNumber();
+        this.houseNumber = location.getHouseNumber();
+        this.street = location.getStreet();
+        this.zip = location.getZip();
+        this.city = location.getCity();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

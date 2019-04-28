@@ -23,4 +23,9 @@ public class DocumentService implements IDocumentService {
         this.documentRepository.save(document);
         return document;
     }
+
+    @Override
+    public void deleteDocument(Document document) {
+        this.documentRepository.delete(document);
+    }
 }

@@ -23,7 +23,7 @@ public class Deposits {
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id") //FK
-    private Accounts account;
+    private Account account;
     
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -52,8 +52,7 @@ public class Deposits {
     @Setter
     private Boolean isActive;
     
-    public Deposits(DepositDto depositDto, Accounts account, DepositTypes depositType){
-        this.id = depositDto.getId();
+    public Deposits(DepositDto depositDto, Account account, DepositTypes depositType){
         this.account = account;
         this.depositType = depositType;
         if (depositDto.getStartDate() != null){

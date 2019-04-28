@@ -5,7 +5,7 @@
  */
 package com.banking.chestnut.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -26,8 +26,11 @@ import javax.validation.constraints.Size;
  * @author macie
  */
 @Entity
+@Data
+
 @Table(name = "accounts")
-public class Accounts implements Serializable {
+public class Account implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,9 +60,9 @@ public class Accounts implements Serializable {
     private Boolean isActive;
     @Column(name = "is_blocked")
     private Boolean isBlocked;
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Currencies currencyId;
+//    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+//    @ManyToOne
+//    private Currencies currencyId;
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
     private Client clientId;
@@ -67,10 +70,21 @@ public class Accounts implements Serializable {
     @ManyToOne
     private AccountInfo infoId;
 
-    public Accounts() {
+    @Size(max = 3)
+    @Column(name = "currency")
+    private String currency;
+
+    public Account() {
     }
 
-    public Accounts(Integer id) {
+    public Account(String currency) {
+        this.isActive = true;
+        this.isBlocked = false;
+        this.type = AccountType.INDIVIDUAL.type();
+        this.currency = currency;
+    }
+
+    public Account(Integer id) {
         this.id = id;
     }
     
@@ -130,13 +144,13 @@ public class Accounts implements Serializable {
         this.isBlocked = isBlocked;
     }
 
-    public Currencies getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Currencies currencyId) {
-        this.currencyId = currencyId;
-    }
+//    public Currencies getCurrencyId() {
+//        return currencyId;
+//    }
+//
+//    public void setCurrencyId(Currencies currencyId) {
+//        this.currencyId = currencyId;
+//    }
 
     public Client getClientId() {
         return clientId;
@@ -154,6 +168,14 @@ public class Accounts implements Serializable {
         this.infoId = infoId;
     }
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -164,10 +186,10 @@ public class Accounts implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Accounts)) {
+        if (!(object instanceof Account)) {
             return false;
         }
-        Accounts other = (Accounts) object;
+        Account other = (Account) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -176,7 +198,9 @@ public class Accounts implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Accounts[ id=" + id + " ]";
+        return "com.banking.chestnut.Account[ id=" + id + " ]";
     }
+
+
 
 }

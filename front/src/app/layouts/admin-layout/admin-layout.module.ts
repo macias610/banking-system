@@ -11,7 +11,9 @@ import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { AccountService } from '../../modules/ror/account/account.service';
+import { AccountAddComponent } from '../../modules/ror/account/account-add/account-add.component';
 import { AccountsingleComponent } from '../../modules/ror/account/accountsingle/accountsingle.component';
+
 import { ClientsListComponent } from '../../modules/ror/clients/clients-list/clients-list.component';
 import { ClientsAddComponent } from '../../modules/ror/clients/clients-add/clients-add.component';
 import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/clients-edit.component';
@@ -33,6 +35,7 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
         DashboardComponent,
         NotificationsComponent,
         AccountComponent,
+        AccountAddComponent,
         AccountsingleComponent,
         ClientsListComponent,
         ClientsAddComponent,

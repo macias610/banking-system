@@ -6,6 +6,8 @@
 package com.banking.chestnut.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +29,8 @@ import javax.validation.constraints.Size;
  * @author macie
  */
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "banks")
 public class Banks implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -35,6 +39,9 @@ public class Banks implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Size(max = 2)
+    @Column(name = "country")
+    private String country;
     @Size(max = 255)
     @Column(name = "name")
     private String name;
@@ -43,65 +50,6 @@ public class Banks implements Serializable {
     private String swift;
     @OneToMany(mappedBy = "bankId")
     private transient List<Users> usersList;
-
-    public Banks() {
-    }
-
-    public Banks(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSwift() {
-        return swift;
-    }
-
-    public void setSwift(String swift) {
-        this.swift = swift;
-    }
-
-    public List<Users> getUsersList() {
-        return usersList;
-    }
-
-    public void setUsersList(List<Users> usersList) {
-        this.usersList = usersList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Banks)) {
-            return false;
-        }
-        Banks other = (Banks) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
 
     @Override
     public String toString() {

@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,7 +49,7 @@ public class Credits implements Serializable {
     private Date deletedAt;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne
-    private Accounts accountId;
+    private Account accountId;
     @JoinColumn(name = "credit_type_id", referencedColumnName = "id")
     @ManyToOne
     private CreditTypes creditTypeId;
@@ -128,11 +126,11 @@ public class Credits implements Serializable {
         this.deletedAt = deletedAt;
     }
 
-    public Accounts getAccountId() {
+    public Account getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Accounts accountId) {
+    public void setAccountId(Account accountId) {
         this.accountId = accountId;
     }
 

@@ -60,6 +60,14 @@ public class ClientInfo implements Serializable {
     public ClientInfo() {
     }
 
+    public void assignNewValues(ClientInfo clientInfo){
+        this.country = clientInfo.getCountry();
+        this.firstName = clientInfo.getFirstName();
+        this.surname = clientInfo.getSurname();
+        this.nationality = clientInfo.getNationality();
+        this.lang = clientInfo.getLang();
+    }
+
     public ClientInfo(Integer id) {
         this.id = id;
     }
