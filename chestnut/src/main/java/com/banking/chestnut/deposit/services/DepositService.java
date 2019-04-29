@@ -43,7 +43,7 @@ public class DepositService {
     UserRepository userRepository;
     
     public DepositDto getDepositById(Integer id) {
-        Deposits deposit = depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Deposits deposit = depositRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Deposit not found"));
         return new DepositDto(deposit);
     }
     

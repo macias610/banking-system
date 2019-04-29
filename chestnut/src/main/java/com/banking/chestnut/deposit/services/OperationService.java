@@ -17,12 +17,16 @@ public class OperationService {
     OperationRepository operationRepository;
     
     public Set<DepositOperationDto> getOperationsByDepositId(Integer id) {
-        Set<DepositOperations> depositOperations = operationRepository.findAllByDepositId(id).orElseThrow(NoSuchElementException::new);
+        Set<DepositOperations> depositOperations = operationRepository.
+                      findAllByDepositId(id).
+                      orElseThrow(() -> new NoSuchElementException("Cannot find operations for deposit with id: " + id));
         return depositOperations.stream().map(o -> new DepositOperationDto(o)).collect(Collectors.toSet());
     }
     
     public Set<DepositOperationDto> getOperationsByAccountId(Integer id) {
-        Set<DepositOperations> depositOperations = operationRepository.findAllByAccountId(id).orElseThrow(NoSuchElementException::new);
+        Set<DepositOperations> depositOperations = operationRepository.
+                      findAllByAccountId(id).
+                      orElseThrow(() -> new NoSuchElementException("Cannot find operations for account with id: " + id));
         return depositOperations.stream().map(o -> new DepositOperationDto(o)).collect(Collectors.toSet());
     }
 }

@@ -1,8 +1,11 @@
 package com.banking.chestnut.deposit.controllers;
 
 import com.banking.chestnut.deposit.dto.DepositOperationDto;
+import com.banking.chestnut.deposit.helpers.JsonNodeCreator;
 import com.banking.chestnut.deposit.services.OperationService;
+import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
+
 @RestController
 @RequestMapping("/operation")
 public class OperationsController {
@@ -20,22 +25,24 @@ public class OperationsController {
     OperationService operationService;
     
     @GetMapping("/deposit/{id}")
-    public ResponseEntity<Set<DepositOperationDto>> getOperationsByDepositId(@PathVariable Integer id) {
+    public ResponseEntity getOperationsByDepositId(@PathVariable Integer id) {
         try {
             Set<DepositOperationDto> depositOperations = operationService.getOperationsByDepositId(id);
-            return ResponseEntity.ok().body(depositOperations);
+            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositOperations));
+            return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
     
     @GetMapping("/account/{id}")
-    public ResponseEntity<Set<DepositOperationDto>> getOperationsByAccountId(@PathVariable Integer id) {
+    public ResponseEntity getOperationsByAccountId(@PathVariable Integer id) {
         try {
             Set<DepositOperationDto> depositOperations = operationService.getOperationsByAccountId(id);
-            return ResponseEntity.ok().body(depositOperations);
+            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositOperations));
+            return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }

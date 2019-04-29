@@ -16,11 +16,13 @@ public class CapitalizationService {
     CapitalizationRepository capitalizationRepository;
     
     public DepositCapitalizations getCapitalizationById(Integer id) {
-        return capitalizationRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        return capitalizationRepository.findById(id).
+                      orElseThrow(() -> new NoSuchElementException("Capitalization not found"));
     }
     
     public DepositCapitalizations getCapitalizationByType(CapitalizationType type) {
-        return capitalizationRepository.findByType(type).orElseThrow(NoSuchElementException::new);
+        return capitalizationRepository.findByType(type).
+                      orElseThrow(() -> new NoSuchElementException("Cannot find capitalization with type: " + type));
     }
     
     public DepositCapitalizations addCapitalization(DepositCapitalizations depositCapitalizations) {

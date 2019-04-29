@@ -32,13 +32,17 @@ public class DepositTypeService {
     CapitalizationRepository capitalizationRepository;
     
     public DepositTypeDto getDepositTypeById(Integer id) throws NoSuchElementException {
-        DepositTypes depositTypes = depositTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        DepositTypes depositTypes = depositTypeRepository
+                      .findById(id)
+                      .orElseThrow(() -> new NoSuchElementException("Deposit type not found"));
         return new DepositTypeDto(depositTypes);
     }
     
     @Transactional
     public DepositTypeDto addDepositType(DepositTypeDto depositTypeDto) {
-        DepositCapitalizations capitalization = capitalizationRepository.findByType(depositTypeDto.getCapitalizationType()).orElseThrow(NoSuchElementException::new);
+        DepositCapitalizations capitalization = capitalizationRepository
+                      .findByType(depositTypeDto.getCapitalizationType())
+                      .orElseThrow(() -> new NoSuchElementException("Cannot find capitalization of type: " + depositTypeDto.getCapitalizationType()));
         DepositTypes addedDepositType = depositTypeRepository.save(new DepositTypes(depositTypeDto, capitalization));
         depositTypeDto.setId(addedDepositType.getId());
         return depositTypeDto;
@@ -46,7 +50,9 @@ public class DepositTypeService {
     
     @Transactional
     public DepositTypeDto deleteDepositTypeById(Integer id) throws NoSuchElementException {
-        DepositTypes depositTypes = depositTypeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Cannot find DepositType with id: " + id));
+        DepositTypes depositTypes = depositTypeRepository
+                      .findById(id)
+                      .orElseThrow(() -> new NoSuchElementException("Cannot find DepositType with id: " + id));
         depositTypes.setDeletedAt(DateHelper.currentTimestamp());
         User user = userRepository.findById(cashierId).orElseThrow(() -> new NoSuchElementException("Cannot find User with id: " + cashierId));
         depositTypes.setDeletedBy(user);
@@ -54,7 +60,7 @@ public class DepositTypeService {
     }
     
     public Set<DepositTypeDto> getAllDepositTypes(){
-        List<DepositTypes> depositTypes = Optional.of((ArrayList<DepositTypes>) depositTypeRepository.findAll()).orElseThrow(NoSuchElementException::new);
+        List<DepositTypes> depositTypes = Optional.of((ArrayList<DepositTypes>) depositTypeRepository.findAll()).orElseThrow(() -> new NoSuchElementException("Cannot find any deposit types"));
         return depositTypes.stream().map(DepositTypeDto::new).collect(Collectors.toSet());
     }
 }
