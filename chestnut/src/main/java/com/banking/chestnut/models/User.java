@@ -8,15 +8,8 @@ package com.banking.chestnut.models;
 import lombok.Data;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.util.Set;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -45,7 +38,13 @@ public class User implements Serializable {
     @JoinColumn(name = "bank_id", referencedColumnName = "id")
     @ManyToOne
     private Banks bankId;
-
+    
+    @OneToMany(mappedBy = "deletedBy")
+    private Set<Deposits> deposits;
+    
+    @OneToMany(mappedBy = "deletedBy")
+    private Set<DepositTypes> depositTypes;
+    
     public User() {
     }
 

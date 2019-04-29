@@ -3,6 +3,7 @@ package com.banking.chestnut.deposit.controllers;
 
 import com.banking.chestnut.deposit.dto.DepositTypeDto;
 import com.banking.chestnut.deposit.services.DepositTypeService;
+import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,10 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/depositTypes")
+@RequestMapping("/deposit-types")
 public class
 DepositTypeController {
     
@@ -25,6 +27,16 @@ DepositTypeController {
     ResponseEntity<DepositTypeDto> getDepositTypeById(@PathVariable Integer id) {
         try {
             DepositTypeDto depositTypeDto = depositTypeService.getDepositTypeById(id);
+            return ResponseEntity.ok().body(depositTypeDto);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @GetMapping()
+    ResponseEntity<Set<DepositTypeDto>> getAllDepositTypes() {
+        try {
+            Set<DepositTypeDto> depositTypeDto = depositTypeService.getAllDepositTypes();
             return ResponseEntity.ok().body(depositTypeDto);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
@@ -50,7 +62,7 @@ DepositTypeController {
             depositTypeService.deleteDepositTypeById(id);
             return ResponseEntity.ok().build();
         } catch (NoSuchElementException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(ResponseObject.createError(e.getMessage()));
         }
     }
 }

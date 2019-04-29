@@ -1,14 +1,17 @@
 package com.banking.chestnut.deposit.controllers;
 
 import com.banking.chestnut.deposit.services.CapitalizationService;
+import com.banking.chestnut.models.CapitalizationType;
 import com.banking.chestnut.models.DepositCapitalizations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/capitalization")
@@ -18,7 +21,7 @@ public class CapitalizationController {
     CapitalizationService capitalizationService;
     
     @GetMapping("/{id}")
-    public ResponseEntity<DepositCapitalizations> getCapitalizationById(Integer id) {
+    public ResponseEntity getCapitalizationById(@PathVariable Integer id) {
         try {
             DepositCapitalizations depositCapitalizations = capitalizationService.getCapitalizationById(id);
             return ResponseEntity.ok().body(depositCapitalizations);

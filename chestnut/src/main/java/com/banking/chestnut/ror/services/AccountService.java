@@ -80,7 +80,7 @@ public class AccountService implements IAccountService {
     @Override
     public Account deleteAccount(Account account) {
         account.setDeletedAt(new Date());
-        account.setDeletedBy(userRepository.findById(cashierId).get());
+//        account.setDeletedBy(userRepository.findById(cashierId).get());
         account.setIsActive(false);
         account.setIsBlocked(true);
         Long payout = account.getInfoId().getAvailableAmount();
