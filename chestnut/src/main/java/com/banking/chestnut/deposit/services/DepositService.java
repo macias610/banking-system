@@ -1,11 +1,11 @@
 package com.banking.chestnut.deposit.services;
 
-import com.banking.chestnut.commonrepositories.AccountsRepository;
 import com.banking.chestnut.deposit.dto.DepositDto;
 import com.banking.chestnut.deposit.repositories.DepositRepository;
 import com.banking.chestnut.deposit.repositories.DepositTypeRepository;
 import com.banking.chestnut.deposit.repositories.OperationRepository;
 import com.banking.chestnut.models.*;
+import com.banking.chestnut.ror.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ public class DepositService {
     OperationRepository operationRepository;
     
     @Autowired
-    AccountsRepository accountsRepository;
+    AccountRepository accountsRepository;
     
     @Autowired
     DepositTypeRepository depositTypeRepository;
@@ -58,7 +58,7 @@ public class DepositService {
     
     @Transactional
     public DepositDto addDeposit(DepositDto depositDto) {
-        Accounts account = accountsRepository.findById(depositDto.getAccountId()).orElseThrow(NoSuchElementException::new);
+        Account account = accountsRepository.findById(depositDto.getAccountId()).orElseThrow(NoSuchElementException::new);
         DepositTypes depositType = depositTypeRepository.findById(depositDto.getDepositTypeId()).orElseThrow(NoSuchElementException::new);
         Deposits addedDeposits = depositRepository.save(new Deposits(depositDto, account, depositType));
         DepositOperations addDepositOperations = createOperation(OperationType.OPENING, addedDeposits);
