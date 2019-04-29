@@ -1,11 +1,9 @@
 package com.banking.chestnut.deposit.controllers;
 
 import com.banking.chestnut.deposit.dto.DepositOperationDto;
-import com.banking.chestnut.deposit.helpers.JsonNodeCreator;
 import com.banking.chestnut.deposit.services.OperationService;
 import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

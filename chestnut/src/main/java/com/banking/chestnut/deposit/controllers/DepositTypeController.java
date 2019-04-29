@@ -2,6 +2,7 @@ package com.banking.chestnut.deposit.controllers;
 
 
 import com.banking.chestnut.deposit.dto.DepositTypeDto;
+import com.banking.chestnut.deposit.helpers.Messages;
 import com.banking.chestnut.deposit.helpers.HateoasHelper;
 import com.banking.chestnut.deposit.services.DepositTypeService;
 import com.banking.chestnut.models.ResponseObject;
@@ -13,8 +14,10 @@ import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import static com.banking.chestnut.deposit.helpers.ErrorMessages.CREATE_DEPOSIT_TYPE_ERROR;
+import static com.banking.chestnut.deposit.helpers.Messages.ADD_DEPOSIT_TYPE_SUCCESS;
+import static com.banking.chestnut.deposit.helpers.Messages.CREATE_DEPOSIT_TYPE_ERROR;
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
+import static com.banking.chestnut.deposit.helpers.Messages.DELETE_DEPOSIT_TYPE_SUCCESS;
 import static org.springframework.http.HttpStatus.*;
 
 @RestController
@@ -53,6 +56,7 @@ DepositTypeController {
         try {
             DepositTypeDto createdDepositTypeDto = depositTypeService.addDepositType(depositTypeDto);
             URI uriForFetchingCreatedDepositType = HateoasHelper.getUriWithPathAndParams("/depositTypes/{id}",createdDepositTypeDto.getId());
+            String successMessage = String.valueOf(ADD_DEPOSIT_TYPE_SUCCESS);
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(createdDepositTypeDto));
             return ResponseEntity.created(uriForFetchingCreatedDepositType).body(success);
         } catch (NoSuchElementException e) {
@@ -68,6 +72,7 @@ DepositTypeController {
     public ResponseEntity deleteDepositTypeById(@PathVariable Integer id) {
         try {
             DepositTypeDto depositTypeDto = depositTypeService.deleteDepositTypeById(id);
+            String successMessage = String.valueOf(DELETE_DEPOSIT_TYPE_SUCCESS);
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositTypeDto));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
