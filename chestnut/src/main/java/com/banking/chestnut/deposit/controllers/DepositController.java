@@ -13,10 +13,14 @@ import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static com.banking.chestnut.deposit.helpers.ErrorMessages.*;
 import static com.banking.chestnut.deposit.helpers.HateoasHelper.getUriWithPathAndParams;
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
 import static com.banking.chestnut.models.ResponseObject.*;
 import static com.banking.chestnut.models.ResponseObject.createSuccess;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.NOT_MODIFIED;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/deposit")
@@ -33,7 +37,7 @@ public class DepositController {
             return ResponseEntity.ok().body(responseBody);
         } catch (NoSuchElementException e) {
             ResponseObject error = createError(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+            return ResponseEntity.status(NOT_FOUND).body(error);
         }
     }
     
@@ -45,7 +49,7 @@ public class DepositController {
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
             ResponseObject error = createError(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+            return ResponseEntity.status(NOT_FOUND).body(error);
         }
     }
     
@@ -53,7 +57,6 @@ public class DepositController {
     public ResponseEntity addDeposit(@RequestBody DepositDto depositDto) {
         try {
             DepositDto createdDeposit = depositService.addDeposit(depositDto);
-//            UriComponents uriComponents = fromPath("/deposits/{id}").buildAndExpand(createdDeposit.getId());
             URI uriForFetchingCreatedDeposit = getUriWithPathAndParams("/deposits/{id}",createdDeposit.getId());
             ResponseObject success = createSuccess("", createJsonNodeFrom(createdDeposit));
             return ResponseEntity.created(uriForFetchingCreatedDeposit).body(success);
@@ -61,7 +64,7 @@ public class DepositController {
             ResponseObject error = createError(e.getMessage());
             return ResponseEntity.badRequest().body(error);
         } catch (Exception e){
-            String errorMessage = String.valueOf(ErrorMessages.ADD_DEPOSIT_ERROR);
+            String errorMessage = String.valueOf(ADD_DEPOSIT_ERROR);
             ResponseObject error = createError(errorMessage);
             return ResponseEntity.badRequest().body(error);
         }
@@ -72,10 +75,10 @@ public class DepositController {
         try {
             DepositDto depositDto = depositService.closeDepositWithId(id);
             ResponseObject success = createSuccess("", createJsonNodeFrom(depositDto));
-            return ResponseEntity.status(HttpStatus.OK).body(success);
+            return ResponseEntity.status(OK).body(success);
         } catch (NoSuchElementException e) {
             ResponseObject error = createError(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(error);
+            return ResponseEntity.status(NOT_MODIFIED).body(error);
         }
     }
 }

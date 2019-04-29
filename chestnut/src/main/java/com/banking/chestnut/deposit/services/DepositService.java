@@ -8,7 +8,6 @@ import com.banking.chestnut.deposit.repositories.DepositTypeRepository;
 import com.banking.chestnut.deposit.repositories.OperationRepository;
 import com.banking.chestnut.models.*;
 import com.banking.chestnut.ror.repositories.AccountRepository;
-import org.omg.CORBA.ExceptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

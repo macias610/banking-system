@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/operation")
@@ -31,7 +32,7 @@ public class OperationsController {
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositOperations));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
     
@@ -42,7 +43,7 @@ public class OperationsController {
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositOperations));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
 }

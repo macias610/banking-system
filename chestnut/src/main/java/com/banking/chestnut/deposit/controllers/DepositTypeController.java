@@ -2,12 +2,10 @@ package com.banking.chestnut.deposit.controllers;
 
 
 import com.banking.chestnut.deposit.dto.DepositTypeDto;
-import com.banking.chestnut.deposit.helpers.ErrorMessages;
 import com.banking.chestnut.deposit.helpers.HateoasHelper;
 import com.banking.chestnut.deposit.services.DepositTypeService;
 import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,9 @@ import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static com.banking.chestnut.deposit.helpers.ErrorMessages.CREATE_DEPOSIT_TYPE_ERROR;
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/deposit-types")
@@ -32,7 +32,7 @@ DepositTypeController {
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositTypeDto));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
     
@@ -43,7 +43,7 @@ DepositTypeController {
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositTypeDto));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
     
@@ -52,14 +52,13 @@ DepositTypeController {
         
         try {
             DepositTypeDto createdDepositTypeDto = depositTypeService.addDepositType(depositTypeDto);
-//            UriComponents uriComponents = fromPath("/depositTypes/{id}").buildAndExpand(createdDepositTypeDto.getId());
             URI uriForFetchingCreatedDepositType = HateoasHelper.getUriWithPathAndParams("/depositTypes/{id}",createdDepositTypeDto.getId());
             ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(createdDepositTypeDto));
             return ResponseEntity.created(uriForFetchingCreatedDepositType).body(success);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            String errorMessage = String.valueOf(ErrorMessages.CREATE_DEPOSIT_TYPE_ERROR);
+            String errorMessage = String.valueOf(CREATE_DEPOSIT_TYPE_ERROR);
             ResponseObject error = ResponseObject.createError(errorMessage);
             return ResponseEntity.badRequest().body(error);
         }
@@ -73,7 +72,7 @@ DepositTypeController {
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
             ResponseObject error = ResponseObject.createError(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(error);
+            return ResponseEntity.status(NOT_MODIFIED).body(error);
         }
     }
 }

@@ -16,6 +16,7 @@ import java.util.NoSuchElementException;
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
 import static com.banking.chestnut.models.ResponseObject.createError;
 import static com.banking.chestnut.models.ResponseObject.createSuccess;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/capitalization")
@@ -32,7 +33,7 @@ public class CapitalizationController {
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
             ResponseObject error = createError(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+            return ResponseEntity.status(NOT_FOUND).body(error);
         }
     }
 }
