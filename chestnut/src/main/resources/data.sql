@@ -59,6 +59,9 @@ INSERT IGNORE INTO `documents` (`id`, `type`, `value`, `client_id`) VALUES
 INSERT INTO `accounts` (`id`, `currency`, `deleted_at`, `iban`, `is_active`, `is_blocked`, `number_banking_account`, `number_client_account`, `type`, `client_id`, `deleted_by`, `info_id`) VALUES
 (1,	'PLN',	NULL,	'PL91249000050537723983865909',	CONV('1', 2, 10) + 0,	CONV('0', 2, 10) + 0,	'91249000050537723983865909',	'0537723983865909',	'INDIVIDUAL',	1,	NULL,	1);
 
+INSERT INTO `account_info` (`id`, `available_amount`, `locked_amount`) VALUES
+(1,	0,	500);
+
 INSERT INTO `deposit_capitalizations` (`capitalization_id`,`days_period`,`type`) VALUES (1,30,'MONTHLY');
 --INSERT INTO `currencies` (`id`, `name`) VALUES(1,	'DOLAR');
 INSERT INTO `deposits`(`deposit_id`,`end_date`,`is_active`,`start_date`,`account_id`,`deposit_type_id`,`amount`, `deleted_by`, `deleted_at`) VALUES (1,'2019-04-05',CONV('1', 2, 10) + 0,'2019-04-05',1,1,4000, NULL, NULL);

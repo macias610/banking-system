@@ -8,6 +8,7 @@ import com.banking.chestnut.deposit.repositories.DepositTypeRepository;
 import com.banking.chestnut.deposit.repositories.OperationRepository;
 import com.banking.chestnut.models.*;
 import com.banking.chestnut.ror.repositories.AccountRepository;
+import org.omg.CORBA.ExceptionList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -70,11 +71,31 @@ public class DepositService {
     @Transactional
     public DepositDto addDeposit(DepositDto depositDto) {
         Account account = accountsRepository.findById(depositDto.getAccountId()).orElseThrow(() -> new NoSuchElementException("Cannot find Account with id: " + depositDto.getAccountId()));
+        reduceAccountBalanceByDepositAmount(depositDto, account);
         DepositTypes depositType = depositTypeRepository.findById(depositDto.getDepositTypeId()).orElseThrow(() -> new NoSuchElementException("Cannot find DepositType with id: " + depositDto.getDepositTypeId()));
         Deposits addedDeposits = depositRepository.save(new Deposits(depositDto, account, depositType));
         DepositOperations addDepositOperations = createOperation(OperationType.OPENING, addedDeposits);
         operationRepository.save(addDepositOperations);
         depositDto.setId(addedDeposits.getId());
         return depositDto;
+    }
+    
+    private void reduceAccountBalanceByDepositAmount(DepositDto depositDto, Account account) {
+        AccountInfo accountInfo = account.getInfoId();
+        if (isBalanceEnoughToCreateDeposit(accountInfo, depositDto)){
+            Long accountBalanceAfterDepositCreation = (long) (accountInfo.getAvailableAmount() - depositDto.getAmount());
+            accountInfo.setAvailableAmount(accountBalanceAfterDepositCreation);
+        } else {
+            throw new UnsupportedOperationException("Account balance is to low to make an operation");
+        }
+        account.setInfoId(accountInfo);
+    }
+    
+    private Boolean isBalanceEnoughToCreateDeposit(AccountInfo accountInfo, DepositDto depositDto){
+        if (accountInfo.getAvailableAmount() >= depositDto.getAmount()){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -51,6 +51,9 @@ public class DepositController {
         } catch (NoSuchElementException e) {
             ResponseObject error = ResponseObject.createError(e.getMessage());
             return ResponseEntity.badRequest().body(error);
+        } catch (UnsupportedOperationException e){
+            ResponseObject error = ResponseObject.createError(e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
