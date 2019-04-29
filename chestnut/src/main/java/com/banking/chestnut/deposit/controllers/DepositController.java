@@ -59,8 +59,8 @@ public class DepositController {
         }
     }
     
-    @DeleteMapping("/{id}")
-    public ResponseEntity deleteDepositById(@PathVariable Integer id) {
+    @PatchMapping("/{id}")
+    public ResponseEntity closeDepositById(@PathVariable Integer id) {
         try {
             depositService.closeDepositWithId(id);
             return ResponseEntity.status(HttpStatus.OK).build();

@@ -56,7 +56,7 @@ DepositTypeController {
         
     }
     
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity deleteDepositTypeById(@PathVariable Integer id) {
         try {
             depositTypeService.deleteDepositTypeById(id);
