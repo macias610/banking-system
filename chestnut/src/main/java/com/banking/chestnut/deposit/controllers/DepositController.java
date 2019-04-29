@@ -62,8 +62,8 @@ public class DepositController {
     @PatchMapping("/{id}")
     public ResponseEntity closeDepositById(@PathVariable Integer id) {
         try {
-            depositService.closeDepositWithId(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            DepositDto depositDto = depositService.closeDepositWithId(id);
+            return ResponseEntity.status(HttpStatus.OK).body(depositDto);
         } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body(ResponseObject.createError(e.getMessage()));
         }

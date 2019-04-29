@@ -45,11 +45,12 @@ public class DepositTypeService {
     }
     
     @Transactional
-    public void deleteDepositTypeById(Integer id) throws NoSuchElementException {
+    public DepositTypeDto deleteDepositTypeById(Integer id) throws NoSuchElementException {
         DepositTypes depositTypes = depositTypeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Cannot find DepositType with id: " + id));
         depositTypes.setDeletedAt(DateHelper.currentTimestamp());
         User user = userRepository.findById(cashierId).orElseThrow(() -> new NoSuchElementException("Cannot find User with id: " + cashierId));
         depositTypes.setDeletedBy(user);
+        return new DepositTypeDto(depositTypes);
     }
     
     public Set<DepositTypeDto> getAllDepositTypes(){

@@ -59,8 +59,8 @@ DepositTypeController {
     @PatchMapping("/{id}")
     public ResponseEntity deleteDepositTypeById(@PathVariable Integer id) {
         try {
-            depositTypeService.deleteDepositTypeById(id);
-            return ResponseEntity.ok().build();
+            DepositTypeDto depositTypeDto = depositTypeService.deleteDepositTypeById(id);
+            return ResponseEntity.ok().body(depositTypeDto);
         } catch (NoSuchElementException e) {
             return ResponseEntity.badRequest().body(ResponseObject.createError(e.getMessage()));
         }
