@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { Card } from '../../../../models/card';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 const PIN_LENGTH = 4;
 
@@ -25,8 +26,8 @@ export class AccountsingleComponent implements OnInit {
     constructor(
         private accountService: AccountService,
         private cardService: CardService,
-        private toastr: ToastrService,
         private modalService: NgbModal,
+        private notiService: NotificationService,
         private route: ActivatedRoute
     ) { }
 
@@ -48,42 +49,19 @@ export class AccountsingleComponent implements OnInit {
         this.cardService.addNewCardForAccount({ accountId: this.accountId }).subscribe(
             (data) => {
                 this.refreshCardList();
-                // this.formInSave = false;
-
-                // this.addNotification(false, data.notification || '');
+                this.notiService.showNotification(data.notification || '', true);
             },
             (error) => {
-                // const errorData = error.error;
-                // this.formInSave = false;
-                // this.addNotification(true, errorData ? errorData.notification : '');
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
             }
         );
-    }
-
-    showNotification(message, isGood) {
-        if (isGood) {
-            this.toastr.info('<span class="now-ui-icons ui-1_bell-53"></span>' + message, '', {
-                timeOut: 5000,
-                enableHtml: true,
-                closeButton: true,
-                toastClass: 'alert alert-info alert-with-icon',
-                positionClass: 'toast-top-right'
-            });
-        } else {
-            this.toastr.error('<span class="now-ui-icons ui-1_bell-53"></span>' + message, '', {
-                timeOut: 5000,
-                enableHtml: true,
-                closeButton: true,
-                toastClass: 'alert alert-danger alert-with-icon',
-                positionClass: 'toast-top-right'
-            });
-        }
     }
 
     showPinModal(cardId, content) {
         this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
             if (result.length !== PIN_LENGTH) {
-                this.showNotification('Wrong pin length', false);
+                this.notiService.showNotification('Wrong pin length', false);
             } else {
                 this.changeCardPin(cardId, result);
             }
@@ -101,11 +79,11 @@ export class AccountsingleComponent implements OnInit {
 
         this.cardService.changeCardStatus(statusData).subscribe(
             (data) => {
-                this.showNotification(data.notification || '', true);
+                this.notiService.showNotification(data.notification || '', true);
             },
             (error) => {
                 const errorData = error.error;
-                this.showNotification(errorData.notification || '', false);
+                this.notiService.showNotification(errorData.notification || '', false);
             }
         );
     }
@@ -120,11 +98,11 @@ export class AccountsingleComponent implements OnInit {
 
         this.cardService.changeCardStatus(statusData).subscribe(
             (data) => {
-                this.showNotification(data.notification || '', true);
+                this.notiService.showNotification(data.notification || '', true);
             },
             (error) => {
                 const errorData = error.error;
-                this.showNotification(errorData.notification || '', false);
+                this.notiService.showNotification(errorData.notification || '', false);
             }
         );
     }

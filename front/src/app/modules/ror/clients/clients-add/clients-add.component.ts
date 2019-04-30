@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
 import { ResponseData } from '../../../../models/responseData';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-clients-add',
@@ -13,10 +14,12 @@ export class ClientsAddComponent implements OnInit {
 
     formInSave = false;
     createClientForm: FormGroup;
-    notification: Notification = new Notification();
-    notificationTimer;
 
-    constructor(private fb: FormBuilder, private service: ClientsService) { }
+    constructor(
+        private fb: FormBuilder,
+        private notiService: NotificationService,
+        private service: ClientsService
+    ) { }
 
     ngOnInit() {
         this.createClientForm = this.fb.group({
@@ -81,18 +84,6 @@ export class ClientsAddComponent implements OnInit {
         }
     }
 
-    addNotification(error: boolean, msg: string) {
-        this.notification.message = msg;
-        this.notification.error = error;
-        if (this.notificationTimer) {
-            clearTimeout(this.notificationTimer);
-        }
-
-        this.notificationTimer = setTimeout(() => {
-            this.notification = new Notification();
-        }, 3000);
-    }
-
     createClient() {
         const formValue = this.createClientForm.value;
         this.formInSave = true;
@@ -107,13 +98,13 @@ export class ClientsAddComponent implements OnInit {
                 this.addContact();
                 this.addDocument();
 
-                this.addNotification(false, data.notification || '');
+                this.notiService.showNotification(data.notification || '', true);
             },
             (error) => {
                 const errorData: ResponseData = error.error;
-                console.log(errorData);
                 this.formInSave = true;
-                this.addNotification(true, errorData ? errorData.notification : '');
+
+                this.notiService.showNotification(errorData.notification || '', false);
             }
         );
 

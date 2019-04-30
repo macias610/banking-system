@@ -21,6 +21,7 @@ import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/cli
 import { AccountNumberPipe } from '../../shared/pipes/account-number.pipe';
 import { IbanNumberPipe } from '../../shared/pipes/iban-number.pipe';
 import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @NgModule({
     imports: [
@@ -44,11 +45,12 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
         ClientsEditComponent,
         AccountNumberPipe,
         IbanNumberPipe,
-        CustomFilterPipe
+        CustomFilterPipe,
     ],
     providers: [
         AccountService,
         CardService,
+        NotificationService,
     ]
 })
 

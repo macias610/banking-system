@@ -59,7 +59,7 @@
                       <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                       <div ngbDropdownMenu>
                         <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
-                        <a class="dropdown-item" href="#">Change status</a>
+                        <a class="dropdown-item" role="button" (click)="changeAccountStatus(account)">Change status</a>
                         <a class="dropdown-item" href="#">Remove</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Generate history</a>

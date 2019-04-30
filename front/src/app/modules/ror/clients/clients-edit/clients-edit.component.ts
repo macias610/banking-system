@@ -8,6 +8,7 @@ import { ResponseData } from '../../../../models/responseData';
 import { AccountService } from '../../account/account.service';
 import { Observable } from 'rxjs';
 import { AccountListItem } from '../../../../models/account/accountListItem';
+import { NotificationService } from '../../../../shared/services/notification.service';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -28,6 +29,7 @@ export class ClientsEditComponent implements OnInit {
         private fb: FormBuilder,
         private service: ClientsService,
         private accountService: AccountService,
+        private notiService: NotificationService,
         private route: ActivatedRoute
     ) { }
 
@@ -137,18 +139,6 @@ export class ClientsEditComponent implements OnInit {
         }
     }
 
-    addNotification(error: boolean, msg: string) {
-        this.notification.message = msg;
-        this.notification.error = error;
-        if (this.notificationTimer) {
-            clearTimeout(this.notificationTimer);
-        }
-
-        this.notificationTimer = setTimeout(() => {
-            this.notification = new Notification();
-        }, 3000);
-    }
-
     editClient() {
         const formValue = this.editClientForm.value;
         this.formInSave = true;
@@ -158,12 +148,13 @@ export class ClientsEditComponent implements OnInit {
             (data) => {
                 this.formInSave = false;
 
-                this.addNotification(false, data.notification || '');
+                this.notiService.showNotification(data.notification || '', true);
             },
             (error) => {
                 const errorData = error.error;
                 this.formInSave = false;
-                this.addNotification(true, errorData ? errorData.notification : '');
+
+                this.notiService.showNotification(errorData.notification || '', false);
             }
         );
 
