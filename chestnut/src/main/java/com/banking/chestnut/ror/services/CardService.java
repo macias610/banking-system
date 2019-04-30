@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,6 +59,11 @@ public class CardService implements ICardService {
     public Card editCard(Card card) {
         this.cardRepository.save(card);
         return card;
+    }
+
+    @Override
+    public List<Card> getByAccountId(Integer id) {
+        return this.cardRepository.findAllByAccountId(id);
     }
 
     @Override
