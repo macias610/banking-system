@@ -19,9 +19,6 @@ public class ClientDto implements Serializable {
     @JsonProperty("surname")
     private String surname;
 
-    @JsonProperty("pesel")
-    private Long pesel;
-
     @JsonProperty("street")
     private String street;
 

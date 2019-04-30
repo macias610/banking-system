@@ -3,10 +3,7 @@ package com.banking.chestnut.ror.controllers;
 
 import com.banking.chestnut.helper.AccountNumberHelper;
 import com.banking.chestnut.models.*;
-import com.banking.chestnut.ror.dto.ClientInfoDto;
-import com.banking.chestnut.ror.dto.Info;
-import com.banking.chestnut.ror.dto.ClientDto;
-import com.banking.chestnut.ror.dto.RawClientInfoDto;
+import com.banking.chestnut.ror.dto.*;
 import com.banking.chestnut.ror.services.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -183,17 +180,17 @@ public class ClientController {
             return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
     }
 
-    @PutMapping(value = "/edit")
+    @PutMapping(value = "/edit/{clientId}")
     @ResponseBody
-    ResponseEntity editClient(@RequestBody ClientDto clientDto){
+    ResponseEntity editClient(@RequestBody ClientDto clientDto, @PathVariable Integer clientId){
         try {
-            Optional<Client> originalClient = this.clientService.getByPesel(clientDto.getPesel());
+            Optional<Client> originalClient = this.clientService.getById(clientId);
             if(!originalClient.isPresent())
                 return new ResponseEntity<>(ResponseObject.createError("Client not found"), HttpStatus.NOT_FOUND);
             else{
                 DataHistoryClient dataHistoryClient = new DataHistoryClient();
                 dataHistoryClient.setClientId(originalClient.get());
-                dataHistoryClient.setBeforeHistory(mapper.writeValueAsString(originalClient.get().prepare()));
+                dataHistoryClient.setBeforeHistory(mapper.writeValueAsString(modelMapper.map(originalClient.get(), ClientArchiveDto.class)));
 
                 ClientInfo clientInfo =  modelMapper.map(clientDto, ClientInfo.class);
                 originalClient.get().getClientInfoId().assignNewValues(clientInfo);
@@ -204,40 +201,26 @@ public class ClientController {
                 location.setClientId(originalClient.get());
                 this.locationService.saveLocation(originalClient.get().getLocation());
 
+                List<Contacts> contacts = originalClient.get().getContacts();
+                contacts.forEach(item -> this.contactService.deleteContact(item));
                 if(!clientDto.getContacts().isEmpty()){
-                    List<Contacts> newContacs = clientDto.getContacts().stream().filter(item -> item.getId() == null).collect(Collectors.toList());
-                    List<Integer> frontIds = clientDto.getContacts().stream()
-                            .filter(item -> item.getId() != null).map(item -> item.getId()).collect(Collectors.toList());
-                    for(Contacts contact : originalClient.get().getContacts()){
-                        if(frontIds.contains(contact.getId())){
-                            contact.assignNewValues(clientDto.getContacts().stream().filter(item -> item.getId().equals(contact.getId())).findFirst().get());
-                            this.contactService.saveContact(contact);
-                        }
-                        else
-                            this.contactService.deleteContact(contact);
+                    List<Contacts> contactsDto = clientDto.getContacts();
+                    for(Contacts contact : contactsDto){
+                        contact.setClientId(originalClient.get());
+                        this.contactService.saveContact(contact);
                     }
-                    final Client tmp = originalClient.get();
-                    newContacs.forEach(item -> item.setClientId(tmp));
-                    newContacs.forEach(item -> this.contactService.saveContact(item));
                 }
+                List<Document> documents = originalClient.get().getDocuments();
+                documents.forEach(item -> this.documentService.deleteDocument(item));
                 if(!clientDto.getDocuments().isEmpty()){
-                    List<Document> newDocuments = clientDto.getDocuments().stream().filter(item -> item.getId() == null).collect(Collectors.toList());
-                    List<Integer> frontIds = clientDto.getDocuments().stream()
-                            .filter(item -> item.getId() != null).map(item -> item.getId()).collect(Collectors.toList());
-                    for(Document document : originalClient.get().getDocuments()){
-                        if(frontIds.contains(document.getId())){
-                            document.assignNewValues(clientDto.getDocuments().stream().filter(item -> item.getId().equals(document.getId())).findFirst().get());
-                            this.documentService.saveDocument(document);
-                        }
-                        else
-                            this.documentService.deleteDocument(document);
+                    List<Document> documentsDto = clientDto.getDocuments();
+                    for(Document document : documentsDto){
+                        document.setClientId(originalClient.get());
+                        this.documentService.saveDocument(document);
                     }
-                    final Client tmp = originalClient.get();
-                    newDocuments.forEach(item -> item.setClientId(tmp));
-                    newDocuments.forEach(item -> this.documentService.saveDocument(item));
                 }
-                originalClient = this.clientService.getByPesel(clientDto.getPesel());
-                dataHistoryClient.setAfterHistory(mapper.writeValueAsString(originalClient.get().prepare()));
+                originalClient = this.clientService.getById(clientId);
+                dataHistoryClient.setAfterHistory(mapper.writeValueAsString(modelMapper.map(originalClient.get(), ClientArchiveDto.class)));
                 this.dataHistoryClientService.saveDataHistoryClient(dataHistoryClient);
                 return new ResponseEntity<>(ResponseObject.createSuccess("Client updated"), HttpStatus.OK);
             }
