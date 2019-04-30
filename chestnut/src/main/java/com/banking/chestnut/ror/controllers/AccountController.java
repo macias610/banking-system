@@ -73,9 +73,9 @@ public class AccountController {
             Account originalDb = account.get();
             originalDb.setIsBlocked(originalDb.getIsBlocked().equals(true)? false : true);
             this.accountService.editAccount(originalDb);
-            List<Card> cards = this.cardService.getByAccountId(originalDb.getId());
+            List<Card> cards = this.cardService.getByAccountId(originalDb);
             for(Card card : cards){
-                card.setStatus(false);
+                card.setStatus(originalDb.getIsBlocked().equals(true)? false : true);
                 this.cardService.saveCard(card);
             }
             return new ResponseEntity<>(ResponseObject.createSuccess("Account locked"), HttpStatus.OK);
@@ -94,7 +94,7 @@ public class AccountController {
                 return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
             Account originalDb = account.get();
             this.accountService.deleteAccount(originalDb);
-            List<Card> cards = this.cardService.getByAccountId(originalDb.getId());
+            List<Card> cards = this.cardService.getByAccountId(originalDb);
             for(Card card : cards){
                 card.setStatus(false);
                 this.cardService.saveCard(card);

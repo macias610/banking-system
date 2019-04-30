@@ -42,6 +42,8 @@ public class TransactionController {
             if(overflowDto.getType().equals("OUT")){
                 if((originalDb.getInfoId().getAvailableAmount() - overflowDto.getValue()) + originalDb.getInfoId().getLockedAmount() < 0)
                     return new ResponseEntity(ResponseObject.createError("Insufficient funfs on account"), HttpStatus.BAD_REQUEST);
+                originalDb.getInfoId().setAvailableAmount(originalDb.getInfoId().getAvailableAmount() - overflowDto.getValue());
+                this.accountInfoService.saveAccountInfo(originalDb.getInfoId());
             }
             return new ResponseEntity(ResponseObject.createSuccess("OK"), HttpStatus.CREATED);
         } catch (Exception e){

@@ -3,6 +3,7 @@ package com.banking.chestnut.ror.services;
 import com.banking.chestnut.commonrepositories.UserRepository;
 import com.banking.chestnut.helper.BCryptUtility;
 import com.banking.chestnut.helper.NumericStringGenerator;
+import com.banking.chestnut.models.Account;
 import com.banking.chestnut.models.Card;
 import com.banking.chestnut.ror.repositories.CardRepository;
 import com.google.common.hash.Hashing;
@@ -62,8 +63,8 @@ public class CardService implements ICardService {
     }
 
     @Override
-    public List<Card> getByAccountId(Integer id) {
-        return this.cardRepository.findAllByAccountId(id);
+    public List<Card> getByAccountId(Account account) {
+        return this.cardRepository.findAllByAccountId(account);
     }
 
     @Override
