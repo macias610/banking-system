@@ -51,7 +51,7 @@ public class Location implements Serializable {
     private Client clientId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
     public Location() {
     }

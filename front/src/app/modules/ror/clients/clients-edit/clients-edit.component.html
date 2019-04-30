@@ -5,14 +5,9 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <h5 class="title">Edit client</h5>
+          <h5 class="title">Preview client</h5>
         </div>
         <div class="card-body">
-          <div class="alert text-center"
-            [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
-            *ngIf="notification && notification.message">
-            <span>{{ notification.message }}</span>
-          </div>
           <form [formGroup]="editClientForm" (ngSubmit)="editClient()">
             <p class="card-category">Personal info</p>
             <div class="row">
@@ -32,8 +27,8 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Pesel</label>
-                  <input type="number" step="1" class="form-control" formControlName="pesel" placeholder="Pesel"
-                    value="">
+                  <input type="number" step="1" class="form-control" formControlName="pesel" readonly=""
+                    placeholder="Pesel" value="">
                 </div>
               </div>
             </div>
@@ -164,11 +159,73 @@
             </div>
             <div class="text-right">
               <button type="submit" [disabled]="editClientForm.invalid || formInSave"
-                class="btn btn-lg btn-info btn-round">Create
+                class="btn btn-lg btn-info btn-round">Save
                 account</button>
             </div>
           </form>
         </div>
       </div>
     </div>
+
   </div>
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Client accounts</h5>
+        </div>
+        <div class="card-body">
+          <div class="table">
+            <table class="table" *ngIf="(accounts$ | async) as accounts">
+              <thead class=" text-primary">
+                <th>
+                  Number
+                </th>
+                <th>
+                  Balance
+                </th>
+                <th class="text-right">
+                  Operations
+                </th>
+              </thead>
+              <tbody *ngIf="accounts.length > 0">
+                <tr *ngFor="let account of accounts">
+                  <td>
+                    {{ account.number_banking_account | accountNumber }}
+                  </td>
+                  <td>
+                    {{ account.available_amount }} {{ account.currency }}
+                  </td>
+                  <td class="text-right">
+                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
+                      <div ngbDropdownMenu>
+                        <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
+                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Remove</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Generate history</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Make transfer</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="accounts.length === 0">
+                <tr>
+                  <td colspan="3">
+                    No results
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
