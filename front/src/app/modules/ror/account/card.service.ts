@@ -19,6 +19,10 @@ export class CardService {
         return this.http.post<ResponseData>(`${environment.api_url}/card/save`, cardData);
     }
 
+    changeCardStatus(cardData: any): Observable<ResponseData> {
+        return this.http.put<ResponseData>(`${environment.api_url}/card/edit`, cardData);
+    }
+
     getCardsForAccount(accountId: String): Observable<ResponseData> {
         return this.http.get<ResponseData>(`${environment.api_url}/card/account/${accountId}`);
     }

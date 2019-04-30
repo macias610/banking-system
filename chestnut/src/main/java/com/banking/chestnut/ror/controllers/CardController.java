@@ -80,7 +80,7 @@ public class CardController {
             else if(editCardDto.getType().toLowerCase().equals("status"))
                 card.get().setStatus(Boolean.valueOf(editCardDto.getValue()));
             this.cardService.editCard(card.get());
-            return new ResponseEntity<>(ResponseObject.createSuccess("Card " + editCardDto.getId() + " edited"), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseObject.createSuccess("Cart " + editCardDto.getType() + " edited successful"), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Cannot edit card account"), HttpStatus.BAD_REQUEST);
