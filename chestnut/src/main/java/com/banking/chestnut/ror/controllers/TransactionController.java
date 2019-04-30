@@ -46,6 +46,8 @@ public class TransactionController {
                 originalDb.getInfoId().setAvailableAmount(originalDb.getInfoId().getAvailableAmount() - overflowDto.getValue());
                 this.accountInfoService.saveAccountInfo(originalDb.getInfoId());
                 Transaction transaction = new Transaction();
+                transaction.setType(overflowDto.getType());
+//                transaction.setIsTransferClientAcconuts();
                 transaction.setValue(overflowDto.getValue());
             }
             return new ResponseEntity(ResponseObject.createSuccess("OK"), HttpStatus.CREATED);
