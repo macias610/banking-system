@@ -10,6 +10,7 @@ import { AccountComponent } from '../../modules/ror/account/list/account.compone
 import { ChartsModule } from 'ng2-charts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
+import { CardService } from '../../modules/ror/account/card.service';
 import { AccountService } from '../../modules/ror/account/account.service';
 import { AccountAddComponent } from '../../modules/ror/account/account-add/account-add.component';
 import { AccountsingleComponent } from '../../modules/ror/account/accountsingle/accountsingle.component';
@@ -46,7 +47,8 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
         CustomFilterPipe
     ],
     providers: [
-        AccountService
+        AccountService,
+        CardService,
     ]
 })
 

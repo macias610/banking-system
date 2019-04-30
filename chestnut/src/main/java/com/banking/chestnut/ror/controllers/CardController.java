@@ -58,7 +58,7 @@ public class CardController {
             Card card = new Card();
             card.setAccountId(account.get());
             this.cardService.saveCard(card);
-            return new ResponseEntity<>(ResponseObject.createSuccess("Saved card for account " + cardDto.getAccountId()), HttpStatus.CREATED);
+            return new ResponseEntity<>(ResponseObject.createSuccess("Add card for account"), HttpStatus.CREATED);
         } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Error during saving card account"), HttpStatus.BAD_REQUEST);
