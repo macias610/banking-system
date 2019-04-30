@@ -118,4 +118,11 @@ public class AccountService implements IAccountService {
     public List<Account> getAll() {
         return this.accountRepository.findAll();
     }
+
+    @Override
+    public List<Account> getClientAccounts(Integer clientId) {
+        List<Account> accounts = this.accountRepository.findAll();
+        accounts = accounts.stream().filter(item -> item.getClientId().getId().equals(clientId)).collect(Collectors.toList());
+        return accounts;
+    }
 }
