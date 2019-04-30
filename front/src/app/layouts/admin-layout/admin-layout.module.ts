@@ -18,6 +18,7 @@ import { ClientsListComponent } from '../../modules/ror/clients/clients-list/cli
 import { ClientsAddComponent } from '../../modules/ror/clients/clients-add/clients-add.component';
 import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/clients-edit.component';
 import { AccountNumberPipe } from '../../shared/pipes/account-number.pipe';
+import { IbanNumberPipe } from '../../shared/pipes/iban-number.pipe';
 import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
 
 @NgModule({
@@ -41,6 +42,7 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
         ClientsAddComponent,
         ClientsEditComponent,
         AccountNumberPipe,
+        IbanNumberPipe,
         CustomFilterPipe
     ],
     providers: [

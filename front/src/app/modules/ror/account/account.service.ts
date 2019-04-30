@@ -19,6 +19,14 @@ export class AccountService {
         return this.http.get<ResponseData>(`${environment.api_url}/account/all`);
     }
 
+    getAccount(accountId: String): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/account/${accountId}`);
+    }
+
+    getAccountsForClient(clientId: String): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/account/client/${clientId}`);
+    }
+
     createAccount(account: any): Observable<ResponseData> {
         delete account.client;
         return this.http

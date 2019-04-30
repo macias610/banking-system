@@ -200,6 +200,8 @@ public class ClientController {
                 this.clientInfoService.save(originalClient.get().getClientInfoId());
                 Location location = modelMapper.map(clientDto, Location.class);
                 originalClient.get().getLocation().assignNewValues(location);
+                location.setClientId(originalClient.get());
+                location.setClientId(originalClient.get());
                 this.locationService.saveLocation(originalClient.get().getLocation());
 
                 if(!clientDto.getContacts().isEmpty()){

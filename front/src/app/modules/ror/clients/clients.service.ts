@@ -32,4 +32,9 @@ export class ClientsService {
         return this.http
             .post<ResponseData>(`${environment.api_url}/client/save`, client);
     }
+
+    editClient(id: String, client: ClientCreateDao): Observable<ResponseData> {
+        return this.http
+            .put<ResponseData>(`${environment.api_url}/client/edit`, client);
+    }
 }

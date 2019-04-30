@@ -91,6 +91,23 @@ public class AccountController {
         }
     }
 
+    @GetMapping(value = "/{id}")
+    @ResponseBody
+    ResponseEntity showSingleAccount(@PathVariable Integer id){
+        try {
+            Optional<Account> account = this.accountService.getById(id);
+            if (account.isPresent()){
+                JsonNode returnData = mapper.valueToTree(new AccountDto(account.get()));
+                return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(ResponseObject.createError("ACCOUNT NOT EXISTS"), HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetch accounts data"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @GetMapping(value = "/all")
     @ResponseBody
     ResponseEntity getAllAccounts(){

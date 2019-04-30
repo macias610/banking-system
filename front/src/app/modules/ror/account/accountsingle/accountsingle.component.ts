@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AccountService } from '../account.service';
+import { Observable } from 'rxjs';
+import { AccountListItem } from '../../../../models/account/accountListItem';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-accountsingle',
@@ -9,12 +13,15 @@ import { ActivatedRoute } from '@angular/router';
 export class AccountsingleComponent implements OnInit {
 
     accountId: string;
-    constructor(private route: ActivatedRoute) { }
+    account$: Observable<AccountListItem>;
+
+    constructor(private accountService: AccountService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         this.accountId = this.route.snapshot.paramMap.get('id');
-
-        console.log(this.accountId);
+        this.account$ = this.accountService.getAccount(this.accountId).pipe(
+            map(item => item.data)
+        );
     }
 
 }
