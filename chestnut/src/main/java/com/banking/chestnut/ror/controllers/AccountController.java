@@ -77,7 +77,7 @@ public class AccountController {
                 List<Card> cards = this.cardService.getByAccountId(originalDb);
                 for(Card card : cards){
                     card.setStatus(false);
-                    this.cardService.saveCard(card);
+                    this.cardService.editCard(card);
                 }
             }
             return new ResponseEntity<>(ResponseObject.createSuccess("Account locked"), HttpStatus.OK);
