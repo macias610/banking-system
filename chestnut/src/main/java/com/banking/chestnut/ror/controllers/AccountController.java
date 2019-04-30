@@ -73,10 +73,12 @@ public class AccountController {
             Account originalDb = account.get();
             originalDb.setIsBlocked(originalDb.getIsBlocked().equals(true)? false : true);
             this.accountService.editAccount(originalDb);
-            List<Card> cards = this.cardService.getByAccountId(originalDb);
-            for(Card card : cards){
-                card.setStatus(originalDb.getIsBlocked().equals(true)? false : true);
-                this.cardService.saveCard(card);
+            if(originalDb.getIsBlocked()){
+                List<Card> cards = this.cardService.getByAccountId(originalDb);
+                for(Card card : cards){
+                    card.setStatus(false);
+                    this.cardService.saveCard(card);
+                }
             }
             return new ResponseEntity<>(ResponseObject.createSuccess("Account locked"), HttpStatus.OK);
         } catch (Exception e){

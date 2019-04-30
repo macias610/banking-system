@@ -2,6 +2,7 @@ package com.banking.chestnut.ror.controllers;
 
 import com.banking.chestnut.models.Account;
 import com.banking.chestnut.models.ResponseObject;
+import com.banking.chestnut.models.Transaction;
 import com.banking.chestnut.ror.dto.OverflowDto;
 import com.banking.chestnut.ror.services.IAccountInfoService;
 import com.banking.chestnut.ror.services.IAccountService;
@@ -44,6 +45,8 @@ public class TransactionController {
                     return new ResponseEntity(ResponseObject.createError("Insufficient funfs on account"), HttpStatus.BAD_REQUEST);
                 originalDb.getInfoId().setAvailableAmount(originalDb.getInfoId().getAvailableAmount() - overflowDto.getValue());
                 this.accountInfoService.saveAccountInfo(originalDb.getInfoId());
+                Transaction transaction = new Transaction();
+                transaction.setValue(overflowDto.getValue());
             }
             return new ResponseEntity(ResponseObject.createSuccess("OK"), HttpStatus.CREATED);
         } catch (Exception e){
