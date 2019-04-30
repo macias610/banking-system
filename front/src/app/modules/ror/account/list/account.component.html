@@ -32,12 +32,16 @@
                 <th>
                   Balance
                 </th>
+                <th>
+                  Status
+                </th>
                 <th class="text-right">
                   Operations
                 </th>
               </thead>
               <tbody *ngIf="accounts.length > 0">
-                <tr *ngFor="let account of accounts | customFilter: accountFilter : searchString">
+                <tr *ngFor="let account of accounts | customFilter: accountFilter : searchString"
+                  [ngClass]="{'locked': account.is_blocked}">
                   <td>
                     {{ account.number_banking_account | accountNumber }}
                   </td>
@@ -47,12 +51,15 @@
                   <td>
                     {{ account.available_amount }} {{ account.currency }}
                   </td>
+                  <td>
+                    {{ account.is_blocked ? 'Locked' : 'Normal' }}
+                  </td>
                   <td class="text-right">
                     <div ngbDropdown class="dropdown" placement="bottom-right">
                       <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                       <div ngbDropdownMenu>
                         <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
-                        <a class="dropdown-item" href="#">Edit</a>
+                        <a class="dropdown-item" href="#">Change status</a>
                         <a class="dropdown-item" href="#">Remove</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Generate history</a>
@@ -65,7 +72,7 @@
               </tbody>
               <tbody *ngIf="accounts.length === 0">
                 <tr>
-                  <td colspan="4">
+                  <td colspan="5">
                     No results
                   </td>
                 </tr>
