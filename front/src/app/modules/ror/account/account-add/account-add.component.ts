@@ -8,6 +8,7 @@ import { ThinClient } from '../../../../models/client/thinClient';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-account-add',
@@ -19,10 +20,14 @@ export class AccountAddComponent implements OnInit {
     clients: ThinClient[] = [];
     formInSave = false;
     createAccountForm: FormGroup;
-    notification: Notification = new Notification();
-    notificationTimer;
 
-    constructor(private router: Router, private fb: FormBuilder, private service: AccountService, private clientService: ClientsService) { }
+    constructor(
+        private router: Router,
+        private fb: FormBuilder,
+        private service: AccountService,
+        private notiService: NotificationService,
+        private clientService: ClientsService
+    ) { }
 
     ngOnInit() {
         this.clientService.getAllClients().subscribe(
@@ -38,18 +43,6 @@ export class AccountAddComponent implements OnInit {
             'client_id': ['', [Validators.required]],
             'currency': ['', [Validators.required]]
         });
-    }
-
-    addNotification(error: boolean, msg: string) {
-        this.notification.message = msg;
-        this.notification.error = error;
-        if (this.notificationTimer) {
-            clearTimeout(this.notificationTimer);
-        }
-
-        this.notificationTimer = setTimeout(() => {
-            this.notification = new Notification();
-        }, 3000);
     }
 
     searchClient = (text$: Observable<string>) =>
@@ -90,7 +83,7 @@ export class AccountAddComponent implements OnInit {
             (error) => {
                 const errorData: ResponseData = error.error;
                 this.formInSave = true;
-                this.addNotification(true, errorData ? errorData.notification : '');
+                this.notiService.showNotification(errorData.notification || '', false);
             }
         );
 

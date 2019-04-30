@@ -1,8 +1,8 @@
 <div class="panel-header panel-header-sm">
 </div>
-<div class="main-content">
+<div class="main-content" *ngIf="(account$ | async) as account">
 
-  <div class="row" *ngIf="(account$ | async) as account">
+  <div class="row">
     <div class="col-12 col-md-6">
       <div class="card">
         <div class="card-header">
@@ -79,7 +79,7 @@
               <div class="form-group">
                 <label>Status</label>
                 <input type="text" class="form-control" readonly="" placeholder="Status"
-                  [value]="account.is_blocked ? 'BLOCKED': 'NORMAL'">
+                  [value]="account.is_blocked ? 'LOCKED': 'NORMAL'">
               </div>
             </div>
             <div class="col-md-12">
@@ -103,7 +103,8 @@
           <h4 class="card-title">Cards</h4>
           <div class="row">
             <div class="col-md-6">
-              <button class="btn btn-info btn-round" (click)="addCard()">Add card</button>
+              <button class="btn btn-info btn-round" [disabled]="account.is_blocked" (click)="addCard()">Add
+                card</button>
             </div>
             <div class="col-md-3"></div>
           </div>
@@ -144,7 +145,8 @@
                   </td>
                   <td class="text-right">
                     <div ngbDropdown class="dropdown" placement="bottom-right">
-                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
+                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle
+                        [disabled]="account.is_blocked">Actions</button>
                       <div ngbDropdownMenu>
                         <a class="dropdown-item" role="button" (click)="changeCardStatus(card)">Change status</a>
                         <a class="dropdown-item" role="button" (click)="showPinModal(card.id, content)">Change pin

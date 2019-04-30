@@ -32,4 +32,9 @@ export class AccountService {
         return this.http
             .post<ResponseData>(`${environment.api_url}/account/save`, account);
     }
+
+    changeAccountStatus(accountId: string): Observable<ResponseData> {
+        return this.http
+            .patch<ResponseData>(`${environment.api_url}/account/state/${accountId}`, {});
+    }
 }

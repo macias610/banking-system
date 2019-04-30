@@ -5,6 +5,8 @@ import { catchError, map, switchMap, filter, flatMap, tap, debounceTime, distinc
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../../../../models/account';
 import { AccountListItem } from '../../../../models/account/accountListItem';
+import { NotificationService } from '../../../../shared/services/notification.service';
+
 @Component({
     selector: 'app-account',
     templateUrl: './account.component.html',
@@ -15,7 +17,11 @@ export class AccountComponent implements OnInit {
     searchString: string;
     accounts$: Observable<AccountListItem[]>;
 
-    constructor(private service: AccountService, private http: HttpClient) { }
+    constructor(
+        private service: AccountService,
+        private notiService: NotificationService,
+        private http: HttpClient
+    ) { }
 
     ngOnInit() {
         this.searchString = '';
@@ -33,6 +39,20 @@ export class AccountComponent implements OnInit {
     accountFilter(item: AccountListItem, search: string): boolean {
         const itemString = (item.number_banking_account + '' + item.first_name + '' + item.surname).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
+    }
+
+    changeAccountStatus(account: AccountListItem) {
+        this.service.changeAccountStatus(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_blocked = !account.is_blocked;
+
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
     }
 
 }
