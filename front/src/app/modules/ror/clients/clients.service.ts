@@ -35,6 +35,6 @@ export class ClientsService {
 
     editClient(id: String, client: ClientCreateDao): Observable<ResponseData> {
         return this.http
-            .put<ResponseData>(`${environment.api_url}/client/edit`, client);
+            .put<ResponseData>(`${environment.api_url}/client/edit/${id}`, client);
     }
 }
