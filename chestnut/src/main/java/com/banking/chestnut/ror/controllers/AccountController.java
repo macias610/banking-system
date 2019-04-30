@@ -4,6 +4,7 @@ import com.banking.chestnut.models.*;
 import com.banking.chestnut.ror.dto.*;
 import com.banking.chestnut.ror.services.IAccountInfoService;
 import com.banking.chestnut.ror.services.IAccountService;
+import com.banking.chestnut.ror.services.ICardService;
 import com.banking.chestnut.ror.services.IClientService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +25,8 @@ public class AccountController {
 
     private IAccountInfoService accountInfoService;
 
+    private ICardService cardService;
+
     private IClientService clientService;
 
     private IAccountService accountService;
@@ -33,10 +36,12 @@ public class AccountController {
     private static ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
-    public AccountController(IAccountInfoService accountInfoService, IClientService clientService, IAccountService accountService) {
+    public AccountController(IAccountInfoService accountInfoService, IClientService clientService,
+                             IAccountService accountService, ICardService cardService) {
         this.accountInfoService = accountInfoService;
         this.clientService = clientService;
         this.accountService = accountService;
+        this.cardService = cardService;
     }
 
     @PostMapping (value = "/save")
@@ -58,7 +63,7 @@ public class AccountController {
         }
     }
 
-    @PatchMapping(value = "/lock/{accountId}")
+    @PatchMapping(value = "/state/{accountId}")
     @ResponseBody
     ResponseEntity lockClientAccount(@PathVariable Integer accountId){
         try {
@@ -66,8 +71,13 @@ public class AccountController {
             if(!account.isPresent())
                 return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
             Account originalDb = account.get();
-            originalDb.setIsBlocked(true);
+            originalDb.setIsBlocked(originalDb.getIsBlocked().equals(true)? false : true);
             this.accountService.editAccount(originalDb);
+            List<Card> cards = this.cardService.getByAccountId(originalDb.getId());
+            for(Card card : cards){
+                card.setStatus(false);
+                this.cardService.saveCard(card);
+            }
             return new ResponseEntity<>(ResponseObject.createSuccess("Account locked"), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
@@ -84,6 +94,11 @@ public class AccountController {
                 return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
             Account originalDb = account.get();
             this.accountService.deleteAccount(originalDb);
+            List<Card> cards = this.cardService.getByAccountId(originalDb.getId());
+            for(Card card : cards){
+                card.setStatus(false);
+                this.cardService.saveCard(card);
+            }
             return new ResponseEntity<>(ResponseObject.createSuccess("Account deleted"), HttpStatus.OK);
         } catch (Exception e){
             e.printStackTrace();
