@@ -4,6 +4,12 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card">
+        <select name="" (change)="onChange($event.target.value)">
+          <option value="">-- Select client --</option>
+          <option *ngFor="let client of clients | async" [value]="client.id">
+            {{client.info.surname}}
+          </option>
+        </select>
         <div class="card-header">
           <h5 class="title">Send transfer</h5>
         </div>
@@ -21,8 +27,9 @@
                   <label>Account</label>
                   <select name="" formControlName="senderAccNumber" class="form-control">
                     <option value="">-- Select account --</option>
-                    <option value="DE">12345</option>
-                    <option value="PL">12345</option>
+                    <option *ngFor="let account of accounts | async" [value]="account.number_banking_account">
+                      {{account.number_banking_account}}
+                    </option>
                   </select>
                 </div>
               </div>

@@ -3,6 +3,11 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TransfersService} from '../transfers.service';
 import {Notification} from '../../../models/notification';
 import {ResponseData} from '../../../models/responseData';
+import {ClientsService} from '../../ror/clients/clients.service';
+import {Observable} from 'rxjs';
+import {Client} from '../../../models/client/client';
+import {map} from 'rxjs/operators';
+import {AccountService} from '../../ror/account/account.service';
 
 @Component({
   selector: 'app-transfer-send',
@@ -15,8 +20,10 @@ export class TransferSendComponent implements OnInit {
   sendTransferForm: FormGroup;
   notification: Notification = new Notification();
   notificationTimer;
+  clients: Observable<Client[]>;
+  accounts: Observable<Account[]>;
 
-  constructor(private fb: FormBuilder, private service: TransfersService) {
+  constructor(private fb: FormBuilder, private service: TransfersService, private clientService: ClientsService, private accountService: AccountService) {
   }
 
   ngOnInit() {
@@ -27,6 +34,16 @@ export class TransferSendComponent implements OnInit {
       'receiverAccNumber': ['', [Validators.required]],
       'transactionDate': ['', [Validators.required]],
     });
+
+    this.clients = this.clientService.getClients().pipe(
+      map(item => item.data)
+    );
+  }
+
+  onChange(clientId: string) {
+    this.accounts = this.accountService.getAccountsForClient(clientId).pipe(
+      map(item => item.data)
+    );
   }
 
   sendTransfer() {

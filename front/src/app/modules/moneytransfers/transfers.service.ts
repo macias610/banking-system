@@ -13,7 +13,7 @@ export class TransfersService {
   constructor(private http: HttpClient) { }
 
   getTransfers(id: String): Observable<ResponseData> {
-    return this.http.get<ResponseData>(`${environment.api_url}/transactions/clients/` + id);
+    return this.http.get<ResponseData>(`${environment.api_url}/transactions/client/` + id);
   }
 
   getTransfer(id: String): Observable<ResponseData> {
