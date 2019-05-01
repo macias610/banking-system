@@ -33,12 +33,14 @@ public class TransactionScheduler {
     public void executeTask() {
         Date currentDate = new Date();
         List<PermanentTransactions> permanentTransactions = permanentTransactionService.findByNextDate(currentDate);
-        for (PermanentTransactions t: permanentTransactions) {
-            Transaction outgoing = moneyTransactionService.addTransaction(t, "outgoing", currentDate);
-            Transaction incoming = moneyTransactionService.addTransaction(t, "incoming", currentDate);
-            transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
-            transfersAccountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
-            permanentTransactionService.updateNextDate(t.getId());
+        if (permanentTransactions.isEmpty() == false) {
+            for (PermanentTransactions t: permanentTransactions) {
+                Transaction outgoing = moneyTransactionService.addTransaction(t, "outgoing", currentDate);
+                Transaction incoming = moneyTransactionService.addTransaction(t, "incoming", currentDate);
+                transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
+                transfersAccountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
+                permanentTransactionService.updateNextDate(t.getId());
+            }
         }
         log.info("Task executed at {}", dateFormat.format(new Date()));
     }
