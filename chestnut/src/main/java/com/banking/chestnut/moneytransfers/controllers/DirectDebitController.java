@@ -1,6 +1,7 @@
 package com.banking.chestnut.moneytransfers.controllers;
 
 import com.banking.chestnut.models.ResponseObject;
+import com.banking.chestnut.moneytransfers.DTO.AccountDTO;
 import com.banking.chestnut.moneytransfers.DTO.DirectDebitDTO;
 import com.banking.chestnut.moneytransfers.services.DirectDebitService;
 import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
@@ -60,5 +61,15 @@ public class DirectDebitController {
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Error during canceling direct debit"), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/providers")
+    public ResponseEntity findProviders() {
+        List<AccountDTO> accountDTOs = transfersAccountService.findByType("provider");
+        JsonNode returnData = mapper.valueToTree(accountDTOs);
+        if (accountDTOs.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NO_CONTENT);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
     }
 }
