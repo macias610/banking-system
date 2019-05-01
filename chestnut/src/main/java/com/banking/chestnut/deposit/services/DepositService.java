@@ -1,12 +1,15 @@
 package com.banking.chestnut.deposit.services;
 
-import com.banking.chestnut.commonrepositories.AccountsRepository;
+import com.banking.chestnut.commonrepositories.UserRepository;
 import com.banking.chestnut.deposit.dto.DepositDto;
+import com.banking.chestnut.deposit.helpers.DateHelper;
 import com.banking.chestnut.deposit.repositories.DepositRepository;
 import com.banking.chestnut.deposit.repositories.DepositTypeRepository;
 import com.banking.chestnut.deposit.repositories.OperationRepository;
 import com.banking.chestnut.models.*;
+import com.banking.chestnut.ror.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +23,9 @@ import static com.banking.chestnut.deposit.helpers.OperationFactory.createOperat
 @Service
 public class DepositService {
     
+    @Value("${app.cashier.user.id}")
+    Integer cashierId;
+    
     @Autowired
     DepositRepository depositRepository;
     
@@ -27,20 +33,22 @@ public class DepositService {
     OperationRepository operationRepository;
     
     @Autowired
-    AccountsRepository accountsRepository;
+    AccountRepository accountsRepository;
     
     @Autowired
     DepositTypeRepository depositTypeRepository;
     
+    @Autowired
+    UserRepository userRepository;
     
     public DepositDto getDepositById(Integer id) {
-        Deposits deposit = depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Deposits deposit = depositRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Deposit not found"));
         return new DepositDto(deposit);
     }
     
     @Transactional
     public DepositDto closeDepositWithId(Integer id) throws NoSuchElementException {
-        Deposits depositsToClose = depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
+        Deposits depositsToClose = depositRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Cannot find Deposit with id: " + id));
         DepositOperations closeDepositOperations = createOperation(OperationType.CLOSING, depositsToClose);
         operationRepository.save(closeDepositOperations);
         AccountInfo accountInfo = depositsToClose.getAccount().getInfoId();
@@ -48,6 +56,9 @@ public class DepositService {
         accountInfo.setAvailableAmount(accountInfo.getAvailableAmount() + depositAmount.longValue());
         depositsToClose.setEndDate(currentDate());
         depositsToClose.setIsActive(false);
+        depositsToClose.setDeletedAt(DateHelper.currentTimestamp());
+        User user = userRepository.findById(cashierId).orElseThrow(() -> new NoSuchElementException("Cannot find User with id: " + cashierId));
+        depositsToClose.setDeletedBy(user);
         return new DepositDto(depositsToClose);
     }
     
@@ -58,8 +69,9 @@ public class DepositService {
     
     @Transactional
     public DepositDto addDeposit(DepositDto depositDto) {
-        Accounts account = accountsRepository.findById(depositDto.getAccountId()).orElseThrow(NoSuchElementException::new);
-        DepositTypes depositType = depositTypeRepository.findById(depositDto.getDepositTypeId()).orElseThrow(NoSuchElementException::new);
+        Account account = accountsRepository.findById(depositDto.getAccountId()).orElseThrow(() -> new NoSuchElementException("Cannot find Account with id: " + depositDto.getAccountId()));
+        reduceAccountBalanceByDepositAmount(depositDto, account);
+        DepositTypes depositType = depositTypeRepository.findById(depositDto.getDepositTypeId()).orElseThrow(() -> new NoSuchElementException("Cannot find DepositType with id: " + depositDto.getDepositTypeId()));
         Deposits addedDeposits = depositRepository.save(new Deposits(depositDto, account, depositType));
         DepositOperations addDepositOperations = createOperation(OperationType.OPENING, addedDeposits);
         operationRepository.save(addDepositOperations);
@@ -67,9 +79,22 @@ public class DepositService {
         return depositDto;
     }
     
-    @Transactional
-    public void deleteDeposit(Integer id) {
-        Deposits deposits = depositRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        depositRepository.delete(deposits);
+    private void reduceAccountBalanceByDepositAmount(DepositDto depositDto, Account account) {
+        AccountInfo accountInfo = account.getInfoId();
+        if (isBalanceEnoughToCreateDeposit(accountInfo, depositDto)){
+            Long accountBalanceAfterDepositCreation = (long) (accountInfo.getAvailableAmount() - depositDto.getAmount());
+            accountInfo.setAvailableAmount(accountBalanceAfterDepositCreation);
+        } else {
+            throw new UnsupportedOperationException("Account balance is to low to make an operation");
+        }
+        account.setInfoId(accountInfo);
+    }
+    
+    private Boolean isBalanceEnoughToCreateDeposit(AccountInfo accountInfo, DepositDto depositDto){
+        if (accountInfo.getAvailableAmount() >= depositDto.getAmount()){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -9,18 +9,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -30,7 +19,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 @Data
-public class Users implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,11 +38,17 @@ public class Users implements Serializable {
     @JoinColumn(name = "bank_id", referencedColumnName = "id")
     @ManyToOne
     private Banks bankId;
-
-    public Users() {
+    
+    @OneToMany(mappedBy = "deletedBy")
+    private Set<Deposits> deposits;
+    
+    @OneToMany(mappedBy = "deletedBy")
+    private Set<DepositTypes> depositTypes;
+    
+    public User() {
     }
 
-    public Users(Integer id) {
+    public User(Integer id) {
         this.id = id;
     }
 
@@ -68,10 +63,10 @@ public class Users implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Users)) {
+        if (!(object instanceof User)) {
             return false;
         }
-        Users other = (Users) object;
+        User other = (User) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -80,7 +75,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Users[ id=" + id + " ]";
+        return "com.banking.chestnut.User[ id=" + id + " ]";
     }
 
 }

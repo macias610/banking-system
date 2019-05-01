@@ -3,8 +3,10 @@ package com.banking.chestnut.models;
 import com.banking.chestnut.deposit.dto.DepositTypeDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 
@@ -42,8 +44,17 @@ public class DepositTypes {
     @JoinColumn(name = "capitalization_id")
     private DepositCapitalizations capitalization;
     
+    @Setter
+    @Getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
+    private User deletedBy;
+    
+    @Getter
+    @Setter
+    private LocalDateTime deletedAt;
+    
     public DepositTypes(DepositTypeDto depositTypeDto, DepositCapitalizations capitalization) {
-        this.id = depositTypeDto.getId();
         this.name = depositTypeDto.getName();
         this.maxAmount = depositTypeDto.getMaxAmount();
         this.minAmount = depositTypeDto.getMinAmount();

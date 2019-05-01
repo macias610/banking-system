@@ -5,9 +5,12 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import javax.persistence.Basic;
@@ -70,9 +73,21 @@ public class Account implements Serializable {
     @ManyToOne
     private AccountInfo infoId;
 
+    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
+    @ManyToOne
+    private User deletedBy;
+
+    @Column(name = "deleted_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
+
     @Size(max = 3)
     @Column(name = "currency")
     private String currency;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "accountId")
+    private List<Card> cards;
 
     public Account() {
     }
@@ -174,6 +189,38 @@ public class Account implements Serializable {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    public User getDeletedBy() {
+        return deletedBy;
+    }
+
+    public void setDeletedBy(User deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
     }
 
     @Override

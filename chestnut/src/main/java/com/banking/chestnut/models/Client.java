@@ -48,7 +48,7 @@ public class Client implements Serializable {
     private CreditCategories creditCategoryId;
     @JoinColumn(name = "introductor_id", referencedColumnName = "id")
     @ManyToOne
-    private Users introductorId;
+    private User introductorId;
     @JoinColumn(name = "client_type_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ClientTypes clientTypeId;
@@ -57,10 +57,10 @@ public class Client implements Serializable {
     private ClientInfo clientInfoId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
     @JoinColumn(name = "deleted_by", referencedColumnName = "id")
     @ManyToOne
-    private Users deletedBy;
+    private User deletedBy;
     @Column(name = "client_status")
     private String clientStatus;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientId")
@@ -71,6 +71,10 @@ public class Client implements Serializable {
     private List<Contacts> contacts;
     @OneToMany(mappedBy = "clientId")
     private List<Document> documents;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "clientId", fetch = FetchType.LAZY)
+    private List<Account> accounts;
 
     public Client() {
         this.uuid = UUID.randomUUID().toString();

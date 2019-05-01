@@ -4,6 +4,7 @@ import com.banking.chestnut.deposit.dto.DepositDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -51,6 +52,17 @@ public class Deposits {
     @Getter
     @Setter
     private Boolean isActive;
+    
+    
+    @Setter
+    @Getter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
+    private User deletedBy;
+    
+    @Getter
+    @Setter
+    private LocalDateTime deletedAt;
     
     public Deposits(DepositDto depositDto, Account account, DepositTypes depositType){
         this.account = account;
