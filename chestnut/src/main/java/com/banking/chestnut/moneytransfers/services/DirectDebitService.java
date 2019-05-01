@@ -34,8 +34,8 @@ public class DirectDebitService {
     public DirectDebits addDirectDebit(DirectDebitDTO directDebitDTO) {
         DirectDebits directDebit = new DirectDebits();
         directDebit.setIsEnabled(true);
-        directDebit.setAccountId(transfersAccountRepository.findByNumberClientAccount(directDebitDTO.getClientAccNumber()));
-        directDebit.setProviderId(transfersAccountRepository.findByNumberClientAccount(directDebitDTO.getProviderAccNumber()));
+        directDebit.setAccountId(transfersAccountRepository.findByNumberBankingAccount(directDebitDTO.getClientAccNumber()));
+        directDebit.setProviderId(transfersAccountRepository.findByNumberBankingAccount(directDebitDTO.getProviderAccNumber()));
         return directDebitRepository.save(directDebit);
     }
 

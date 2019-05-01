@@ -28,6 +28,6 @@ public class TransfersAccountService {
     }
 
     public Account findByClientNumber(String number) {
-        return transfersAccountRepository.findByNumberClientAccount(number);
+        return transfersAccountRepository.findByNumberBankingAccount(number);
     }
 }

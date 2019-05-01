@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface TransfersAccountRepository extends CrudRepository<Account, Integer> {
     Account findByClientId_Id(int clientId);
     Account findById(int id);
-    Account findByNumberClientAccount(String number);
+    Account findByNumberBankingAccount(String number);
 }

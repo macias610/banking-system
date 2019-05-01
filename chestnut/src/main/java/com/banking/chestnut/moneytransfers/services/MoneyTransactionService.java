@@ -46,8 +46,8 @@ public class MoneyTransactionService {
         Transaction transaction = new Transaction();
         transaction.setTitle(transactionDTO.getTitle());
         transaction.setValue(transactionDTO.getValue());
-        transaction.setSenderId(transfersAccountRepository.findByNumberClientAccount(transactionDTO.getSenderAccNumber()));
-        transaction.setReceiverId(transfersAccountRepository.findByNumberClientAccount(transactionDTO.getReceiverAccNumber()));
+        transaction.setSenderId(transfersAccountRepository.findByNumberBankingAccount(transactionDTO.getSenderAccNumber()));
+        transaction.setReceiverId(transfersAccountRepository.findByNumberBankingAccount(transactionDTO.getReceiverAccNumber()));
         transaction.setTransactionDate(transactionDTO.getTransactionDate());
         transaction.setCreatedAt(new Date());
         transaction.setCreatedBy(userRepository.findById(systemId));
@@ -58,8 +58,8 @@ public class MoneyTransactionService {
     private TransactionDTO prepareModel(Transaction transaction) {
         TransactionDTO dto = new TransactionDTO();
         dto.setId(transaction.getId());
-        dto.setReceiverAccNumber(transaction.getReceiverId().getNumberClientAccount());
-        dto.setSenderAccNumber(transaction.getSenderId().getNumberClientAccount());
+        dto.setReceiverAccNumber(transaction.getReceiverId().getNumberBankingAccount());
+        dto.setSenderAccNumber(transaction.getSenderId().getNumberBankingAccount());
         dto.setTransactionDate(transaction.getTransactionDate());
         dto.setValue(transaction.getValue());
         dto.setTitle(transaction.getTitle());
