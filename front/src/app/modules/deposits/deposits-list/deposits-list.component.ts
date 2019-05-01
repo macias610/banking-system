@@ -3,6 +3,9 @@ import {DepositsService} from "../deposits.service";
 import {Deposit} from "../../../models/deposit/deposit";
 import {ActivatedRoute} from "@angular/router";
 import {DepositType} from "../../../models/deposit/depositType";
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs";
+import {Notification} from "../../../models/notification";
 
 @Component({
   selector: 'app-deposits-list',
@@ -10,16 +13,17 @@ import {DepositType} from "../../../models/deposit/depositType";
   styleUrls: ['./deposits-list.component.scss']
 })
 export class DepositsListComponent implements OnInit {
-  deposits: Deposit[];
+  deposits$: Observable<Deposit[]>;
   depositTypes: DepositType[];
   accountId: number;
+  notification: Notification = new Notification();
+  notificationTimer;
 
   constructor(private service: DepositsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.setAccountId();
     this.getDepositTypes();
-    this.getDeposits();
   }
 
   setAccountId(): void {
@@ -29,22 +33,15 @@ export class DepositsListComponent implements OnInit {
   }
 
   getDeposits(): void {
-    this.service.getDeposits(this.accountId).subscribe(deposits => {
-        this.deposits = deposits;
-      },
-      (error) => {
-        console.log(error);
-        this.deposits = [];
-      });
+     this.deposits$ = this.service.getDeposits(this.accountId).pipe(
+      map(item => item.data)
+    );
   }
 
   getDepositTypes(): void {
-    this.service.getDepositTypes().subscribe(
-      (depositTypes: DepositType[]) => {
-        this.depositTypes = depositTypes
-      },
-      (error) => {
-        console.log(error);
+    this.service.getDepositTypes().subscribe(responseData => {
+        this.depositTypes = responseData['data'];
+        this.getDeposits();
       }
     );
   }
@@ -59,9 +56,22 @@ export class DepositsListComponent implements OnInit {
 
   closeDeposit(depositId: number): void {
     this.service.closeDeposit(depositId).subscribe(
-      (deposit) => {
+      (data) => {
+        this.addNotification(false, data.notification || '');
         this.getDeposits();
       }
     )
+  }
+
+  addNotification(error: boolean, msg: string) {
+    this.notification.message = msg;
+    this.notification.error = error;
+    if (this.notificationTimer) {
+      clearTimeout(this.notificationTimer);
+    }
+
+    this.notificationTimer = setTimeout(() => {
+      this.notification = new Notification();
+    }, 3000);
   }
 }

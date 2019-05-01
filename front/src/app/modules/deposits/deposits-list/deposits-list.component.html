@@ -13,8 +13,13 @@
           </div>
         </div>
         <div class="card-body">
+          <div class="alert text-center"
+               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+               *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
           <div class="table">
-            <table class="table" *ngIf="deposits">
+            <table class="table" *ngIf="(deposits$ | async) as deposits">
               <thead class=" text-primary">
               <th>
                 Name

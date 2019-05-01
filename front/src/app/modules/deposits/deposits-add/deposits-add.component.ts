@@ -5,6 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Deposit} from "../../../models/deposit/deposit";
 import {DepositType} from "../../../models/deposit/depositType";
 import {formatDate} from "@angular/common";
+import {ResponseData} from "../../../models/responseData";
+import {Notification} from "../../../models/notification";
 
 @Component({
   selector: 'app-deposits-add',
@@ -16,7 +18,9 @@ export class DepositsAddComponent implements OnInit {
   formInSave = false;
   createDepositForm: FormGroup;
   accountId: number;
-  depositTypes: DepositType[] = [];
+  depositTypes: DepositType[];
+  notification: Notification = new Notification();
+  notificationTimer;
 
   constructor(private fb: FormBuilder, private service: DepositsService, private route: ActivatedRoute) {}
 
@@ -24,17 +28,11 @@ export class DepositsAddComponent implements OnInit {
     this.getDepositTypes();
     this.setAccountId();
     this.createAddDepositForm();
-    //TODO add balance checking
   }
 
   getDepositTypes(): void {
-    this.service.getDepositTypes().subscribe(
-      (data: DepositType[]) => {
-        this.depositTypes = data
-      },
-      (error) => {
-        console.log(error);
-      }
+    this.service.getDepositTypes().subscribe(responseData =>
+      this.depositTypes = responseData['data']
     );
   }
 
@@ -82,19 +80,34 @@ export class DepositsAddComponent implements OnInit {
 
   addDeposit() {
     const formValue = this.createDepositForm.value;
-    this.formInSave = true;
     console.log(formValue);
+
     this.service.addDeposit(this.prepareDepositCreateDaoForRequest(formValue)).subscribe(
-      (data: Deposit) => {
+      (data: ResponseData) => {
         this.createDepositForm.reset();
+        this.formInSave = true;
+        this.addNotification(false, data.notification || '');
         console.log(data);
       },
       (error) => {
-        //TODO error handling
-        console.log(error);
+        const errorData: ResponseData = error.error;
         this.formInSave = true;
+        this.addNotification(true, errorData ? errorData.notification : '');
+        console.log(errorData);
       }
     );
+  }
+
+  addNotification(error: boolean, msg: string) {
+    this.notification.message = msg;
+    this.notification.error = error;
+    if (this.notificationTimer) {
+      clearTimeout(this.notificationTimer);
+    }
+
+    this.notificationTimer = setTimeout(() => {
+      this.notification = new Notification();
+    }, 3000);
   }
 
   prepareDepositCreateDaoForRequest(formValue: any): Deposit {
