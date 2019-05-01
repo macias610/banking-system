@@ -26,9 +26,29 @@ public class MoneyTransactionController {
 
     private static ObjectMapper mapper = new ObjectMapper();
 
-    @GetMapping("/client/{clientId}")
+/*    @GetMapping("/client/{clientId}")
     public ResponseEntity findByClientId(@PathVariable("clientId") final int clientId) {
         List<TransactionDTO> transactionsDTO = moneyTransactionService.findAllByReceiverIdOrSenderId(transfersAccountService.findByClientId(clientId).getId());
+        JsonNode returnData = mapper.valueToTree(transactionsDTO);
+        if (transactionsDTO.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }*/
+
+    @GetMapping("/sender/{senderId}")
+    public ResponseEntity findBySenderId(@PathVariable("senderId") final int senderId) {
+        List<TransactionDTO> transactionsDTO = moneyTransactionService.findAllBySenderId(transfersAccountService.findByClientId(senderId).getId());
+        JsonNode returnData = mapper.valueToTree(transactionsDTO);
+        if (transactionsDTO.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }
+
+    @GetMapping("/receiver/{receiverId}")
+    public ResponseEntity findByReceiverId(@PathVariable("receiverId") final int receiverId) {
+        List<TransactionDTO> transactionsDTO = moneyTransactionService.findAllByReceiverId(transfersAccountService.findByClientId(receiverId).getId());
         JsonNode returnData = mapper.valueToTree(transactionsDTO);
         if (transactionsDTO.isEmpty())
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);

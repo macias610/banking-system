@@ -40,8 +40,8 @@ public class PermanentTransactionService {
         PermanentTransactions permanentTransaction = new PermanentTransactions();
         permanentTransaction.setTitle(dto.getTitle());
         permanentTransaction.setValue(dto.getValue());
-        permanentTransaction.setSenderId(transfersAccountRepository.findById(dto.getSenderId()));
-        permanentTransaction.setReceiverId(transfersAccountRepository.findById(dto.getReceiverId()));
+        permanentTransaction.setSenderId(transfersAccountRepository.findByNumberBankingAccount(dto.getSenderAccNumber()));
+        permanentTransaction.setReceiverId(transfersAccountRepository.findByNumberBankingAccount(dto.getReceiverAccNumber()));
         permanentTransaction.setDateFrom(dto.getDateFrom());
         permanentTransaction.setDateTo(dto.getDateTo());
         permanentTransaction.setIntervalTransaction(dto.getInterval());
@@ -54,6 +54,10 @@ public class PermanentTransactionService {
         permanentTransaction.setNextDate(new Date());
         permanentTransaction.setDateTo(new Date());
         permanentTransactionRepository.save(permanentTransaction);
+    }
+
+    public List<PermanentTransactions> findByNextDate(Date nextDate) {
+        return permanentTransactionRepository.findByNextDate(nextDate);
     }
 
     private PermanentTransactionDTO prepareModel(PermanentTransactions permanentTransaction) {
@@ -69,6 +73,15 @@ public class PermanentTransactionService {
         dto.setDateTo(permanentTransaction.getDateTo());
         dto.setInterval(permanentTransaction.getIntervalTransaction());
         return dto;
+    }
+
+    public void updateNextDate(int id) {
+        PermanentTransactions permanentTransaction = permanentTransactionRepository.findById(id);
+        Date nextDate = calculateNextDate(permanentTransaction.getNextDate(), permanentTransaction.getIntervalTransaction());
+        if (nextDate.before(permanentTransaction.getDateTo()) || nextDate.equals(permanentTransaction.getDateTo())) {
+            permanentTransaction.setNextDate(nextDate);
+            permanentTransactionRepository.save(permanentTransaction);
+        }
     }
 
     private Date calculateNextDate(Date currentDate, int interval) {
