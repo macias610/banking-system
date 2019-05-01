@@ -50,7 +50,7 @@ public class PermanentTransactions implements Serializable {
     private Date deletedAt;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users deletedBy;
+    private User deletedBy;
 
     public PermanentTransactions() {
     }
@@ -131,9 +131,9 @@ public class PermanentTransactions implements Serializable {
         this.receiverId = receiverId;
     }
 
-    public Users getDeletedBy() {return deletedBy; }
+    public User getDeletedBy() {return deletedBy; }
 
-    public void setDeletedBy(Users deletedBy) {
+    public void setDeletedBy(User deletedBy) {
         this.deletedBy = deletedBy;
     }
 

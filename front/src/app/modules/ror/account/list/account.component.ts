@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../account.service';
-import { Observable } from 'rxjs';
-import { catchError, map, switchMap, filter, flatMap, tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Account } from '../../../../models/account';
-import { AccountListItem } from '../../../../models/account/accountListItem';
-import { NotificationService } from '../../../../shared/services/notification.service';
+import {Component, OnInit} from '@angular/core';
+import {AccountService} from '../account.service';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {AccountListItem} from '../../../../models/account/accountListItem';
+import {NotificationService} from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-account',

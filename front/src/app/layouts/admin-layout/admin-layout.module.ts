@@ -18,6 +18,12 @@ import {ClientsEditComponent} from '../../modules/ror/clients/clients-edit/clien
 import {AccountNumberPipe} from '../../shared/pipes/account-number.pipe';
 import {CustomFilterPipe} from '../../shared/pipes/custom-filter.pipe';
 import {AccountAddComponent} from '../../modules/ror/account/account-add/account-add.component';
+import {TransferDetailComponent} from '../../modules/moneytransfers/transfer-detail/transfer-detail.component';
+import {IbanNumberPipe} from '../../shared/pipes/iban-number.pipe';
+import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/transfer-send.component';
+import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
+import {CardService} from '../../modules/ror/account/card.service';
+import {NotificationService} from '../../shared/services/notification.service';
 
 @NgModule({
     imports: [
@@ -43,7 +49,7 @@ import {AccountAddComponent} from '../../modules/ror/account/account-add/account
         CustomFilterPipe,
         TransferHistoryComponent,
         TransferSendComponent,
-        TransferDetailComponent
+        TransferDetailComponent,
         IbanNumberPipe,
         CustomFilterPipe,
     ],
