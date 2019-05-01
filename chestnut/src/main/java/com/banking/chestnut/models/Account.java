@@ -52,6 +52,11 @@ public class Account implements Serializable {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
     private Client clientId;
+
+    @JoinColumn(name = "agent_id", referencedColumnName = "id")
+    @ManyToOne(optional = true)
+    private Client agentId;
+
     @JoinColumn(name = "info_id", referencedColumnName = "id")
     @ManyToOne
     private AccountInfo infoId;
@@ -156,6 +161,14 @@ public class Account implements Serializable {
 
     public void setClientId(Client clientId) {
         this.clientId = clientId;
+    }
+
+    public Client getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Client agentId) {
+        this.agentId = agentId;
     }
 
     public AccountInfo getInfoId() {

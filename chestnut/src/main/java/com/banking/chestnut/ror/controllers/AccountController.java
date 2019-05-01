@@ -87,6 +87,25 @@ public class AccountController {
         }
     }
 
+    @PatchMapping(value = "/agent")
+    @ResponseBody
+    ResponseEntity addAccountAgent(@RequestBody AgentAccountDto agentAccountDto){
+        try {
+            Optional<Account> account = this.accountService.getById(agentAccountDto.getAccountId());
+            Optional<Client> agent = this.clientService.getById(agentAccountDto.getClientId());
+            if(!account.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
+            if(!agent.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Agent not found"), HttpStatus.NOT_FOUND);
+            account.get().setAgentId(agent.get());
+            this.accountService.editAccount(account.get());
+            return new ResponseEntity(ResponseObject.createSuccess("Agent assigned to account"), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during assiging agent account"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PatchMapping(value = "/delete/{accountId}")
     @ResponseBody
     ResponseEntity deleteAccount(@PathVariable Integer accountId){
