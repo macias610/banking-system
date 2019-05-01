@@ -1,7 +1,7 @@
 package com.banking.chestnut.commonservices;
 
 import com.banking.chestnut.commonrepositories.UserRepository;
-import com.banking.chestnut.models.Users;
+import com.banking.chestnut.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +20,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<Users> findById(Integer id) {
+    public Optional<User> findById(Integer id) {
         return this.userRepository.findById(id);
     }
 }

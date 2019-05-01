@@ -36,7 +36,7 @@ public class DataHistoryClient implements Serializable {
     private Date createdAt;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
     public DataHistoryClient() {
     }
@@ -85,11 +85,11 @@ public class DataHistoryClient implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

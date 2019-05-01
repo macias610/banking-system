@@ -56,7 +56,7 @@ public class Deposits implements Serializable {
     private DepositTypes depositTypeId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
     public Deposits() {
     }
@@ -129,11 +129,11 @@ public class Deposits implements Serializable {
         this.depositTypeId = depositTypeId;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

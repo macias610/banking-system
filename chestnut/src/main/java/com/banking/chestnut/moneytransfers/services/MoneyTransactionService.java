@@ -1,10 +1,10 @@
 package com.banking.chestnut.moneytransfers.services;
 
 import com.banking.chestnut.commonrepositories.UserRepository;
-import com.banking.chestnut.models.Transactions;
+import com.banking.chestnut.models.Transaction;
 import com.banking.chestnut.moneytransfers.DTO.TransactionDTO;
+import com.banking.chestnut.moneytransfers.repositories.MoneyTransactionRepository;
 import com.banking.chestnut.moneytransfers.repositories.TransfersAccountRepository;
-import com.banking.chestnut.moneytransfers.repositories.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,9 +17,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-public class TransactionService {
+public class MoneyTransactionService {
 
-    private final TransactionRepository transactionRepository;
+    private final MoneyTransactionRepository moneyTransactionRepository;
     private final TransfersAccountRepository transfersAccountRepository;
     private final UserRepository userRepository;
 
@@ -29,21 +29,21 @@ public class TransactionService {
     private int systemId;
 
     public TransactionDTO findById(int id) {
-        return prepareModel(transactionRepository.findById(id));
+        return prepareModel(moneyTransactionRepository.findById(id));
     }
 
     public List<TransactionDTO> findAllByReceiverIdOrSenderId(int accountId){
-        List<Transactions> transactions = transactionRepository.findBySenderId_IdOrReceiverId_Id(accountId, accountId);
+        List<Transaction> transactions = moneyTransactionRepository.findBySenderId_IdOrReceiverId_Id(accountId, accountId);
         List<TransactionDTO> transactionsDTO = new ArrayList<>();
-        for (Transactions t: transactions) {
+        for (Transaction t: transactions) {
             transactionsDTO.add(prepareModel(t));
         }
         return transactionsDTO;
     }
 
     @Transactional
-    public Transactions addTransaction(TransactionDTO transactionDTO, String type) {
-        Transactions transaction = new Transactions();
+    public Transaction addTransaction(TransactionDTO transactionDTO, String type) {
+        Transaction transaction = new Transaction();
         transaction.setTitle(transactionDTO.getTitle());
         transaction.setValue(transactionDTO.getValue());
         transaction.setSenderId(transfersAccountRepository.findByNumberClientAccount(transactionDTO.getSenderAccNumber()));
@@ -52,10 +52,10 @@ public class TransactionService {
         transaction.setCreatedAt(new Date());
         transaction.setCreatedBy(userRepository.findById(systemId));
         transaction.setType(type);
-        return transactionRepository.save(transaction);
+        return moneyTransactionRepository.save(transaction);
     }
 
-    private TransactionDTO prepareModel(Transactions transaction) {
+    private TransactionDTO prepareModel(Transaction transaction) {
         TransactionDTO dto = new TransactionDTO();
         dto.setId(transaction.getId());
         dto.setReceiverAccNumber(transaction.getReceiverId().getNumberClientAccount());
