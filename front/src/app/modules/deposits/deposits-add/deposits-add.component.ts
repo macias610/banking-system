@@ -49,7 +49,8 @@ export class DepositsAddComponent implements OnInit {
       'maxAmount': '',
       'minAmount': '',
       'interestRate': '',
-      'daysPeriod': ''
+      'daysPeriod': '',
+      'capitalizationType': ''
     });
   }
 
@@ -73,8 +74,9 @@ export class DepositsAddComponent implements OnInit {
     console.log(selectedDepositType);
     this.createDepositForm.controls['maxAmount'].setValue(selectedDepositType != undefined ? selectedDepositType.maxAmount : '');
     this.createDepositForm.controls['minAmount'].setValue(selectedDepositType != undefined ? selectedDepositType.minAmount : '');
-    this.createDepositForm.controls['interestRate'].setValue(selectedDepositType != undefined ? selectedDepositType.interestRate : '');
+    this.createDepositForm.controls['interestRate'].setValue(selectedDepositType != undefined ? selectedDepositType.interestRate  + ' %': '');
     this.createDepositForm.controls['daysPeriod'].setValue(selectedDepositType != undefined ? selectedDepositType.daysPeriod : '');
+    this.createDepositForm.controls['capitalizationType'].setValue(selectedDepositType != undefined ? selectedDepositType.capitalizationType : '');
     this.createDepositForm.controls['amount'].setValue('');
   }
 

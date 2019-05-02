@@ -4,5 +4,6 @@ export class DepositType {
     public maxAmount: number,
     public minAmount: number,
     public interestRate: number,
-    public daysPeriod: number) {}
+    public daysPeriod: number,
+    public capitalizationType: string) {}
 }
