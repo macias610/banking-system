@@ -5,9 +5,10 @@
  */
 package com.banking.chestnut.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,9 +36,12 @@ public class AccountInfo implements Serializable {
     @Column(name = "locked_amount")
     private Long lockedAmount;
     @OneToMany(mappedBy = "infoId")
-    private transient List<Accounts> accountsSet;
+    @JsonIgnore
+    private List<Account> accountSet;
 
     public AccountInfo() {
+        this.availableAmount = new Long(0);
+        this.lockedAmount = new Long(500);
     }
 
     public AccountInfo(Integer id) {
@@ -68,12 +72,12 @@ public class AccountInfo implements Serializable {
         this.lockedAmount = lockedAmount;
     }
 
-    public List<Accounts> getAccountsSet() {
-        return accountsSet;
+    public List<Account> getAccountSet() {
+        return accountSet;
     }
 
-    public void setAccountsSet(List<Accounts> accountsSet) {
-        this.accountsSet = accountsSet;
+    public void setAccountSet(List<Account> accountSet) {
+        this.accountSet = accountSet;
     }
 
     @Override

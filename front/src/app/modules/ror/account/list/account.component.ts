@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../account.service';
 import { Observable } from 'rxjs';
-import { catchError, map, switchMap, filter, flatMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, filter, flatMap, tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../../../../models/account';
+import { AccountListItem } from '../../../../models/account/accountListItem';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-account',
@@ -13,13 +15,19 @@ import { Account } from '../../../../models/account';
 export class AccountComponent implements OnInit {
 
     searchString: string;
-    accounts$: Observable<Account[]>;
+    accounts$: Observable<AccountListItem[]>;
 
-    constructor(private service: AccountService, private http: HttpClient) { }
+    constructor(
+        private service: AccountService,
+        private notiService: NotificationService,
+        private http: HttpClient
+    ) { }
 
     ngOnInit() {
         this.searchString = '';
-        this.accounts$ = this.service.getAccounts();
+        this.accounts$ = this.service.getAccounts().pipe(
+            map(item => item.data)
+        );
     }
 
     searchInTable(searchItem: string) {
@@ -28,9 +36,23 @@ export class AccountComponent implements OnInit {
         this.searchString = searchItem;
     }
 
-    accountFilter(item: Account, search: string): boolean {
-        const itemString = (item.number + '' + item.owner.info.first_name + '' + item.owner.info.surname).toLocaleLowerCase();
+    accountFilter(item: AccountListItem, search: string): boolean {
+        const itemString = (item.number_banking_account + '' + item.first_name + '' + item.surname).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
+    }
+
+    changeAccountStatus(account: AccountListItem) {
+        this.service.changeAccountStatus(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_blocked = !account.is_blocked;
+
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
     }
 
 }

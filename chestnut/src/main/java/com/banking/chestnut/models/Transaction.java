@@ -7,19 +7,7 @@ package com.banking.chestnut.models;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
 /**
@@ -28,7 +16,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "transactions")
-public class Transactions implements Serializable {
+public class Transaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,18 +45,32 @@ public class Transactions implements Serializable {
     private Date createdAt;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
     @JoinColumn(name = "sender_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Accounts senderId;
+    @ManyToOne(optional = true)
+    private Account senderId;
     @JoinColumn(name = "receiver_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Accounts receiverId;
+    @ManyToOne(optional = true)
+    private Account receiverId;
 
-    public Transactions() {
+    public Transaction() {
     }
 
-    public Transactions(Integer id) {
+    public void setPayoutTransation(Long value, User user, Account account){
+        this.type = "OUT";
+        this.isTransferClientAcconuts = false;
+        this.value = value;
+        this.title = "Payout from account";
+        this.senderId = account;
+        this.createdAt = new Date();
+        this.transactionDate = new Date();
+        this.isTransferClientAcconuts = false;
+        this.isViaBank = false;
+        this.isForeign = false;
+        this.createdBy = user;
+    }
+
+    public Transaction(Integer id) {
         this.id = id;
     }
 
@@ -144,27 +146,27 @@ public class Transactions implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Accounts getSenderId() {
+    public Account getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(Accounts senderId) {
+    public void setSenderId(Account senderId) {
         this.senderId = senderId;
     }
 
-    public Accounts getReceiverId() {
+    public Account getReceiverId() {
         return receiverId;
     }
 
-    public void setReceiverId(Accounts receiverId) {
+    public void setReceiverId(Account receiverId) {
         this.receiverId = receiverId;
     }
 
@@ -178,10 +180,10 @@ public class Transactions implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Transactions)) {
+        if (!(object instanceof Transaction)) {
             return false;
         }
-        Transactions other = (Transactions) object;
+        Transaction other = (Transaction) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -190,7 +192,7 @@ public class Transactions implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Transactions[ id=" + id + " ]";
+        return "com.banking.chestnut.Transaction[ id=" + id + " ]";
     }
     
 }

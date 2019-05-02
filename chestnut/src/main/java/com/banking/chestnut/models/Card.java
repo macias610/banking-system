@@ -15,8 +15,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,7 +26,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "cards")
-public class Cards implements Serializable {
+public class Card implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,27 +34,34 @@ public class Cards implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Column(name = "number")
-    private Integer number;
+    private String number;
+    @Column(name = "cvv")
+    private String cvv;
     @Size(max = 255)
     @Column(name = "type")
     private String type;
+    @Column(name = "status")
+    private Boolean status;
     @Size(max = 255)
     @Column(name = "pin")
     private String pin;
+    @Column(name = "validity_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date validityDate;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Accounts accountId;
+    private Account accountId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
-    public Cards() {
+    public Card() {
     }
 
-    public Cards(Integer id) {
+    public Card(Integer id) {
         this.id = id;
     }
 
@@ -68,11 +73,11 @@ public class Cards implements Serializable {
         this.id = id;
     }
 
-    public Integer getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
@@ -100,20 +105,44 @@ public class Cards implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Accounts getAccountId() {
+    public Account getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Accounts accountId) {
+    public void setAccountId(Account accountId) {
         this.accountId = accountId;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public Date getValidityDate() {
+        return validityDate;
+    }
+
+    public void setValidityDate(Date validityDate) {
+        this.validityDate = validityDate;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
     }
 
     @Override
@@ -126,10 +155,10 @@ public class Cards implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cards)) {
+        if (!(object instanceof Card)) {
             return false;
         }
-        Cards other = (Cards) object;
+        Card other = (Card) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -138,7 +167,7 @@ public class Cards implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.Cards[ id=" + id + " ]";
+        return "com.banking.chestnut.Card[ id=" + id + " ]";
     }
     
 }

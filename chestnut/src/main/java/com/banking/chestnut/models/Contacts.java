@@ -45,7 +45,7 @@ public class Contacts implements Serializable {
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
     @JsonIgnore
-    private Users createdBy;
+    private User createdBy;
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     @JsonIgnore
@@ -56,6 +56,11 @@ public class Contacts implements Serializable {
     private Client clientId;
 
     public Contacts() {
+    }
+
+    public void assignNewValues(Contacts contacts){
+        this.type = contacts.getType();
+        this.value = contacts.getValue();
     }
 
     public Contacts(Integer id) {
@@ -86,11 +91,11 @@ public class Contacts implements Serializable {
         this.value = value;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 

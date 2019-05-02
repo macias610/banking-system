@@ -51,13 +51,21 @@ public class Location implements Serializable {
     private Client clientId;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
     public Location() {
     }
 
     public Location(Integer id) {
         this.id = id;
+    }
+
+    public void assignNewValues(Location location){
+        this.apartmentNumber = location.getApartmentNumber();
+        this.houseNumber = location.getHouseNumber();
+        this.street = location.getStreet();
+        this.zip = location.getZip();
+        this.city = location.getCity();
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.banking.chestnut.commoncontrollers;
 
 import com.banking.chestnut.commonservices.IUserService;
-import com.banking.chestnut.models.Users;
+import com.banking.chestnut.models.User;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class UserController {
     public @ResponseBody
     ResponseEntity getUserById(@PathVariable Integer id){
         try {
-            Optional<Users> user = this.userService.findById(id);
+            Optional<User> user = this.userService.findById(id);
             if(user.isPresent())
                 return new ResponseEntity<>(gson.toJson(user.get()), HttpStatus.OK);
             else

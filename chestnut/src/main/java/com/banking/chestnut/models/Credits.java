@@ -12,6 +12,22 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ *
+ * @author macie
+ */
 @Entity
 @NoArgsConstructor
 @Data
@@ -23,14 +39,107 @@ public class Credits {
     @Getter
     @Column(name = "credit_id")
     private Integer id;
-
-    @Getter
-    @Setter
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "credit_balance_id")
+    private Integer creditBalanceId;
+    @Column(name = "value")
+    private Long value;
+    @Column(name = "is_active")
+    private Boolean isActive;
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+    @Column(name = "expiration_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date expirationAt;
+    @Column(name = "deleted_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date deletedAt;
     @JoinColumn(name = "account_id", referencedColumnName = "id")
-    private Accounts account;
+    @ManyToOne
+    private Account accountId;
+    @JoinColumn(name = "credit_type_id", referencedColumnName = "id")
+    @ManyToOne
+    private CreditTypes creditTypeId;
+    @JoinColumn(name = "payment_schedule_id", referencedColumnName = "id")
+    @ManyToOne
+    private PaymentSchedules paymentScheduleId;
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @ManyToOne
+    private User createdBy;
+    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
+    @ManyToOne
+    private User deletedBy;
+
+    public Credits() {
+    }
+
+    public Credits(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCreditBalanceId() {
+        return creditBalanceId;
+    }
+
+    public void setCreditBalanceId(Integer creditBalanceId) {
+        this.creditBalanceId = creditBalanceId;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getExpirationAt() {
+        return expirationAt;
+    }
+
+    public void setExpirationAt(Date expirationAt) {
+        this.expirationAt = expirationAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public Account getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Account accountId) {
+        this.accountId = accountId;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "credit_type_id")
@@ -44,17 +153,21 @@ public class Credits {
 
     private Boolean is_active;
 
-    @Temporal(TemporalType.DATE)
-    private Date created_at;
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-    @Temporal(TemporalType.DATE)
-    private Date expiration_at;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date deleted_at;
+    public User getDeletedBy() {
+        return deletedBy;
+    }
 
-    private Long created_by;
+    public void setDeletedBy(User deletedBy) {
+        this.deletedBy = deletedBy;
+    }
 
     private Long deleted_by;
 

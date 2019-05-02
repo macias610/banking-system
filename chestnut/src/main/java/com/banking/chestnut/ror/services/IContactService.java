@@ -4,4 +4,5 @@ import com.banking.chestnut.models.Contacts;
 
 public interface IContactService {
     Contacts saveContact(Contacts contact);
+    void deleteContact(Contacts contact);
 }

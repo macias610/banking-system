@@ -15,7 +15,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "data_history_clients")
-public class DataHistoryClients implements Serializable {
+public class DataHistoryClient implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,12 +36,12 @@ public class DataHistoryClients implements Serializable {
     private Date createdAt;
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
-    private Users createdBy;
+    private User createdBy;
 
-    public DataHistoryClients() {
+    public DataHistoryClient() {
     }
 
-    public DataHistoryClients(Integer id) {
+    public DataHistoryClient(Integer id) {
         this.id = id;
     }
 
@@ -69,11 +69,11 @@ public class DataHistoryClients implements Serializable {
         this.beforeHistory = beforeHistory;
     }
 
-    public String getAfter() {
+    public String getAfterHistory() {
         return afterHistory;
     }
 
-    public void setAfter(String afterHistory) {
+    public void setAfterHistory(String afterHistory) {
         this.afterHistory = afterHistory;
     }
 
@@ -85,11 +85,11 @@ public class DataHistoryClients implements Serializable {
         this.createdAt = createdAt;
     }
 
-    public Users getCreatedBy() {
+    public User getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Users createdBy) {
+    public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -103,10 +103,10 @@ public class DataHistoryClients implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DataHistoryClients)) {
+        if (!(object instanceof DataHistoryClient)) {
             return false;
         }
-        DataHistoryClients other = (DataHistoryClients) object;
+        DataHistoryClient other = (DataHistoryClient) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -115,7 +115,7 @@ public class DataHistoryClients implements Serializable {
 
     @Override
     public String toString() {
-        return "com.banking.chestnut.DataHistoryClients[ id=" + id + " ]";
+        return "com.banking.chestnut.DataHistoryClientService[ id=" + id + " ]";
     }
 
 }
