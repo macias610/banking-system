@@ -13,11 +13,11 @@ public class CreditTypeService {
     @Autowired
     CreditTypeRepository creditTypeRepository;
 
-    public CreditType getById(Integer id){
-        return creditTypeRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    public CreditType getCreditTypeById(Integer id){
+        return creditTypeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Credit type not found"));
     }
 
-    public CreditType addCreditType(CreditType creditType){
+    public CreditType addCreditType(CreditType creditType) {
         return creditTypeRepository.save(creditType);
     }
 }

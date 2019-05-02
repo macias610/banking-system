@@ -1,6 +1,8 @@
 package com.banking.chestnut.credit.services;
 
+import com.banking.chestnut.credit.dto.CreditDto;
 import com.banking.chestnut.credit.repositories.CreditRepository;
+import com.banking.chestnut.models.Accounts;
 import com.banking.chestnut.models.Credits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,9 @@ public class CreditService {
     @Autowired
     CreditRepository creditRepository;
 
-    public Credits getById(Integer id){
-        return creditRepository.findById(id).orElseThrow(NoSuchElementException::new);
-    }
-
-    public Credits addCredit(Credits credits){
-        return creditRepository.save(credits);
+    public CreditDto getCreditById(Integer id){
+        Credits credit = creditRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Credit not found"));
+        return new CreditDto(credit);
     }
 
 }

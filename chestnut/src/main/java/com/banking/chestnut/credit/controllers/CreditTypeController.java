@@ -2,6 +2,7 @@ package com.banking.chestnut.credit.controllers;
 
 import com.banking.chestnut.credit.services.CreditTypeService;
 import com.banking.chestnut.models.CreditType;
+import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
 
+import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNodeFrom;
+import static com.banking.chestnut.models.ResponseObject.createError;
+import static com.banking.chestnut.models.ResponseObject.createSuccess;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @RestController
 @RequestMapping("/creditType")
 public class CreditTypeController {
@@ -17,27 +23,18 @@ public class CreditTypeController {
     @Autowired
     CreditTypeService creditTypeService;
 
-    UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<CreditType> getCreditTypeById(@PathVariable Integer id){
-        try {
-            CreditType creditType = creditTypeService.getById(id);
-            return ResponseEntity.ok().body(creditType);
-        } catch(NoSuchElementException e){
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity getCreditTypeById(@PathVariable Integer id) {
+    try {
+        CreditType creditType = creditTypeService.getCreditTypeById(id);
+        ResponseObject success = createSuccess("", createJsonNodeFrom(creditType));
+        return ResponseEntity.ok().body(success);
+    } catch (NoSuchElementException e) {
+        ResponseObject error = createError(e.getMessage());
+        return ResponseEntity.status(NOT_FOUND).body(error);
+    }
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<CreditType> addCreditType(@RequestBody CreditType creditType) {
-        try {
-            CreditType createdCreditType = creditTypeService.addCreditType(creditType);
-            UriComponents uriComponents = uriBuilder.fromPath("/paymentSchedule/{id}").buildAndExpand(createdCreditType.getId());
-            return ResponseEntity.created(uriComponents.toUri()).body(createdCreditType);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
 
 }

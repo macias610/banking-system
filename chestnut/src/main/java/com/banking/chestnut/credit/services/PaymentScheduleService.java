@@ -14,12 +14,8 @@ public class PaymentScheduleService {
     PaymentScheduleRepository paymentScheduleRepository;
 
 
-    public PaymentSchedule getById(Integer id){
-       return paymentScheduleRepository.findById(id).orElseThrow(NoSuchElementException::new);
-    }
-
-    public PaymentSchedule addPaymentSchedule(PaymentSchedule paymentSchedule){
-        return paymentScheduleRepository.save(paymentSchedule);
+    public PaymentSchedule getPaymentScheduleById(Integer id){
+       return paymentScheduleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Payment Schedule not found"));
     }
 
 }

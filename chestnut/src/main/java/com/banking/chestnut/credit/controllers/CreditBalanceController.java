@@ -2,6 +2,7 @@ package com.banking.chestnut.credit.controllers;
 
 import com.banking.chestnut.credit.services.CreditBalanceService;
 import com.banking.chestnut.models.CreditBalance;
+import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
 
+import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNodeFrom;
+import static com.banking.chestnut.models.ResponseObject.createError;
+import static com.banking.chestnut.models.ResponseObject.createSuccess;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
 @RestController
 @RequestMapping("/creditBalance")
 public class CreditBalanceController {
@@ -17,28 +23,16 @@ public class CreditBalanceController {
     @Autowired
     CreditBalanceService creditBalanceService;
 
-    UriComponentsBuilder uriBuilder = UriComponentsBuilder.newInstance();
-
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<CreditBalance> getCreditBalanceById(@PathVariable Integer id){
-        try {
-            CreditBalance creditBalance = creditBalanceService.getById(id);
-            return ResponseEntity.ok().body(creditBalance);
-        } catch(NoSuchElementException e){
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/{id}")
+    public ResponseEntity getCreditBalanceById(@PathVariable Integer id) {
+    try {
+        CreditBalance creditBalance = creditBalanceService.getCreditBalanceByCreditId(id);
+        ResponseObject success = createSuccess("", createJsonNodeFrom(creditBalance));
+        return ResponseEntity.ok().body(success);
+    } catch (NoSuchElementException e) {
+        ResponseObject error = createError(e.getMessage());
+        return ResponseEntity.status(NOT_FOUND).body(error);
     }
-
-    //do poprawy
-    @PostMapping("/add")
-    public ResponseEntity<CreditBalance> addCredit(@RequestBody CreditBalance creditBalance) {
-        try {
-            CreditBalance createdCreditBalance = creditBalanceService.addCreditBalance(creditBalance);
-            UriComponents uriComponents = uriBuilder.fromPath("/creditBalance/{id}").buildAndExpand(createdCreditBalance.getId());
-            return ResponseEntity.created(uriComponents.toUri()).body(createdCreditBalance);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
 
