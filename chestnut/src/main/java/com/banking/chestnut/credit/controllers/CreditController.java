@@ -2,6 +2,7 @@ package com.banking.chestnut.credit.controllers;
 
 import com.banking.chestnut.credit.dto.CreditDto;
 import com.banking.chestnut.credit.services.CreditService;
+import com.banking.chestnut.models.CreditType;
 import com.banking.chestnut.models.Credits;
 import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.NoSuchElementException;
 
 import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNodeFrom;

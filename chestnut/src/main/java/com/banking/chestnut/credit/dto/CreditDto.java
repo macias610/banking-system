@@ -1,5 +1,6 @@
 package com.banking.chestnut.credit.dto;
 
+import com.banking.chestnut.models.Account;
 import com.banking.chestnut.models.Credits;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
@@ -23,7 +24,7 @@ public class CreditDto {
 
     private Integer paymentScheduleId;
 
-    private Float value;
+    private Long value;
 
     private Boolean isActive;
 

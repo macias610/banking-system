@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
 @Service
 public class PaymentScheduleService {
 
-    @Autowired //odpowiada za wstrzykniecia do repozytorium
+    @Autowired
     PaymentScheduleRepository paymentScheduleRepository;
 
 

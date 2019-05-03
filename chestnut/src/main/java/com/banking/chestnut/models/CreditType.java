@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -38,8 +39,5 @@ public class CreditType {
 
     private Float interest_rate;
 
-    public Integer getId() {
-        return id;
-    }
 }
 
