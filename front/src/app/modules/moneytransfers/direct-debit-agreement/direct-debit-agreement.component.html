@@ -1,0 +1,58 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <select name="" (change)="onChange($event.target.value)">
+          <option value="">-- Select client --</option>
+          <option *ngFor="let client of clients | async" [value]="client.id">
+            {{client.info.surname}}
+          </option>
+        </select>
+        <div class="card-header">
+          <h5 class="title">Send transfer</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert text-center"
+               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+               *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <form [formGroup]="applyDirectDebitAgreementForm" (ngSubmit)="applyDirectDebitAgreement()">
+            <p class="card-category">Your info</p>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Account</label>
+                  <select name="" formControlName="clientAccNumber" class="form-control">
+                    <option value="">-- Select account --</option>
+                    <option *ngFor="let account of accounts | async" [value]="account.number_banking_account">
+                      {{account.number_banking_account}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Title</label>
+                  <select name="" formControlName="providerAccNumber" class="form-control">
+                    <option value="">-- Select provider --</option>
+                    <option *ngFor="let provider of providers | async" [value]="provider.accountNumber">
+                      {{provider.clientName}}
+                    </option>
+                  </select>                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="text-right">
+              <button type="submit" [disabled]="applyDirectDebitAgreementForm.invalid || formInSave"
+                      class="btn btn-lg btn-info btn-round">apply
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,6 +24,7 @@ import {TransferSendComponent} from '../../modules/moneytransfers/transfer-send/
 import {TransferHistoryComponent} from '../../modules/moneytransfers/transfer-history/transfer-history.component';
 import {CardService} from '../../modules/ror/account/card.service';
 import {NotificationService} from '../../shared/services/notification.service';
+import {DirectDebitAgreementComponent} from '../../modules/moneytransfers/direct-debit-agreement/direct-debit-agreement.component';
 
 @NgModule({
     imports: [
@@ -50,6 +51,7 @@ import {NotificationService} from '../../shared/services/notification.service';
         TransferHistoryComponent,
         TransferSendComponent,
         TransferDetailComponent,
+        DirectDebitAgreementComponent,
         IbanNumberPipe,
         CustomFilterPipe,
     ],
