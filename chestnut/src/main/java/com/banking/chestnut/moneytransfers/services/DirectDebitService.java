@@ -57,8 +57,8 @@ public class DirectDebitService {
     private DirectDebitDTO prepareModel(DirectDebits directDebit) {
         DirectDebitDTO dto = new DirectDebitDTO();
         dto.setId(directDebit.getId());
-        dto.setClientAccNumber(directDebit.getAccountId().getNumberClientAccount());
-        dto.setProviderAccNumber(directDebit.getProviderId().getNumberClientAccount());
+        dto.setClientAccNumber(directDebit.getAccountId().getNumberBankingAccount());
+        dto.setProviderAccNumber(directDebit.getProviderId().getNumberBankingAccount());
         dto.setEnabled(directDebit.getIsEnabled());
         dto.setClientId(directDebit.getAccountId().getId());
         dto.setProviderId(directDebit.getProviderId().getId());
