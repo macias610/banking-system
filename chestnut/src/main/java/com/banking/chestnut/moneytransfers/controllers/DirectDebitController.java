@@ -65,10 +65,10 @@ public class DirectDebitController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity cancelDirectDebit(@PathVariable("id") final int id, @RequestBody DirectDebitDTO directDebitDTO) {
+    public ResponseEntity cancelDirectDebit(@PathVariable("id") final int id) {
         try {
             directDebitService.cancelDirectDebit(id);
-            return new ResponseEntity<>(ResponseObject.createSuccess(""), HttpStatus.OK);
+            return new ResponseEntity<>(ResponseObject.createSuccess("Direct debit deactivated"), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(ResponseObject.createError("Error during canceling direct debit"), HttpStatus.BAD_REQUEST);
