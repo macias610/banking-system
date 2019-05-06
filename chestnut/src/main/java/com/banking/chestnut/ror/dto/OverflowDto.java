@@ -1,5 +1,6 @@
 package com.banking.chestnut.ror.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,8 +12,7 @@ public class OverflowDto implements Serializable {
 
     private Long value;
 
-    private Integer senderId;
-
-    private Integer receiverId;
+    @JsonProperty("account_id")
+    private Integer accountId;
 
 }
