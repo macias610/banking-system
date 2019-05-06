@@ -49,4 +49,7 @@ export class TransfersService {
     return this.http.get<ResponseData>(`${environment.api_url}/directDebits/providers`);
   }
 
+  getDirectDebitsForProvider(providerId: string): Observable<ResponseData> {
+    return this.http.get<ResponseData>(`${environment.api_url}/directDebits/provider/` + providerId);
+  }
 }

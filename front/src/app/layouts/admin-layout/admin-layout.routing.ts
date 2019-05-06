@@ -13,6 +13,7 @@ import {AccountAddComponent} from '../../modules/ror/account/account-add/account
 import {DirectDebitAgreementComponent} from '../../modules/moneytransfers/direct-debit-agreement/direct-debit-agreement.component';
 import {DirectDebitListComponent} from '../../modules/moneytransfers/direct-debit-list/direct-debit-list.component';
 import {PermanentTransferAddComponent} from '../../modules/moneytransfers/permanent-transfer-add/permanent-transfer-add.component';
+import {DirectDebitSendComponent} from '../../modules/moneytransfers/direct-debit-send/direct-debit-send.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -28,4 +29,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'transfers/:id', component: TransferDetailComponent },
     { path: 'directdebitagreement', component: DirectDebitAgreementComponent },
     { path: 'directdebitlist', component: DirectDebitListComponent},
+    { path: 'directdebitsend', component: DirectDebitSendComponent},
 ];

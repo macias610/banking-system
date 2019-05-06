@@ -15,6 +15,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/transfersend', title: 'send transfer', icon: 'business_money-coins', class: '' },
     { path: '/directdebitagreement', title: 'direct debit agreement', icon: 'business_money-coins', class: '' },
     { path: '/directdebitlist', title: 'direct debit history', icon: 'business_money-coins', class: '' },
+    { path: '/directdebitsend', title: 'send direct debit', icon: 'business_money-coins', class: '' },
     { path: '/permanentTransferAdd', title: 'set permanent transfer', icon: 'business_money-coins', class: '' },
 ];
 

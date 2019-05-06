@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {TransfersService} from '../transfers.service';
 import {Transfer} from '../../../models/transfer/transfer';
 import {ResponseData} from '../../../models/responseData';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-transfer-detail',
@@ -38,10 +39,12 @@ export class TransferDetailComponent implements OnInit {
 
 
   fillForm(transfer: Transfer) {
+    const datePipe = new DatePipe('en-US');
+
     this.transferForm.setValue({
       'id': transfer.id,
       'title': transfer.title,
-      'transactionDate': transfer.transactionDate,
+      'transactionDate': datePipe.transform(transfer.transactionDate, 'dd/MM/yyyy'),
       'value': transfer.value,
       'senderAccNumber': transfer.senderAccNumber,
       'receiverAccNumber': transfer.receiverAccNumber,
