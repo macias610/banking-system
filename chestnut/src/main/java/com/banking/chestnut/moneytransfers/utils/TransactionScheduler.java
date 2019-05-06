@@ -32,7 +32,7 @@ public class TransactionScheduler {
     @Scheduled(cron = "0 1 0 * * ?")
     public void executeTask() {
         Date currentDate = new Date();
-        List<PermanentTransactions> permanentTransactions = permanentTransactionService.findByNextDate(currentDate);
+        List<PermanentTransactions> permanentTransactions = permanentTransactionService.findByNextDateAndEnabled(currentDate);
         if (permanentTransactions.isEmpty() == false) {
             for (PermanentTransactions t: permanentTransactions) {
                 Transaction outgoing = moneyTransactionService.addTransaction(t, "outgoing", currentDate);

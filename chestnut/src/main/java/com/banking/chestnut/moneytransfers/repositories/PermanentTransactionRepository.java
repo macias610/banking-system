@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface PermanentTransactionRepository extends CrudRepository<PermanentTransactions, Integer> {
-    List<PermanentTransactions> findByReceiverId_IdOrSenderId_Id(int receiverId, int senderId);
+    List<PermanentTransactions> findBySenderId_Id(int senderId);
     PermanentTransactions findById(int id);
-    List<PermanentTransactions> findByNextDate(Date nextDate);
+    List<PermanentTransactions> findByNextDateAndIsEnabled(Date nextDate, boolean isEnabled);
 }

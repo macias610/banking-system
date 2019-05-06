@@ -28,7 +28,7 @@ public class DirectDebitService {
     }
 
     public List<DirectDebitDTO> findByAccountId(int accountId) {
-        List<DirectDebits> directDebits = directDebitRepository.findByAccountId_Id(accountId);
+        List<DirectDebits> directDebits = directDebitRepository.findByAccountId_IdAndIsEnabled(accountId, true);
         List<DirectDebitDTO> directDebitsDTO = new ArrayList<>();
         for (DirectDebits t: directDebits) {
             directDebitsDTO.add(prepareModel(t));

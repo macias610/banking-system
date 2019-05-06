@@ -51,6 +51,8 @@ public class PermanentTransactions implements Serializable {
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     @ManyToOne
     private User deletedBy;
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
 
     public PermanentTransactions() {
     }
@@ -141,6 +143,14 @@ public class PermanentTransactions implements Serializable {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 
     @Override

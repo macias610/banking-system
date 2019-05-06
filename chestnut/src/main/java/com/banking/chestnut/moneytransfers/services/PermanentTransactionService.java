@@ -28,7 +28,7 @@ public class PermanentTransactionService {
     }
 
     public List<PermanentTransactionDTO> findBySenderIdOrReceiverId(int accountId) {
-        List<PermanentTransactions> transactions = permanentTransactionRepository.findByReceiverId_IdOrSenderId_Id(accountId, accountId);
+        List<PermanentTransactions> transactions = permanentTransactionRepository.findBySenderId_Id(accountId);
         List<PermanentTransactionDTO> transactionsDTO = new ArrayList<>();
         for (PermanentTransactions t: transactions) {
             transactionsDTO.add(prepareModel(t));
@@ -46,19 +46,20 @@ public class PermanentTransactionService {
         permanentTransaction.setDateFrom(Date.from(dto.getDateFrom().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         permanentTransaction.setDateTo(Date.from(dto.getDateTo().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         permanentTransaction.setIntervalTransaction(dto.getInterval());
+        permanentTransaction.setEnabled(true);
         permanentTransaction.setNextDate(Date.from(calculateNextDate(dto.getDateFrom(), dto.getInterval()).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         return permanentTransactionRepository.save(permanentTransaction);
     }
 
     public void cancelPermanentTransaction(int id) {
         PermanentTransactions permanentTransaction = permanentTransactionRepository.findById(id);
+        permanentTransaction.setEnabled(false);
         permanentTransaction.setNextDate(new Date());
-        permanentTransaction.setDateTo(new Date());
         permanentTransactionRepository.save(permanentTransaction);
     }
 
-    public List<PermanentTransactions> findByNextDate(Date nextDate) {
-        return permanentTransactionRepository.findByNextDate(nextDate);
+    public List<PermanentTransactions> findByNextDateAndEnabled(Date nextDate) {
+        return permanentTransactionRepository.findByNextDateAndIsEnabled(nextDate, true);
     }
 
     private PermanentTransactionDTO prepareModel(PermanentTransactions permanentTransaction) {

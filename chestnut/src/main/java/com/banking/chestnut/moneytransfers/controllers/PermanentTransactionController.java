@@ -59,7 +59,7 @@ public class PermanentTransactionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity cancelPermanentTransaction(@PathVariable("id") final int id, @RequestBody PermanentTransactionDTO dto) {
+    public ResponseEntity cancelPermanentTransaction(@PathVariable("id") final int id) {
         try {
             permanentTransactionService.cancelPermanentTransaction(id);
             return new ResponseEntity<>(ResponseObject.createSuccess(""), HttpStatus.OK);

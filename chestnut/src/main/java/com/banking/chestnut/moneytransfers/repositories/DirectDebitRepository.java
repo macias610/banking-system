@@ -9,5 +9,5 @@ public interface DirectDebitRepository extends CrudRepository<DirectDebits, Inte
     List<DirectDebits> findByProviderId_Id(int providerId);
     DirectDebits findById(int id);
     List<DirectDebits> findByProviderId_IdAndIsEnabled(int providerId, boolean isEnabled);
-    List<DirectDebits> findByAccountId_Id(int accountId);
+    List<DirectDebits> findByAccountId_IdAndIsEnabled(int accountId, boolean isEnabled);
 }
