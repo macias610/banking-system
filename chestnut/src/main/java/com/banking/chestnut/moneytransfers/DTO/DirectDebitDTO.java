@@ -10,4 +10,6 @@ public class DirectDebitDTO {
     private int providerId;
     private int clientId;
     private boolean isEnabled;
+    private String providerName;
+    private String providerSurname;
 }

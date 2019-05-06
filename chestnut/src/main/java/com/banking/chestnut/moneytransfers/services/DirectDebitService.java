@@ -62,6 +62,8 @@ public class DirectDebitService {
         dto.setEnabled(directDebit.getIsEnabled());
         dto.setClientId(directDebit.getAccountId().getId());
         dto.setProviderId(directDebit.getProviderId().getId());
+        dto.setProviderName(directDebit.getProviderId().getClientId().getClientInfoId().getFirstName());
+        dto.setProviderName(directDebit.getProviderId().getClientId().getClientInfoId().getSurname());
         return dto;
     }
 }

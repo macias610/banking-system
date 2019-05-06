@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -42,10 +43,10 @@ public class PermanentTransactionService {
         permanentTransaction.setValue(dto.getValue());
         permanentTransaction.setSenderId(transfersAccountRepository.findByNumberBankingAccount(dto.getSenderAccNumber()));
         permanentTransaction.setReceiverId(transfersAccountRepository.findByNumberBankingAccount(dto.getReceiverAccNumber()));
-        permanentTransaction.setDateFrom(dto.getDateFrom());
-        permanentTransaction.setDateTo(dto.getDateTo());
+        permanentTransaction.setDateFrom(Date.from(dto.getDateFrom().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        permanentTransaction.setDateTo(Date.from(dto.getDateTo().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         permanentTransaction.setIntervalTransaction(dto.getInterval());
-        permanentTransaction.setNextDate(calculateNextDate(dto.getDateFrom(), dto.getInterval()));
+        permanentTransaction.setNextDate(Date.from(calculateNextDate(dto.getDateFrom(), dto.getInterval()).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         return permanentTransactionRepository.save(permanentTransaction);
     }
 
@@ -69,22 +70,22 @@ public class PermanentTransactionService {
         dto.setTitle(permanentTransaction.getTitle());
         dto.setSenderId(permanentTransaction.getSenderId().getId());
         dto.setReceiverId(permanentTransaction.getReceiverId().getId());
-        dto.setDateFrom(permanentTransaction.getDateFrom());
-        dto.setDateTo(permanentTransaction.getDateTo());
+        dto.setDateFrom(permanentTransaction.getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        dto.setDateTo(permanentTransaction.getDateTo().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         dto.setInterval(permanentTransaction.getIntervalTransaction());
         return dto;
     }
 
     public void updateNextDate(int id) {
         PermanentTransactions permanentTransaction = permanentTransactionRepository.findById(id);
-        Date nextDate = calculateNextDate(permanentTransaction.getNextDate(), permanentTransaction.getIntervalTransaction());
-        if (nextDate.before(permanentTransaction.getDateTo()) || nextDate.equals(permanentTransaction.getDateTo())) {
-            permanentTransaction.setNextDate(nextDate);
+        LocalDate nextDate = calculateNextDate(permanentTransaction.getNextDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), permanentTransaction.getIntervalTransaction());
+        if (nextDate.isBefore(permanentTransaction.getDateTo().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) || nextDate.equals(permanentTransaction.getDateTo())) {
+            permanentTransaction.setNextDate(Date.from(nextDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
             permanentTransactionRepository.save(permanentTransaction);
         }
     }
 
-    private Date calculateNextDate(Date currentDate, int interval) {
-        return Date.from(LocalDateTime.from(currentDate.toInstant()).plusDays(interval).atZone(ZoneId.systemDefault()).toInstant());
+    private LocalDate calculateNextDate(LocalDate currentDate, int interval) {
+        return currentDate.plusDays(interval);
     }
 }
