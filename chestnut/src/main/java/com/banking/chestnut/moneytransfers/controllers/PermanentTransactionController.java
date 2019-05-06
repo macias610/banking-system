@@ -47,8 +47,15 @@ public class PermanentTransactionController {
 
     @PostMapping("")
     public ResponseEntity createPermanentTransaction(@RequestBody PermanentTransactionDTO dto) {
-        permanentTransactionService.addPermanentTransaction(dto);
-        return new ResponseEntity<>(ResponseObject.createSuccess("Permanent transaction created"), HttpStatus.CREATED);
+        dto.setReceiverAccNumber(dto.getReceiverAccNumber().replace(" ", "").trim());
+        dto.setSenderAccNumber(dto.getSenderAccNumber().replace(" ", "").trim());
+        if (dto.getValue() < 0) {
+            JsonNode returnData = mapper.valueToTree(dto);
+            return new ResponseEntity(ResponseObject.createError("Value < 0", returnData), HttpStatus.BAD_REQUEST);
+        } else {
+            permanentTransactionService.addPermanentTransaction(dto);
+            return new ResponseEntity<>(ResponseObject.createSuccess("Transactions created"), HttpStatus.CREATED);
+        }
     }
 
     @PutMapping("/{id}")

@@ -69,10 +69,17 @@ public class MoneyTransactionController {
 
     @PostMapping("")
     public ResponseEntity createTransactions(@RequestBody TransactionDTO transactionDTO) {
-        Transaction outgoing = moneyTransactionService.addTransaction(transactionDTO, "outgoing");
-        Transaction incoming = moneyTransactionService.addTransaction(transactionDTO, "incoming");
-        transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
-        transfersAccountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
-        return new ResponseEntity<>(ResponseObject.createSuccess("Transactions created"), HttpStatus.CREATED);
+        transactionDTO.setReceiverAccNumber(transactionDTO.getReceiverAccNumber().replace(" ", "").trim());
+        transactionDTO.setSenderAccNumber(transactionDTO.getSenderAccNumber().replace(" ", "").trim());
+        if (transactionDTO.getValue() < 0) {
+            JsonNode returnData = mapper.valueToTree(transactionDTO);
+            return new ResponseEntity(ResponseObject.createError("Value < 0", returnData), HttpStatus.BAD_REQUEST);
+        } else {
+            Transaction outgoing = moneyTransactionService.addTransaction(transactionDTO, "outgoing");
+            Transaction incoming = moneyTransactionService.addTransaction(transactionDTO, "incoming");
+            transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
+            transfersAccountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
+            return new ResponseEntity<>(ResponseObject.createSuccess("Transactions created"), HttpStatus.CREATED);
+        }
     }
 }

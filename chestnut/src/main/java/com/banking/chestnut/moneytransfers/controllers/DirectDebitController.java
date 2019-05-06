@@ -46,8 +46,20 @@ public class DirectDebitController {
         return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
     }
 
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity findByAccountId(@PathVariable("clientId") final int id) {
+        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByAccountId(id);
+        JsonNode returnData = mapper.valueToTree(directDebitsDTO);
+        if (directDebitsDTO.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity addDirectDebit(@RequestBody DirectDebitDTO directDebitDTO) {
+        directDebitDTO.setProviderAccNumber(directDebitDTO.getProviderAccNumber().replace(" ", ""));
+        directDebitDTO.setClientAccNumber(directDebitDTO.getClientAccNumber().replace(" ", ""));
         directDebitService.addDirectDebit(directDebitDTO);
         return new ResponseEntity<>(ResponseObject.createSuccess("Direct debit created"), HttpStatus.CREATED);
     }
