@@ -5,6 +5,7 @@ import {environment} from '../../../environments/environment';
 import {TransferSendDao} from '../../models/transfer/transferSendDao';
 import {ResponseData} from '../../models/responseData';
 import {DirectDebitAgreement} from '../../models/transfer/directDebitAgreement';
+import {PermanentTransferAddRequest} from '../../models/transfer/permanentTransferAdd';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,11 @@ export class TransfersService {
   sendTransfer(transfer: TransferSendDao): Observable<ResponseData> {
     return this.http
       .post<ResponseData>(`${environment.api_url}/transactions`, transfer);
+  }
+
+  setPermanentTransfer(transfer: PermanentTransferAddRequest): Observable<ResponseData> {
+    return this.http
+      .post<ResponseData>(`${environment.api_url}/permanentTransactions`, transfer);
   }
 
   applyDirectDebitAgreement(directDebitAgreement: DirectDebitAgreement): Observable<ResponseData> {

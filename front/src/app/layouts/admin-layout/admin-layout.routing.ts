@@ -12,6 +12,7 @@ import {TransferDetailComponent} from '../../modules/moneytransfers/transfer-det
 import {AccountAddComponent} from '../../modules/ror/account/account-add/account-add.component';
 import {DirectDebitAgreementComponent} from '../../modules/moneytransfers/direct-debit-agreement/direct-debit-agreement.component';
 import {DirectDebitListComponent} from '../../modules/moneytransfers/direct-debit-list/direct-debit-list.component';
+import {PermanentTransferAddComponent} from '../../modules/moneytransfers/permanent-transfer-add/permanent-transfer-add.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -23,6 +24,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'client/:id', component: ClientsEditComponent },
     { path: 'transferhistory', component: TransferHistoryComponent},
     { path: 'transfersend', component: TransferSendComponent},
+    { path: 'permanentTransferAdd', component: PermanentTransferAddComponent},
     { path: 'transfers/:id', component: TransferDetailComponent },
     { path: 'directdebitagreement', component: DirectDebitAgreementComponent },
     { path: 'directdebitlist', component: DirectDebitListComponent},
