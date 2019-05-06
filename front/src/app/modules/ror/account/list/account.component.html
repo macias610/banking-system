@@ -46,7 +46,7 @@
                     {{ account.number_banking_account | accountNumber }}
                   </td>
                   <td>
-                    {{ account.first_name }} {{ account.surname }} ({{ account.pesel }})
+                    {{ account.owner?.first_name }} {{ account.owner?.surname }} ({{ account.owner?.pesel }})
                   </td>
                   <td>
                     {{ account.available_amount }} {{ account.currency }}
@@ -55,18 +55,19 @@
                     {{ account.is_blocked ? 'Locked' : 'Normal' }}
                   </td>
                   <td class="text-right">
-                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                    <div ngbDropdown class="dropdown" *ngIf="account.is_active" placement="bottom-right">
                       <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                       <div ngbDropdownMenu>
                         <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
                         <a class="dropdown-item" role="button" (click)="changeAccountStatus(account)">Change status</a>
-                        <a class="dropdown-item" href="#">Remove</a>
+                        <a class="dropdown-item" role="button" (click)="removeAccount(account)">Remove</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Generate history</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Make transfer</a>
                       </div>
                     </div>
+                    <button disabled class="btn btn-sm btn-danger" *ngIf="!account.is_active">Account removed</button>
                   </td>
                 </tr>
               </tbody>

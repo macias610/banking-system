@@ -36,19 +36,20 @@
               <div class="form-group">
                 <label>Owner first name</label>
                 <input type="text" class="form-control" readonly="" placeholder="First_name"
-                  [value]="account.first_name">
+                  [value]="account.owner.first_name">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label>Owner surname</label>
-                <input type="text" class="form-control" readonly="" placeholder="Surname" [value]="account.surname">
+                <input type="text" class="form-control" readonly="" placeholder="Surname"
+                  [value]="account.owner.surname">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label>Owner pesel</label>
-                <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.pesel">
+                <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.owner.pesel">
               </div>
             </div>
           </div>

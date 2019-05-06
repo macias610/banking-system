@@ -37,4 +37,9 @@ export class AccountService {
         return this.http
             .patch<ResponseData>(`${environment.api_url}/account/state/${accountId}`, {});
     }
+
+    removeAccount(accountId: string): Observable<ResponseData> {
+        return this.http
+            .patch<ResponseData>(`${environment.api_url}/account/delete/${accountId}`, {});
+    }
 }
