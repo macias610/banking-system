@@ -28,6 +28,7 @@ import {DirectDebitAgreementComponent} from '../../modules/moneytransfers/direct
 import {DirectDebitListComponent} from '../../modules/moneytransfers/direct-debit-list/direct-debit-list.component';
 import {PermanentTransferAddComponent} from '../../modules/moneytransfers/permanent-transfer-add/permanent-transfer-add.component';
 import {DirectDebitSendComponent} from '../../modules/moneytransfers/direct-debit-send/direct-debit-send.component';
+import {PermanentTransferListComponent} from '../../modules/moneytransfers/permanent-transfer-list/permanent-transfer-list.component';
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ import {DirectDebitSendComponent} from '../../modules/moneytransfers/direct-debi
         TransferSendComponent,
         TransferDetailComponent,
         PermanentTransferAddComponent,
+        PermanentTransferListComponent,
         DirectDebitAgreementComponent,
         DirectDebitListComponent,
         DirectDebitSendComponent,

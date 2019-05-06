@@ -5,7 +5,7 @@ import {environment} from '../../../environments/environment';
 import {TransferSendDao} from '../../models/transfer/transferSendDao';
 import {ResponseData} from '../../models/responseData';
 import {DirectDebitAgreement} from '../../models/transfer/directDebitAgreement';
-import {PermanentTransferAddRequest} from '../../models/transfer/permanentTransferAdd';
+import {PermanentTransfer} from '../../models/transfer/permanentTransfer';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,10 @@ export class TransfersService {
     return this.http.get<ResponseData>(`${environment.api_url}/directDebits/client/` + id);
   }
 
+  getPermanentTransfersForClient(id: String): Observable<ResponseData> {
+    return this.http.get<ResponseData>(`${environment.api_url}/permanentTransactions/client/` + id);
+  }
+
   getTransfer(id: String): Observable<ResponseData> {
     return this.http.get<ResponseData>(`${environment.api_url}/transactions/` + id);
   }
@@ -32,7 +36,7 @@ export class TransfersService {
       .post<ResponseData>(`${environment.api_url}/transactions`, transfer);
   }
 
-  setPermanentTransfer(transfer: PermanentTransferAddRequest): Observable<ResponseData> {
+  setPermanentTransfer(transfer: PermanentTransfer): Observable<ResponseData> {
     return this.http
       .post<ResponseData>(`${environment.api_url}/permanentTransactions`, transfer);
   }
@@ -43,6 +47,10 @@ export class TransfersService {
 
   cancelDirectDebit(id: String): Observable<ResponseData> {
     return this.http.put<ResponseData>(`${environment.api_url}/directDebits/` + id, null);
+  }
+
+  cancelPermanentTransfer(id: String): Observable<ResponseData> {
+    return this.http.put<ResponseData>(`${environment.api_url}/permanentTransactions/` + id, null);
   }
 
   getProviders(): Observable<ResponseData> {

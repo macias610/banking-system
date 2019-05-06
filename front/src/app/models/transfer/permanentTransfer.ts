@@ -1,4 +1,5 @@
-export interface PermanentTransferAddRequest {
+export interface PermanentTransfer {
+  id: string;
   senderAccNumber: number;
   receiverAccNumber: number;
   title: string;
@@ -7,4 +8,5 @@ export interface PermanentTransferAddRequest {
   dateFrom: Date;
   dateTo: Date;
   interval: number;
+  isEnabled: boolean;
 }

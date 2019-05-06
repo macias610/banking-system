@@ -1,23 +1,23 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Client} from '../../../models/client/client';
+import {Notification} from '../../../models/notification';
+import {HttpClient} from '@angular/common/http';
 import {TransfersService} from '../transfers.service';
 import {ClientsService} from '../../ror/clients/clients.service';
 import {map} from 'rxjs/operators';
-import {DirectDebitListItem} from '../../../models/transfer/directDebitListItem';
-import {HttpClient} from '@angular/common/http';
-import {Notification} from '../../../models/notification';
 import {ResponseData} from '../../../models/responseData';
+import {PermanentTransfer} from '../../../models/transfer/permanentTransfer';
 
 @Component({
-  selector: 'app-direct-debit-list',
-  templateUrl: './direct-debit-list.component.html',
-  styleUrls: ['./direct-debit-list.component.scss']
+  selector: 'app-permanent-transfer-list',
+  templateUrl: './permanent-transfer-list.component.html',
+  styleUrls: ['./permanent-transfer-list.component.scss']
 })
-export class DirectDebitListComponent implements OnInit {
+export class PermanentTransferListComponent implements OnInit {
 
   searchString: string;
-  directDebits: Observable<DirectDebitListItem[]>;
+  transfers: Observable<PermanentTransfer[]>;
   clients: Observable<Client[]>;
   notification: Notification = new Notification();
   notificationTimer;
@@ -35,13 +35,13 @@ export class DirectDebitListComponent implements OnInit {
 
   onChange(clientId: string) {
     this.selectedClientId = clientId;
-    this.directDebits = this.service.getDirectDebitsForClient(clientId).pipe(
+    this.transfers = this.service.getPermanentTransfersForClient(clientId).pipe(
       map(item => item.data)
     );
   }
 
-  cancelDirectDebit(directDebit: DirectDebitListItem) {
-    this.service.cancelDirectDebit(directDebit.id).subscribe(
+  cancelPermanentTransaction(transfer: PermanentTransfer) {
+    this.service.cancelPermanentTransfer(transfer.id).subscribe(
       (data: ResponseData) => {
         this.addNotification(false, data.notification || '');
         this.onChange(this.selectedClientId);
@@ -60,8 +60,8 @@ export class DirectDebitListComponent implements OnInit {
     this.searchString = searchItem;
   }
 
-  directDebitsFilter(item: DirectDebitListItem, search: string): boolean {
-    const itemString = (item.providerName).toLocaleLowerCase();
+  permanentTransfersFilter(item: PermanentTransfer, search: string): boolean {
+    const itemString = (item.title).toLocaleLowerCase();
     return itemString.indexOf(search) >= 0;
   }
 
