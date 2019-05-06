@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {TransferSendDao} from '../../models/transfer/TransferSendDao';
+import {TransferSendDao} from '../../models/transfer/transferSendDao';
 import {ResponseData} from '../../models/responseData';
-import {DirectDebitAgreement} from '../../models/transfer/DirectDebitAgreement';
+import {DirectDebitAgreement} from '../../models/transfer/directDebitAgreement';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,10 @@ export class TransfersService {
 
   getTransfers(id: String): Observable<ResponseData> {
     return this.http.get<ResponseData>(`${environment.api_url}/transactions/client/` + id);
+  }
+
+  getDirectDebitsForClient(id: String): Observable<ResponseData> {
+    return this.http.get<ResponseData>(`${environment.api_url}/directDebits/client/` + id);
   }
 
   getTransfer(id: String): Observable<ResponseData> {
@@ -31,7 +35,12 @@ export class TransfersService {
     return this.http.post<ResponseData>(`${environment.api_url}/directDebits`, directDebitAgreement);
   }
 
+  cancelDirectDebit(id: String): Observable<ResponseData> {
+    return this.http.put<ResponseData>(`${environment.api_url}/directDebits/` + id, null);
+  }
+
   getProviders(): Observable<ResponseData> {
     return this.http.get<ResponseData>(`${environment.api_url}/directDebits/providers`);
   }
+
 }

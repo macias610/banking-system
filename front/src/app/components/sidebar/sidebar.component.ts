@@ -14,6 +14,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/transferhistory', title: 'transfer history', icon: 'business_money-coins', class: '' },
     { path: '/transfersend', title: 'send transfer', icon: 'business_money-coins', class: '' },
     { path: '/directdebitagreement', title: 'direct debit agreement', icon: 'business_money-coins', class: '' },
+    { path: '/directdebitlist', title: 'direct debit history', icon: 'business_money-coins', class: '' },
 ];
 
 @Component({
