@@ -7,8 +7,8 @@ import java.util.Date;
 
 @Data
 public class PermanentTransactionDTO extends TransactionDTO {
-    private Date dateFrom;
-    private Date dateTo;
+    private LocalDate dateFrom;
+    private LocalDate dateTo;
     private int interval;
     private LocalDate nextDate;
 }
