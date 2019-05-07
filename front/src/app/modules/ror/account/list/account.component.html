@@ -64,7 +64,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Generate history</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Make transfer</a>
+                        <a class="dropdown-item" [routerLink]="['/transfersend', account.id]">Make transfer</a>
                       </div>
                     </div>
                     <button disabled class="btn btn-sm btn-danger" *ngIf="!account.is_active">Account removed</button>
