@@ -74,6 +74,7 @@ public class PermanentTransactionService {
         dto.setDateFrom(permanentTransaction.getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         dto.setDateTo(permanentTransaction.getDateTo().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         dto.setInterval(permanentTransaction.getIntervalTransaction());
+        dto.setEnabled(permanentTransaction.isEnabled());
         return dto;
     }
 
