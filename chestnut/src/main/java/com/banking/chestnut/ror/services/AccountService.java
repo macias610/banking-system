@@ -16,10 +16,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -96,6 +96,8 @@ public class AccountService implements IAccountService {
     public List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId) {
         List<Transaction> transactions = this.transactionRepository.findAll();
 
+
+
         transactions = transactions.stream().filter(item -> (item.getSenderId() != null && item.getSenderId().getId().equals(accountId))
         ||(item.getReceiverId() != null && item.getReceiverId().getId().equals(accountId))).collect(Collectors.toList());
         
@@ -104,6 +106,20 @@ public class AccountService implements IAccountService {
         || (transactionDto.getEndDate() != null && item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())))
                 .collect(Collectors.toList());
         return transactions;
+    }
+
+    private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... keyExtractors)
+    {
+        final Map<List<?>, Boolean> seen = new ConcurrentHashMap<>();
+
+        return t ->
+        {
+            final List<?> keys = Arrays.stream(keyExtractors)
+                    .map(ke -> ke.apply(t))
+                    .collect(Collectors.toList());
+
+            return seen.putIfAbsent(keys, Boolean.TRUE) == null;
+        };
     }
 
     @Override
