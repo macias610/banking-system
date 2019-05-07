@@ -22,8 +22,6 @@ public class CreditDto {
 
     private Integer creditTypeId;
 
-    private Integer paymentScheduleId;
-
     private Long value;
 
     private Boolean isActive;
@@ -39,7 +37,6 @@ public class CreditDto {
         this.id = credits.getId();
         this.accountId = credits.getAccount().getId();
         this.creditTypeId = credits.getCreditType().getId();
-        this.paymentScheduleId = credits.getPaymentSchedule().getId();
         this.value = credits.getValue();
         this.isActive = credits.getIsActive();
         this.created_at = credits.getCreated_at();

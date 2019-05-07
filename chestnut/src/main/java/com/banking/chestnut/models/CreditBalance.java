@@ -32,10 +32,5 @@ public class CreditBalance {
     private Boolean is_overdue;
 
     private Long payments_left;
-
-
-    public Integer getId() {
-        return id;
-    }
 }
 

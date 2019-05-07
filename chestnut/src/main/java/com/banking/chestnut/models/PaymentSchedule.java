@@ -1,12 +1,11 @@
 package com.banking.chestnut.models;
 
 import com.banking.chestnut.models.Credits;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -25,10 +24,12 @@ public class PaymentSchedule {
     @Column(name = "payment_schedule_id")
     private Integer id;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "paymentSchedule",
-            fetch = FetchType.LAZY)
-    private Set<Credits> credits;
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @NonNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credit_id")
+    private Credits credit;
 
     @Temporal(TemporalType.DATE)
     private Date payment_date;
@@ -37,8 +38,5 @@ public class PaymentSchedule {
 
     private Float payment_interest;
 
-    public Integer getId() {
-        return id;
-    }
 }
 

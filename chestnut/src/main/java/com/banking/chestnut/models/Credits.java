@@ -31,10 +31,6 @@ public class Credits {
     @JoinColumn(name = "credit_type_id")
     private CreditType creditType;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "payment_schedule_id")
-    private PaymentSchedule paymentSchedule;
-
     private Long value;
 
     private Boolean isActive;
@@ -58,10 +54,14 @@ public class Credits {
             orphanRemoval = true)
     private Set<CreditBalance> creditBalance;
 
-    public Credits(CreditDto creditDto, Account account, CreditType creditType, PaymentSchedule paymentSchedule){
+    @OneToMany(mappedBy = "credit",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Set<PaymentSchedule> paymentSchedule;
+
+    public Credits(CreditDto creditDto, Account account, CreditType creditType){
         this.account = account;
         this.creditType = creditType;
-        this.paymentSchedule = paymentSchedule;
         this.value = creditDto.getValue();
         this.isActive = creditDto.getIsActive();
         this.created_at = creditDto.getCreated_at();
