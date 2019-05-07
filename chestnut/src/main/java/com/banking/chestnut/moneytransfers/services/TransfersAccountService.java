@@ -36,6 +36,14 @@ public class TransfersAccountService {
         return transfersAccountRepository.findByNumberBankingAccount(number);
     }
 
+    public boolean checkIfAccountExists(String number) {
+        Account account = transfersAccountRepository.findByNumberBankingAccount(number);
+        if (account == null)
+            return false;
+        else
+            return true;
+    }
+
     public List<AccountDTO> findByType(String type) {
         List<Account> accounts = transfersAccountRepository.findByType(type);
         List<AccountDTO> accountDTOs = new ArrayList<>();

@@ -49,12 +49,17 @@ public class PermanentTransactionController {
     public ResponseEntity createPermanentTransaction(@RequestBody PermanentTransactionDTO dto) {
         dto.setReceiverAccNumber(dto.getReceiverAccNumber().replace(" ", "").trim());
         dto.setSenderAccNumber(dto.getSenderAccNumber().replace(" ", "").trim());
-        if (dto.getValue() < 0) {
-            JsonNode returnData = mapper.valueToTree(dto);
-            return new ResponseEntity(ResponseObject.createError("Value < 0", returnData), HttpStatus.BAD_REQUEST);
+        if (transfersAccountService.checkIfAccountExists(dto.getReceiverAccNumber())) {
+            if (dto.getValue() < 0) {
+                JsonNode returnData = mapper.valueToTree(dto);
+                return new ResponseEntity(ResponseObject.createError("Value < 0", returnData), HttpStatus.BAD_REQUEST);
+            } else {
+                permanentTransactionService.addPermanentTransaction(dto);
+                return new ResponseEntity<>(ResponseObject.createSuccess("Transactions created"), HttpStatus.CREATED);
+            }
         } else {
-            permanentTransactionService.addPermanentTransaction(dto);
-            return new ResponseEntity<>(ResponseObject.createSuccess("Transactions created"), HttpStatus.CREATED);
+            JsonNode returnData = mapper.valueToTree(dto);
+            return new ResponseEntity(ResponseObject.createError("Account does not exist", returnData), HttpStatus.BAD_REQUEST);
         }
     }
 

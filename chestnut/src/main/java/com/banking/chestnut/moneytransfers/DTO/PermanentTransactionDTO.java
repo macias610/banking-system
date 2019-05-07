@@ -23,4 +23,5 @@ public class PermanentTransactionDTO extends TransactionDTO {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate nextDate;
+    private boolean isEnabled;
 }
