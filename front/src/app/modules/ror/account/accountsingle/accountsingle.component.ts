@@ -35,10 +35,14 @@ export class AccountsingleComponent implements OnInit {
 
     ngOnInit() {
         this.accountId = this.route.snapshot.paramMap.get('id');
+        this.getAccountData();
+        this.refreshCardList();
+    }
+
+    getAccountData() {
         this.account$ = this.accountService.getAccount(this.accountId).pipe(
             map(item => item.data)
         );
-        this.refreshCardList();
     }
 
     refreshCardList() {
@@ -124,10 +128,24 @@ export class AccountsingleComponent implements OnInit {
         this.selectedOperationType = null;
     }
 
-    addAmount(value) {
+    addAmount(value, account: AccountListItem) {
         if (value) {
 
-
+            this.accountService.changeAmountOfAccount(this.selectedOperationType, value, this.accountId).subscribe(
+                (data) => {
+                    this.notiService.showNotification(data.notification || '', true);
+                    if (this.selectedOperationType === 'CASH_OUT') {
+                        account.available_amount -= parseFloat(value);
+                    } else {
+                        account.available_amount += parseFloat(value);
+                    }
+                    this.closeInput();
+                },
+                (error) => {
+                    const errorData = error.error;
+                    this.notiService.showNotification(errorData.notification || '', false);
+                }
+            );
 
         }
     }

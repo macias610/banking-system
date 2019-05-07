@@ -42,4 +42,15 @@ export class AccountService {
         return this.http
             .patch<ResponseData>(`${environment.api_url}/account/delete/${accountId}`, {});
     }
+
+    changeAmountOfAccount(type: string, amount: number, accountId: string): Observable<ResponseData> {
+        const data = {
+            type: type,
+            value: amount,
+            account_id: accountId
+        };
+
+        return this.http
+            .post<ResponseData>(`${environment.api_url}/transaction/overflow`, data);
+    }
 }

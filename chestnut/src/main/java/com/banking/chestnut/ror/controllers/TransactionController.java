@@ -43,18 +43,18 @@ public class TransactionController {
         try {
             if(overflowDto.getValue() <= 0)
                 return new ResponseEntity<>(ResponseObject.createError("Invalid amount"), HttpStatus.BAD_REQUEST);
-            if(!Arrays.asList("IN", "OUT").contains(overflowDto.getType()))
+            if(!Arrays.asList("CASH_IN", "CASH_OUT").contains(overflowDto.getType()))
                 return new ResponseEntity<>(ResponseObject.createError("Invalid type operation"), HttpStatus.BAD_REQUEST);
             Optional<Account> account = this.accountService.getById(overflowDto.getAccountId());
             if(!account.isPresent())
                 return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
-            if(overflowDto.getType().equals("IN")){
+            if(overflowDto.getType().equals("CASH_IN")){
                 account.get().getInfoId().setAvailableAmount(account.get().getInfoId().getAvailableAmount() + overflowDto.getValue());
                 this.accountInfoService.saveAccountInfo(account.get().getInfoId());
                 Transaction transaction = prepareTransaction(overflowDto,  null, account.get());
                 this.transactionService.saveTransaction(transaction);
             }
-            if(overflowDto.getType().equals("OUT")){
+            if(overflowDto.getType().equals("CASH_OUT")){
                 if((account.get().getInfoId().getAvailableAmount() - overflowDto.getValue()) + account.get().getInfoId().getLockedAmount() < 0)
                     return new ResponseEntity(ResponseObject.createError("Insufficient funds on sender account"), HttpStatus.BAD_REQUEST);
                 account.get().getInfoId().setAvailableAmount(account.get().getInfoId().getAvailableAmount() - overflowDto.getValue());
@@ -75,9 +75,9 @@ public class TransactionController {
         transaction.setIsTransferClientAcconuts(false);
         transaction.setIsForeign(false);
         transaction.setIsViaBank(false);
-        if(overflowDto.getType().equals("IN"))
+        if(overflowDto.getType().equals("CASH_IN"))
             transaction.setTitle("Cash " + overflowDto.getType() + " to " + receiver.getNumberBankingAccount());
-        else if(overflowDto.getType().equals("OUT"))
+        else if(overflowDto.getType().equals("CASH_OUT"))
             transaction.setTitle("Cash " + overflowDto.getType() + " from " + sender.getNumberBankingAccount());
         transaction.setValue(overflowDto.getValue());
         transaction.setSenderId(sender);
