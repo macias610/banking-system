@@ -19,6 +19,8 @@ const PIN_LENGTH = 4;
 })
 export class AccountsingleComponent implements OnInit {
 
+    selectedOperationType: string;
+    selectedOperation: boolean;
     accountId: string;
     account$: Observable<AccountListItem>;
     cards$: Observable<Card[]>;
@@ -105,6 +107,29 @@ export class AccountsingleComponent implements OnInit {
                 this.notiService.showNotification(errorData.notification || '', false);
             }
         );
+    }
+
+    openCashIn() {
+        this.selectedOperation = true;
+        this.selectedOperationType = 'CASH_IN';
+    }
+
+    openCashOut() {
+        this.selectedOperation = true;
+        this.selectedOperationType = 'CASH_OUT';
+    }
+
+    closeInput() {
+        this.selectedOperation = false;
+        this.selectedOperationType = null;
+    }
+
+    addAmount(value) {
+        if (value) {
+
+
+
+        }
     }
 
 }

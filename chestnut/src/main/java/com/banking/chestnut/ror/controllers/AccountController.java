@@ -97,6 +97,11 @@ public class AccountController {
                 return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
             if(!agent.isPresent())
                 return new ResponseEntity<>(ResponseObject.createError("Agent not found"), HttpStatus.NOT_FOUND);
+
+            if (account.get().getClientId().getId().equals(agent.get().getId())){
+                return new ResponseEntity<>(ResponseObject.createError("Agent is the same as owner"), HttpStatus.NOT_FOUND);
+            }
+
             account.get().setAgentId(agent.get());
             this.accountService.editAccount(account.get());
             return new ResponseEntity(ResponseObject.createSuccess("Agent assigned to account"), HttpStatus.OK);
