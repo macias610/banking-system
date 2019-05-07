@@ -47,7 +47,7 @@ public class PermanentTransactionService {
         permanentTransaction.setDateTo(Date.from(dto.getDateTo().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         permanentTransaction.setIntervalTransaction(dto.getInterval());
         permanentTransaction.setEnabled(true);
-        permanentTransaction.setNextDate(java.sql.Date.valueOf(calculateNextDate(dto.getDateFrom(), dto.getInterval())));
+        permanentTransaction.setNextDate(Date.from(dto.getDateFrom().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         return permanentTransactionRepository.save(permanentTransaction);
     }
 
