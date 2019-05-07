@@ -96,8 +96,6 @@ public class AccountService implements IAccountService {
     public List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId) {
         List<Transaction> transactions = this.transactionRepository.findAll();
 
-
-
         transactions = transactions.stream().filter(item -> (item.getSenderId() != null && item.getSenderId().getId().equals(accountId))
         ||(item.getReceiverId() != null && item.getReceiverId().getId().equals(accountId))).collect(Collectors.toList());
 
@@ -108,20 +106,6 @@ public class AccountService implements IAccountService {
                     .collect(Collectors.toList());
         }
         return transactions;
-    }
-
-    private static <T> Predicate<T> distinctByKeys(Function<? super T, ?>... keyExtractors)
-    {
-        final Map<List<?>, Boolean> seen = new ConcurrentHashMap<>();
-
-        return t ->
-        {
-            final List<?> keys = Arrays.stream(keyExtractors)
-                    .map(ke -> ke.apply(t))
-                    .collect(Collectors.toList());
-
-            return seen.putIfAbsent(keys, Boolean.TRUE) == null;
-        };
     }
 
     @Override
