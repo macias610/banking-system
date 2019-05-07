@@ -4,33 +4,23 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card">
-        <select name="" (change)="onChange($event.target.value)">
-          <option value="">-- Select client --</option>
-          <option *ngFor="let client of clients | async" [value]="client.id">
-            {{client.info.surname}}
-          </option>
-        </select>
         <div class="card-header">
           <h5 class="title">Send transfer</h5>
         </div>
         <div class="card-body">
           <div class="alert text-center"
-               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
-               *ngIf="notification && notification.message">
+            [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+            *ngIf="notification && notification.message">
             <span>{{ notification.message }}</span>
           </div>
           <form [formGroup]="sendTransferForm" (ngSubmit)="sendTransfer()">
             <p class="card-category">Your info</p>
-            <div class="row">
+            <div class="row" *ngIf="(account | async) as accountItem">
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Account</label>
-                  <select name="" formControlName="senderAccNumber" class="form-control">
-                    <option value="">-- Select account --</option>
-                    <option *ngFor="let account of accounts | async" [value]="account.number_banking_account">
-                      {{account.number_banking_account}}
-                    </option>
-                  </select>
+                  <input type="text" readonly="" class="form-control" formControlName="senderAccNumber"
+                    placeholder="Account" [value]="accountItem.number_banking_account">
                 </div>
               </div>
               <div class="col-md-4">
@@ -53,7 +43,7 @@
                 <div class="form-group">
                   <label>account</label>
                   <input type="text" class="form-control" formControlName="receiverAccNumber" placeholder="account"
-                         value="">
+                    value="">
                 </div>
               </div>
             </div>
@@ -68,7 +58,7 @@
             <hr>
             <div class="text-right">
               <button type="submit" [disabled]="sendTransferForm.invalid || formInSave"
-                      class="btn btn-lg btn-info btn-round">Send transfer
+                class="btn btn-lg btn-info btn-round">Send transfer
               </button>
             </div>
           </form>

@@ -24,7 +24,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'clients', component: ClientsListComponent },
     { path: 'client', component: ClientsAddComponent },
     { path: 'client/:id', component: ClientsEditComponent },
-    { path: 'transfersend', component: TransferSendComponent },
+    { path: 'transfersend/:id', component: TransferSendComponent },
     { path: 'permanentTransferAdd', component: PermanentTransferAddComponent },
     { path: 'permanentTransferList', component: PermanentTransferListComponent },
     { path: 'transfers/:id', component: TransferDetailComponent },

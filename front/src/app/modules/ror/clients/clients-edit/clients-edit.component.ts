@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ClientsService} from '../clients.service';
-import {Notification} from '../../../../models/notification';
-import {ActivatedRoute} from '@angular/router';
-import {ClientCreateDao} from '../../../../models/client/clientCreateDao';
-import {ResponseData} from '../../../../models/responseData';
-import {AccountService} from '../../account/account.service';
-import {Observable} from 'rxjs';
-import {AccountListItem} from '../../../../models/account/accountListItem';
-import {NotificationService} from '../../../../shared/services/notification.service';
-import {map} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ClientsService } from '../clients.service';
+import { Notification } from '../../../../models/notification';
+import { ActivatedRoute } from '@angular/router';
+import { ClientCreateDao } from '../../../../models/client/clientCreateDao';
+import { ResponseData } from '../../../../models/responseData';
+import { AccountService } from '../../account/account.service';
+import { Observable } from 'rxjs';
+import { AccountListItem } from '../../../../models/account/accountListItem';
+import { NotificationService } from '../../../../shared/services/notification.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-clients-edit',
@@ -158,6 +158,33 @@ export class ClientsEditComponent implements OnInit {
             }
         );
 
+    }
+
+    changeAccountStatus(account: AccountListItem) {
+        this.accountService.changeAccountStatus(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_blocked = !account.is_blocked;
+
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+    }
+
+    removeAccount(account: AccountListItem) {
+        this.accountService.removeAccount(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_active = false;
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
     }
 
 }
