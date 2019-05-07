@@ -28,7 +28,7 @@ public class DirectDebitController {
     //providerID means clientId (assuming provider is bank's client)
     @GetMapping("/provider/{providerId}")
     public ResponseEntity findByProviderId(@PathVariable("providerId") final int providerId) {
-        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByProviderId(transfersAccountService.findByClientId(providerId).getId());
+        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByProviderId(transfersAccountService.findById(providerId).getId());
         JsonNode returnData = mapper.valueToTree(directDebitsDTO);
         if (directDebitsDTO.isEmpty())
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
@@ -47,8 +47,8 @@ public class DirectDebitController {
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity findByAccountId(@PathVariable("clientId") final int id) {
-        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByAccountId(id);
+    public ResponseEntity findByClientId(@PathVariable("clientId") final int id) {
+        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByClientId(id);
         JsonNode returnData = mapper.valueToTree(directDebitsDTO);
         if (directDebitsDTO.isEmpty())
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);

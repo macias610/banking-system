@@ -23,6 +23,10 @@ public class TransfersAccountService {
         return transfersAccountRepository.findByClientId_Id(clientId);
     }
 
+    public Account findById(int id) {
+        return transfersAccountRepository.findById(id);
+    }
+
     @Transactional
     public Account updateAvailableAmount(int accountId, long amount) {
         Account account = transfersAccountRepository.findById(accountId);
