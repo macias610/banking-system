@@ -94,19 +94,16 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId) {
-        List<Transaction> transactions = this.transactionRepository.findAllByType(transactionDto.getType());
-        List<Transaction> filtered = new ArrayList<>();
-        for(Transaction transaction : transactions){
-            if(transaction.getSenderId() != null && transaction.getSenderId().getId().equals(accountId))
-                filtered.add(transaction);
-            else if(transaction.getReceiverId() != null && transaction.getReceiverId().getId().equals(accountId))
-                filtered.add(transaction);
-        }
-        filtered = filtered.stream().filter(item ->
-                (item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime() &&
-                        item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())
-        ).collect(Collectors.toList());
-        return filtered;
+        List<Transaction> transactions = this.transactionRepository.findAll();
+
+        transactions = transactions.stream().filter(item -> (item.getSenderId() != null && item.getSenderId().getId().equals(accountId))
+        ||(item.getReceiverId() != null && item.getReceiverId().getId().equals(accountId))).collect(Collectors.toList());
+        
+        transactions = transactions.stream().filter(item -> (transactionDto.getType() != null && item.getType().equals(transactionDto.getType())
+        || (transactionDto.getStartDate() != null && item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime())
+        || (transactionDto.getEndDate() != null && item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())))
+                .collect(Collectors.toList());
+        return transactions;
     }
 
     @Override
