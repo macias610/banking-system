@@ -47,7 +47,7 @@ public class PermanentTransactionService {
         permanentTransaction.setDateTo(Date.from(dto.getDateTo().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         permanentTransaction.setIntervalTransaction(dto.getInterval());
         permanentTransaction.setEnabled(true);
-        permanentTransaction.setNextDate(Date.from(calculateNextDate(dto.getDateFrom(), dto.getInterval()).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        permanentTransaction.setNextDate(java.sql.Date.valueOf(calculateNextDate(dto.getDateFrom(), dto.getInterval())));
         return permanentTransactionRepository.save(permanentTransaction);
     }
 
@@ -88,6 +88,6 @@ public class PermanentTransactionService {
     }
 
     private LocalDate calculateNextDate(LocalDate currentDate, int interval) {
-        return currentDate.plusDays(interval);
+        return currentDate.plusDays(interval).atStartOfDay().toLocalDate();
     }
 }

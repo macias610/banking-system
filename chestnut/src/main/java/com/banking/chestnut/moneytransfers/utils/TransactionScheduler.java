@@ -15,6 +15,7 @@ import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,12 +30,12 @@ public class TransactionScheduler {
     private final MoneyTransactionService moneyTransactionService;
     private final TransfersAccountService transfersAccountService;
 
-    @Scheduled(cron = "0 1 0 * * ?")
+    @Scheduled(cron = "*/5 * * * * ?")
     public void executeTask() {
-        Date currentDate = new Date();
+        Date currentDate = java.sql.Date.valueOf(LocalDate.now().atStartOfDay().toLocalDate());
         List<PermanentTransactions> permanentTransactions = permanentTransactionService.findByNextDateAndEnabled(currentDate);
         if (permanentTransactions.isEmpty() == false) {
-            for (PermanentTransactions t: permanentTransactions) {
+            for (PermanentTransactions t : permanentTransactions) {
                 Transaction outgoing = moneyTransactionService.addTransaction(t, "outgoing", currentDate);
                 Transaction incoming = moneyTransactionService.addTransaction(t, "incoming", currentDate);
                 transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
