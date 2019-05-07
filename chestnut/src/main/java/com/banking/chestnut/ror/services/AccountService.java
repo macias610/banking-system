@@ -16,10 +16,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,19 +94,18 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId) {
-        List<Transaction> transactions = this.transactionRepository.findAllByType(transactionDto.getType());
-        List<Transaction> filtered = new ArrayList<>();
-        for(Transaction transaction : transactions){
-            if(transaction.getSenderId() != null && transaction.getSenderId().getId().equals(accountId))
-                filtered.add(transaction);
-            else if(transaction.getReceiverId() != null && transaction.getReceiverId().getId().equals(accountId))
-                filtered.add(transaction);
+        List<Transaction> transactions = this.transactionRepository.findAll();
+
+        transactions = transactions.stream().filter(item -> (item.getSenderId() != null && item.getSenderId().getId().equals(accountId))
+        ||(item.getReceiverId() != null && item.getReceiverId().getId().equals(accountId))).collect(Collectors.toList());
+
+        if (transactionDto != null){
+            transactions = transactions.stream().filter(item -> (transactionDto.getType() != null && item.getType().equals(transactionDto.getType())
+                    || (transactionDto.getStartDate() != null && item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime())
+                    || (transactionDto.getEndDate() != null && item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())))
+                    .collect(Collectors.toList());
         }
-        filtered = filtered.stream().filter(item ->
-                (item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime() &&
-                        item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())
-        ).collect(Collectors.toList());
-        return filtered;
+        return transactions;
     }
 
     @Override
@@ -117,5 +116,12 @@ public class AccountService implements IAccountService {
     @Override
     public List<Account> getAll() {
         return this.accountRepository.findAll();
+    }
+
+    @Override
+    public List<Account> getClientAccounts(Integer clientId) {
+        List<Account> accounts = this.accountRepository.findAll();
+        accounts = accounts.stream().filter(item -> item.getClientId().getId().equals(clientId)).collect(Collectors.toList());
+        return accounts;
     }
 }

@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {AccountService} from '../account.service';
-import {CardService} from '../card.service';
-import {Observable} from 'rxjs';
-import {AccountListItem} from '../../../../models/account/accountListItem';
-import {map} from 'rxjs/operators';
-import {Card} from '../../../../models/card';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NotificationService} from '../../../../shared/services/notification.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AccountService } from '../account.service';
+import { CardService } from '../card.service';
+import { Observable } from 'rxjs';
+import { AccountListItem } from '../../../../models/account/accountListItem';
+import { map, catchError } from 'rxjs/operators';
+import { Card } from '../../../../models/card';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 const PIN_LENGTH = 4;
 
@@ -18,6 +18,8 @@ const PIN_LENGTH = 4;
 })
 export class AccountsingleComponent implements OnInit {
 
+    selectedOperationType: string;
+    selectedOperation: boolean;
     accountId: string;
     account$: Observable<AccountListItem>;
     cards$: Observable<Card[]>;
@@ -32,10 +34,14 @@ export class AccountsingleComponent implements OnInit {
 
     ngOnInit() {
         this.accountId = this.route.snapshot.paramMap.get('id');
+        this.getAccountData();
+        this.refreshCardList();
+    }
+
+    getAccountData() {
         this.account$ = this.accountService.getAccount(this.accountId).pipe(
             map(item => item.data)
         );
-        this.refreshCardList();
     }
 
     refreshCardList() {
@@ -104,6 +110,43 @@ export class AccountsingleComponent implements OnInit {
                 this.notiService.showNotification(errorData.notification || '', false);
             }
         );
+    }
+
+    openCashIn() {
+        this.selectedOperation = true;
+        this.selectedOperationType = 'CASH_IN';
+    }
+
+    openCashOut() {
+        this.selectedOperation = true;
+        this.selectedOperationType = 'CASH_OUT';
+    }
+
+    closeInput() {
+        this.selectedOperation = false;
+        this.selectedOperationType = null;
+    }
+
+    addAmount(value, account: AccountListItem) {
+        if (value) {
+
+            this.accountService.changeAmountOfAccount(this.selectedOperationType, value, this.accountId).subscribe(
+                (data) => {
+                    this.notiService.showNotification(data.notification || '', true);
+                    if (this.selectedOperationType === 'CASH_OUT') {
+                        account.available_amount -= parseFloat(value);
+                    } else {
+                        account.available_amount += parseFloat(value);
+                    }
+                    this.closeInput();
+                },
+                (error) => {
+                    const errorData = error.error;
+                    this.notiService.showNotification(errorData.notification || '', false);
+                }
+            );
+
+        }
     }
 
 }

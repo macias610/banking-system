@@ -36,7 +36,8 @@ export class AccountComponent implements OnInit {
     }
 
     accountFilter(item: AccountListItem, search: string): boolean {
-        const itemString = (item.number_banking_account + '' + item.first_name + '' + item.surname).toLocaleLowerCase();
+        const itemString = (item.number_banking_account + '' +
+            item.owner.first_name + '' + item.owner.surname + '' + item.owner.pesel).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
     }
 
@@ -46,6 +47,19 @@ export class AccountComponent implements OnInit {
                 this.notiService.showNotification(data.notification || '', true);
                 account.is_blocked = !account.is_blocked;
 
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+    }
+
+    removeAccount(account: AccountListItem) {
+        this.service.removeAccount(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_active = false;
             },
             (error) => {
                 const errorData = error.error;

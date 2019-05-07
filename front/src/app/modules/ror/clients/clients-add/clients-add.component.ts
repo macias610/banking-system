@@ -89,7 +89,7 @@ export class ClientsAddComponent implements OnInit {
 
         this.service.createClient(formValue).subscribe(
             (data: ResponseData) => {
-                this.formInSave = true;
+                this.formInSave = false;
                 this.createClientForm.reset();
                 this.cleanFormArray(this.contactForms);
                 this.cleanFormArray(this.documentsForms);
@@ -101,7 +101,7 @@ export class ClientsAddComponent implements OnInit {
             },
             (error) => {
                 const errorData: ResponseData = error.error;
-                this.formInSave = true;
+                this.formInSave = false;
 
                 this.notiService.showNotification(errorData.notification || '', false);
             }

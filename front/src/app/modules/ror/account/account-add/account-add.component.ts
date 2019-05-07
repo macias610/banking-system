@@ -75,13 +75,13 @@ export class AccountAddComponent implements OnInit {
 
         this.service.createAccount(formValue).subscribe(
             (data: ResponseData) => {
-                this.formInSave = true;
+                this.formInSave = false;
                 this.createAccountForm.reset();
                 this.router.navigateByUrl('/accounts');
             },
             (error) => {
                 const errorData: ResponseData = error.error;
-                this.formInSave = true;
+                this.formInSave = false;
                 this.notiService.showNotification(errorData.notification || '', false);
             }
         );

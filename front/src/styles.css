@@ -24,3 +24,8 @@
 .locked {
   text-decoration: line-through;
 }
+
+.input-group>.input-group-append>.btn {
+  margin-top: 0;
+  margin-bottom: 0;
+}
