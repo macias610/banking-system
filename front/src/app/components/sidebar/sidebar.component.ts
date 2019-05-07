@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 declare interface RouteInfo {
     path: string;
@@ -10,7 +10,6 @@ export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard', icon: 'design_app', class: '' },
     { path: '/clients', title: 'Clients', icon: 'users_single-02', class: '' },
     { path: '/accounts', title: 'Accounts', icon: 'business_money-coins', class: '' },
-    { path: '/transferhistory', title: 'transfer history', icon: 'business_money-coins', class: '' },
     { path: '/transfersend', title: 'send transfer', icon: 'business_money-coins', class: '' },
     { path: '/directdebitagreement', title: 'direct debit agreement', icon: 'business_money-coins', class: '' },
     { path: '/directdebitlist', title: 'active direct debits', icon: 'business_money-coins', class: '' },

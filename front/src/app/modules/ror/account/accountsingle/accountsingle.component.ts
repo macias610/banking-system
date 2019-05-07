@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {AccountService} from '../account.service';
-import {CardService} from '../card.service';
-import {Observable} from 'rxjs';
-import {AccountListItem} from '../../../../models/account/accountListItem';
-import {map} from 'rxjs/operators';
-import {Card} from '../../../../models/card';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NotificationService} from '../../../../shared/services/notification.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AccountService } from '../account.service';
+import { CardService } from '../card.service';
+import { Observable } from 'rxjs';
+import { AccountListItem } from '../../../../models/account/accountListItem';
+import { map, catchError } from 'rxjs/operators';
+import { Card } from '../../../../models/card';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 const PIN_LENGTH = 4;
 

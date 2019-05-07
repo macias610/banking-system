@@ -185,7 +185,7 @@ public class AccountController {
 
     @GetMapping(value = "/transactions/{accountId}")
     @ResponseBody
-    ResponseEntity getAccountTransactions(@PathVariable Integer accountId, @RequestBody TransactionDto transactionDto){
+    ResponseEntity getAccountTransactions(@PathVariable Integer accountId, @RequestBody(required = false) TransactionDto transactionDto){
         try {
             Optional<Account> account = this.accountService.getById(accountId);
             if(!account.isPresent())
