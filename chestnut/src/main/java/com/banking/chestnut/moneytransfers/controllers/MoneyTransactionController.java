@@ -78,7 +78,7 @@ public class MoneyTransactionController {
             } else {
                 Transaction outgoing = moneyTransactionService.addTransaction(transactionDTO, "outgoing");
                 Transaction incoming = moneyTransactionService.addTransaction(transactionDTO, "incoming");
-                transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), -outgoing.getValue());
+                transfersAccountService.updateAvailableAmount(outgoing.getSenderId().getId(), outgoing.getValue());
                 transfersAccountService.updateAvailableAmount(incoming.getReceiverId().getId(), incoming.getValue());
                 return new ResponseEntity<>(ResponseObject.createSuccess("Transactions created"), HttpStatus.CREATED);
             }
