@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ClientsService } from '../clients.service';
-import { Notification } from '../../../../models/notification';
-import { ResponseData } from '../../../../models/responseData';
-import { NotificationService } from '../../../../shared/services/notification.service';
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ClientsService} from '../clients.service';
+import {ResponseData} from '../../../../models/responseData';
+import {NotificationService} from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-clients-add',

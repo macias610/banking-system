@@ -1,0 +1,68 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <select [(ngModel)]="selectedValue" name="" (change)="onChange()">
+          <option value="">-- Select provider --</option>
+          <option *ngFor="let provider of providers | async" [ngValue]="provider">
+            {{provider.clientName}}
+          </option>
+        </select>
+        <div class="card-header">
+          <h5 class="title">Send direct debit</h5>
+        </div>
+        <form [formGroup]="sendTransferForm" (ngSubmit)="sendTransfer()">
+        <div class="card-body">
+          <div class="alert text-center"
+               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+               *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+            <p class="card-category">Your info</p>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Account</label>
+                  <select name="" formControlName="senderAccNumber" class="form-control">
+                    <option value="">-- Select account --</option>
+                    <option *ngFor="let directDebit of directDebits | async" [value]="directDebit.clientAccNumber">
+                      {{directDebit.clientAccNumber}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" class="form-control" formControlName="title" placeholder="Title" value="">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Value</label>
+                  <input type="number" class="form-control" formControlName="value" placeholder="Value" value="">
+                </div>
+              </div>
+            </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>date</label>
+                <input type="date" class="form-control" formControlName="transactionDate" placeholder="date" value="">
+              </div>
+            </div>
+          </div>
+            <hr>
+            <div class="text-right">
+              <button type="submit" [disabled]="sendTransferForm.invalid || formInSave"
+                      class="btn btn-lg btn-info btn-round">send direct debit
+              </button>
+            </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

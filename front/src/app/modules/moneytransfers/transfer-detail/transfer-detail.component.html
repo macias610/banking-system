@@ -1,0 +1,67 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Send transfer</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert text-center"
+               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+               *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <form [formGroup]="transferForm" (ngSubmit)="sendTransfer()">
+            <p class="card-category">Your info</p>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Account number</label>
+                  <input type="text" class="form-control" formControlName="senderAccNumber" placeholder="account number"
+                         value="" readonly="readonly">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Title</label>
+                  <input type="text" class="form-control" formControlName="title" placeholder="Title" value=""
+                         readonly="readonly">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Value</label>
+                  <input type="number" class="form-control" formControlName="value" placeholder="Value" value=""
+                         readonly="readonly">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <p class="card-category">Receiver info</p>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>account</label>
+                  <input type="text" class="form-control" formControlName="receiverAccNumber" placeholder="account"
+                         value="" readonly="readonly">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>date</label>
+                  <input type="text" class="form-control" formControlName="transactionDate" placeholder="date" value=""
+                         readonly="readonly">
+                </div>
+              </div>
+            </div>
+            <hr>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
