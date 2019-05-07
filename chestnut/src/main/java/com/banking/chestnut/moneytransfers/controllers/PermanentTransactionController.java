@@ -1,10 +1,9 @@
 package com.banking.chestnut.moneytransfers.controllers;
 
-import com.banking.chestnut.models.PermanentTransactions;
 import com.banking.chestnut.models.ResponseObject;
 import com.banking.chestnut.moneytransfers.DTO.PermanentTransactionDTO;
-import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
 import com.banking.chestnut.moneytransfers.services.PermanentTransactionService;
+import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +49,11 @@ public class PermanentTransactionController {
     public ResponseEntity createPermanentTransaction(@RequestBody PermanentTransactionDTO dto) {
         dto.setReceiverAccNumber(dto.getReceiverAccNumber().replace(" ", "").trim());
         dto.setSenderAccNumber(dto.getSenderAccNumber().replace(" ", "").trim());
+        LocalDate today = LocalDate.now().atStartOfDay().toLocalDate();
+        ResponseEntity validatedDates = validateDates(dto, today);
+        if (validatedDates != null) {
+            return validatedDates;
+        }
         if (transfersAccountService.checkIfAccountExists(dto.getReceiverAccNumber())) {
             if (dto.getValue() < 0) {
                 JsonNode returnData = mapper.valueToTree(dto);
@@ -62,6 +66,22 @@ public class PermanentTransactionController {
             JsonNode returnData = mapper.valueToTree(dto);
             return new ResponseEntity(ResponseObject.createError("Account does not exist", returnData), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private ResponseEntity validateDates(@RequestBody PermanentTransactionDTO dto, LocalDate today) {
+        if (dto.getDateFrom().isBefore(today)) {
+            JsonNode returnData = mapper.valueToTree(dto);
+            return new ResponseEntity(ResponseObject.createError("date from is before today", returnData), HttpStatus.BAD_REQUEST);
+        }
+        if (dto.getDateTo().isBefore(today)) {
+            JsonNode returnData = mapper.valueToTree(dto);
+            return new ResponseEntity(ResponseObject.createError("date to is before today", returnData), HttpStatus.BAD_REQUEST);
+        }
+        if (dto.getDateTo().isBefore(dto.getDateFrom())) {
+            JsonNode returnData = mapper.valueToTree(dto);
+            return new ResponseEntity(ResponseObject.createError("date to is before date from", returnData), HttpStatus.BAD_REQUEST);
+        }
+        return null;
     }
 
     @PutMapping("/{id}")
