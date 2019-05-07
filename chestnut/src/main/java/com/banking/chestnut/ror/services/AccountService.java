@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,11 +91,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId) {
-        List<Transaction> transactions = this.transactionRepository.findAll();
-
-        transactions = transactions.stream().filter(item -> (item.getSenderId() != null && item.getSenderId().getId().equals(accountId))
-        ||(item.getReceiverId() != null && item.getReceiverId().getId().equals(accountId))).collect(Collectors.toList());
-
+        List<Transaction> transactions = findAllTransactionsByAccountId(accountId);
         if (transactionDto != null){
             transactions = transactions.stream().filter(item -> (transactionDto.getType() != null && item.getType().equals(transactionDto.getType())
                     || (transactionDto.getStartDate() != null && item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime())
@@ -106,6 +99,13 @@ public class AccountService implements IAccountService {
                     .collect(Collectors.toList());
         }
         return transactions;
+    }
+
+    private List<Transaction> findAllTransactionsByAccountId(Integer accountId) {
+        List<Transaction> outgoingTransactions = transactionRepository.findBySenderId_IdAndType(accountId, "outgoing");
+        List<Transaction> incomingTransactions =  transactionRepository.findByReceiverId_IdAndType(accountId, "incoming");
+        outgoingTransactions.addAll(incomingTransactions);
+        return outgoingTransactions;
     }
 
     @Override

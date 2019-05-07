@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
     List<Transaction> findAllByType(String type);
+    List<Transaction> findBySenderId_IdAndType(int senderId, String type);
+    List<Transaction> findByReceiverId_IdAndType(int receiverId, String type);
 }
