@@ -54,6 +54,7 @@ public class Transaction implements Serializable {
     private Account receiverId;
 
     public Transaction() {
+        this.title = "Undefined";
     }
 
     public void setPayoutTransation(Long value, User user, Account account){
