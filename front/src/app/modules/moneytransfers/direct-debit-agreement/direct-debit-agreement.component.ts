@@ -7,8 +7,8 @@ import {AccountService} from '../../ror/account/account.service';
 import {Provider} from '../../../models/account/provider';
 import {TransfersService} from '../transfers.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Notification} from '../../../models/notification';
 import {ResponseData} from '../../../models/responseData';
+import {NotificationService} from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-direct-debit-agreement',
@@ -19,13 +19,15 @@ export class DirectDebitAgreementComponent implements OnInit {
 
   formInSave = false;
   applyDirectDebitAgreementForm: FormGroup;
-  notification: Notification = new Notification();
-  notificationTimer;
   clients: Observable<Client[]>;
   accounts: Observable<Account[]>;
   providers: Observable<Provider[]>;
 
-  constructor(private fb: FormBuilder, private service: TransfersService, private clientService: ClientsService, private accountService: AccountService) {
+  constructor(private fb: FormBuilder
+              , private service: TransfersService
+              , private clientService: ClientsService
+              , private accountService: AccountService
+              , private notiService: NotificationService) {
   }
 
   ngOnInit() {
@@ -58,26 +60,14 @@ export class DirectDebitAgreementComponent implements OnInit {
       (data: ResponseData) => {
         this.formInSave = false;
         this.applyDirectDebitAgreementForm.reset();
-        this.addNotification(false, data.notification || '');
+        this.notiService.showNotification(data.notification || '', true);
       },
       (error) => {
         const errorData: ResponseData = error.error;
         console.log(errorData);
         this.formInSave = false;
-        this.addNotification(true, errorData ? errorData.notification : '');
+        this.notiService.showNotification(errorData ? errorData.notification : '', false);
       }
     );
-  }
-
-  addNotification(error: boolean, msg: string) {
-    this.notification.message = msg;
-    this.notification.error = error;
-    if (this.notificationTimer) {
-      clearTimeout(this.notificationTimer);
-    }
-
-    this.notificationTimer = setTimeout(() => {
-      this.notification = new Notification();
-    }, 3000);
   }
 }

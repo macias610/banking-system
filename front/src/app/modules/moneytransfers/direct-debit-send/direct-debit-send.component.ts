@@ -4,10 +4,10 @@ import {map} from 'rxjs/operators';
 import {TransfersService} from '../transfers.service';
 import {DirectDebitListItem} from '../../../models/transfer/directDebitListItem';
 import {ResponseData} from '../../../models/responseData';
-import {Notification} from '../../../models/notification';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Provider} from '../../../models/account/provider';
+import {NotificationService} from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-direct-debit-send',
@@ -18,13 +18,14 @@ export class DirectDebitSendComponent implements OnInit {
 
   formInSave = false;
   sendTransferForm: FormGroup;
-  notification: Notification = new Notification();
-  notificationTimer;
   providers: Observable<Account[]>;
   directDebits: Observable<DirectDebitListItem[]>;
   selectedValue: Provider;
 
-  constructor(private service: TransfersService, private fb: FormBuilder, private http: HttpClient) {
+  constructor(private service: TransfersService
+              , private fb: FormBuilder
+              , private http: HttpClient
+              , private notiService: NotificationService) {
   }
 
   ngOnInit() {
@@ -58,26 +59,14 @@ export class DirectDebitSendComponent implements OnInit {
       (data: ResponseData) => {
         this.formInSave = false;
         this.sendTransferForm.reset();
-        this.addNotification(false, data.notification || '');
+        this.notiService.showNotification(data.notification || '', true);
       },
       (error) => {
         const errorData: ResponseData = error.error;
         console.log(errorData);
         this.formInSave = false;
-        this.addNotification(true, errorData ? errorData.notification : '');
+        this.notiService.showNotification(errorData ? errorData.notification : '', false);
       }
     );
-  }
-
-  addNotification(error: boolean, msg: string) {
-    this.notification.message = msg;
-    this.notification.error = error;
-    if (this.notificationTimer) {
-      clearTimeout(this.notificationTimer);
-    }
-
-    this.notificationTimer = setTimeout(() => {
-      this.notification = new Notification();
-    }, 3000);
   }
 }

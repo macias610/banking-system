@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Notification} from '../../../models/notification';
 import {Observable} from 'rxjs';
 import {Client} from '../../../models/client/client';
 import {TransfersService} from '../transfers.service';
@@ -8,6 +7,7 @@ import {ClientsService} from '../../ror/clients/clients.service';
 import {AccountService} from '../../ror/account/account.service';
 import {map} from 'rxjs/operators';
 import {ResponseData} from '../../../models/responseData';
+import {NotificationService} from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-permanent-transfer-add',
@@ -18,12 +18,14 @@ export class PermanentTransferAddComponent implements OnInit {
 
   formInSave = false;
   sendTransferForm: FormGroup;
-  notification: Notification = new Notification();
-  notificationTimer;
   clients: Observable<Client[]>;
   accounts: Observable<Account[]>;
 
-  constructor(private fb: FormBuilder, private service: TransfersService, private clientService: ClientsService, private accountService: AccountService) {
+  constructor(private fb: FormBuilder
+              , private service: TransfersService
+              , private clientService: ClientsService
+              , private accountService: AccountService
+              , private notiService: NotificationService) {
   }
 
   ngOnInit() {
@@ -55,27 +57,14 @@ export class PermanentTransferAddComponent implements OnInit {
       (data: ResponseData) => {
         this.formInSave = false;
         this.sendTransferForm.reset();
-        this.addNotification(false, data.notification || '');
+        this.notiService.showNotification(data.notification || '', true);
       },
       (error) => {
         const errorData: ResponseData = error.error;
         console.log(errorData);
         this.formInSave = false;
-        this.addNotification(true, errorData ? errorData.notification : '');
+        this.notiService.showNotification(errorData ? errorData.notification : '', false);
       }
     );
   }
-
-  addNotification(error: boolean, msg: string) {
-    this.notification.message = msg;
-    this.notification.error = error;
-    if (this.notificationTimer) {
-      clearTimeout(this.notificationTimer);
-    }
-
-    this.notificationTimer = setTimeout(() => {
-      this.notification = new Notification();
-    }, 3000);
-  }
-
 }

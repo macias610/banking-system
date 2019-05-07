@@ -17,7 +17,8 @@ export class TransferHistoryComponent implements OnInit {
   transfers: Observable<Transfer[]>;
   clients: Observable<Client[]>;
 
-  constructor(private service: TransfersService, private clientService: ClientsService) { }
+  constructor(private service: TransfersService
+              , private clientService: ClientsService) { }
 
   ngOnInit() {
     this.searchString = '';

@@ -6,8 +6,8 @@ import {ClientsService} from '../../ror/clients/clients.service';
 import {map} from 'rxjs/operators';
 import {DirectDebitListItem} from '../../../models/transfer/directDebitListItem';
 import {HttpClient} from '@angular/common/http';
-import {Notification} from '../../../models/notification';
 import {ResponseData} from '../../../models/responseData';
+import {NotificationService} from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-direct-debit-list',
@@ -19,11 +19,12 @@ export class DirectDebitListComponent implements OnInit {
   searchString: string;
   directDebits: Observable<DirectDebitListItem[]>;
   clients: Observable<Client[]>;
-  notification: Notification = new Notification();
-  notificationTimer;
   selectedClientId: string;
 
-  constructor(private http: HttpClient, private service: TransfersService, private clientService: ClientsService) {
+  constructor(private http: HttpClient
+              , private service: TransfersService
+              , private clientService: ClientsService
+              , private notiService: NotificationService) {
   }
 
   ngOnInit() {
@@ -43,13 +44,13 @@ export class DirectDebitListComponent implements OnInit {
   cancelDirectDebit(directDebit: DirectDebitListItem) {
     this.service.cancelDirectDebit(directDebit.id).subscribe(
       (data: ResponseData) => {
-        this.addNotification(false, data.notification || '');
+        this.notiService.showNotification(data.notification || '', true);
         this.onChange(this.selectedClientId);
       },
       (error) => {
         const errorData: ResponseData = error.error;
         console.log(errorData);
-        this.addNotification(true, errorData ? errorData.notification : '');
+        this.notiService.showNotification(errorData ? errorData.notification : '', false);
       }
     );
   }
@@ -63,17 +64,5 @@ export class DirectDebitListComponent implements OnInit {
   directDebitsFilter(item: DirectDebitListItem, search: string): boolean {
     const itemString = (item.providerName).toLocaleLowerCase();
     return itemString.indexOf(search) >= 0;
-  }
-
-  addNotification(error: boolean, msg: string) {
-    this.notification.message = msg;
-    this.notification.error = error;
-    if (this.notificationTimer) {
-      clearTimeout(this.notificationTimer);
-    }
-
-    this.notificationTimer = setTimeout(() => {
-      this.notification = new Notification();
-    }, 3000);
   }
 }
