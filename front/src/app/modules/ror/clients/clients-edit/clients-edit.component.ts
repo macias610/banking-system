@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ClientsService } from '../clients.service';
-import { Notification } from '../../../../models/notification';
-import { ActivatedRoute } from '@angular/router';
-import { ClientCreateDao } from '../../../../models/client/clientCreateDao';
-import { ResponseData } from '../../../../models/responseData';
-import { AccountService } from '../../account/account.service';
-import { Observable } from 'rxjs';
-import { AccountListItem } from '../../../../models/account/accountListItem';
-import { NotificationService } from '../../../../shared/services/notification.service';
-import { map } from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ClientsService} from '../clients.service';
+import {Notification} from '../../../../models/notification';
+import {ActivatedRoute} from '@angular/router';
+import {ClientCreateDao} from '../../../../models/client/clientCreateDao';
+import {ResponseData} from '../../../../models/responseData';
+import {AccountService} from '../../account/account.service';
+import {Observable} from 'rxjs';
+import {AccountListItem} from '../../../../models/account/accountListItem';
+import {NotificationService} from '../../../../shared/services/notification.service';
+import {map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-clients-edit',

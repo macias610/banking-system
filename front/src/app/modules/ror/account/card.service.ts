@@ -1,10 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError, tap, map } from 'rxjs/operators';
-import { Account } from '../../../models/account';
-import { environment } from '../../../../environments/environment';
-import { ResponseData } from '../../../models/responseData';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
+import {ResponseData} from '../../../models/responseData';
 
 
 @Injectable({

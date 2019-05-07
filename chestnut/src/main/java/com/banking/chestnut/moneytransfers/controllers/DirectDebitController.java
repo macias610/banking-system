@@ -1,0 +1,87 @@
+package com.banking.chestnut.moneytransfers.controllers;
+
+import com.banking.chestnut.models.ResponseObject;
+import com.banking.chestnut.moneytransfers.DTO.AccountDTO;
+import com.banking.chestnut.moneytransfers.DTO.DirectDebitDTO;
+import com.banking.chestnut.moneytransfers.services.DirectDebitService;
+import com.banking.chestnut.moneytransfers.services.TransfersAccountService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping(path="/directDebits")
+public class DirectDebitController {
+
+    private final DirectDebitService directDebitService;
+    private final TransfersAccountService transfersAccountService;
+
+    private static ObjectMapper mapper = new ObjectMapper();
+
+    //providerID means clientId (assuming provider is bank's client)
+    @GetMapping("/provider/{providerId}")
+    public ResponseEntity findByProviderId(@PathVariable("providerId") final int providerId) {
+        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByProviderId(transfersAccountService.findByClientId(providerId).getId());
+        JsonNode returnData = mapper.valueToTree(directDebitsDTO);
+        if (directDebitsDTO.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findById(@PathVariable("id") final int id) {
+        DirectDebitDTO dto = directDebitService.findById(id);
+        JsonNode returnData = mapper.valueToTree(dto);
+        if (dto == null)
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity findByAccountId(@PathVariable("clientId") final int id) {
+        List<DirectDebitDTO> directDebitsDTO = directDebitService.findByAccountId(id);
+        JsonNode returnData = mapper.valueToTree(directDebitsDTO);
+        if (directDebitsDTO.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity addDirectDebit(@RequestBody DirectDebitDTO directDebitDTO) {
+        directDebitDTO.setProviderAccNumber(directDebitDTO.getProviderAccNumber().replace(" ", ""));
+        directDebitDTO.setClientAccNumber(directDebitDTO.getClientAccNumber().replace(" ", ""));
+        directDebitService.addDirectDebit(directDebitDTO);
+        return new ResponseEntity<>(ResponseObject.createSuccess("Direct debit created"), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity cancelDirectDebit(@PathVariable("id") final int id) {
+        try {
+            directDebitService.cancelDirectDebit(id);
+            return new ResponseEntity<>(ResponseObject.createSuccess("Direct debit deactivated"), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during canceling direct debit"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/providers")
+    public ResponseEntity findProviders() {
+        List<AccountDTO> accountDTOs = transfersAccountService.findByType("provider");
+        JsonNode returnData = mapper.valueToTree(accountDTOs);
+        if (accountDTOs.isEmpty())
+            return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NO_CONTENT);
+
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+    }
+}
