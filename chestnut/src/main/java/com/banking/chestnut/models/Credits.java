@@ -6,10 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
+
+import static com.banking.chestnut.credit.helpers.DateHelper.currentDate;
 
 @Entity
 @NoArgsConstructor
@@ -45,7 +48,9 @@ public class Credits {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deleted_at;
 
-    private Long created_by;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    private User created_by;
 
     private Long deleted_by;
 
@@ -63,9 +68,6 @@ public class Credits {
         this.account = account;
         this.creditType = creditType;
         this.value = creditDto.getValue();
-        this.isActive = creditDto.getIsActive();
-        this.created_at = creditDto.getCreated_at();
-        this.expiration_at = creditDto.getExpiration_at();
     }
 
 }

@@ -11,6 +11,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
@@ -71,6 +72,12 @@ public class Account implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "accountId")
     private List<Card> cards;
+
+    @OneToMany(mappedBy = "account",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private Set<Credits> credits;
 
     public Account() {
     }
