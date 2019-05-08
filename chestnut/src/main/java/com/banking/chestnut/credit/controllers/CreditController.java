@@ -6,6 +6,7 @@ import com.banking.chestnut.models.CreditType;
 import com.banking.chestnut.models.Credits;
 import com.banking.chestnut.models.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
@@ -44,18 +45,13 @@ public class CreditController {
     @PostMapping()
     public ResponseEntity addCredit(@RequestBody CreditDto creditDto) {
         try {
-            CreditDto createdCredit = creditService.addCredit(creditDto);
-            URI uriForFetchingCreatedCredit = getUriWithPathAndParams("/credit/{id}",createdCredit.getId());
+            creditService.addCredit(creditDto);
             String successMessage = String.valueOf(ADD_CREDIT_SUCCESS);
-            ResponseObject success = createSuccess(successMessage, createJsonNodeFrom(createdCredit));
-            return ResponseEntity.created(uriForFetchingCreatedCredit).body(success);
-        } catch (NoSuchElementException | UnsupportedOperationException e) {
-            ResponseObject error = createError(e.getMessage());
-            return ResponseEntity.badRequest().body(error);
+            return  new ResponseEntity<>(ResponseObject.createSuccess(successMessage), HttpStatus.CREATED);
         } catch (Exception e){
+            e.printStackTrace();
             String errorMessage = String.valueOf(ADD_CREDIT_ERROR);
-            ResponseObject error = createError(errorMessage);
-            return ResponseEntity.badRequest().body(error);
+            return new ResponseEntity<>(ResponseObject.createError(errorMessage), HttpStatus.BAD_REQUEST);
         }
     }
 

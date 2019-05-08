@@ -20,7 +20,7 @@ import static com.banking.chestnut.credit.helpers.DateHelper.currentDate;
 public class Credits {
 
     @Id
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "credit_id")
     private Integer id;
 
