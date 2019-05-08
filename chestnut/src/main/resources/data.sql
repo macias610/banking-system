@@ -67,3 +67,8 @@ INSERT IGNORE INTO `accounts` (`id`, `currency`, `iban`, `is_active`, `is_blocke
 (1, 'PLN', 'PL08249000058429035340935700', 1, 0, '08249000058429035340935700', '8429035340935700', 'provider', '3', '1');
 INSERT IGNORE INTO `account_info` (`id`, `available_amount`, `locked_amount`) VALUES
 (1, 0, 500);
+
+INSERT IGNORE INTO `accounts` (`id`, `currency`, `iban`, `is_active`, `is_blocked`, `number_banking_account`, `number_client_account`, `type`, `client_id`, `info_id`) VALUES
+(2, 'PLN', 'PL20249000053905104997884646', 1, 0, '20249000053905104997884646', '3905104997884646', 'INDIVIDUAL', '1', '2');
+INSERT IGNORE INTO `account_info` (`id`, `available_amount`, `locked_amount`) VALUES
+(2, 0, 500);

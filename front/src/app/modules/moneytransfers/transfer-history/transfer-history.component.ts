@@ -28,7 +28,7 @@ export class TransferHistoryComponent implements OnInit {
         this.accountId = this.route.snapshot.paramMap.get('id');
         this.searchString = '';
         this.transfers = this.service.getTransfers(this.accountId).pipe(
-            map(item => item.data),
+            map(item => item.data.reverse()),
             catchError(err => of([]))
         );
     }

@@ -31,15 +31,16 @@
               </th>
             </thead>
             <tbody *ngIf="transfers.length > 0">
-              <tr *ngFor="let transfer of transfers | customFilter: transfersFilter : searchString">
+              <tr *ngFor="let transfer of transfers | customFilter: transfersFilter : searchString"
+                [ngClass]="{'transfer-out': transfer.type === 'outgoing', 'transfer-in': transfer.type === 'incoming'}">
                 <td>
-                  {{ transfer.transactionDate | date:'dd/MM/yyyy'}}
+                  {{ transfer.createdAt }}
                 </td>
                 <td>
                   {{ transfer.title }}
                 </td>
                 <td>
-                  {{ transfer.value }}
+                  {{ transfer.value.toFixed(2) }} {{ transfer.sender?.currency }}
                 </td>
                 <td class="text-right">
                   <div ngbDropdown class="dropdown" placement="bottom-right">
