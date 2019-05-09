@@ -4,10 +4,14 @@ import { AccountService } from '../account.service';
 import { CardService } from '../card.service';
 import { Observable } from 'rxjs';
 import { AccountListItem } from '../../../../models/account/accountListItem';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Card } from '../../../../models/card';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { ThinClient } from '../../../../models/client/thinClient';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ResponseData } from '../../../../models/responseData';
+import { ClientsService } from '../../clients/clients.service';
 
 const PIN_LENGTH = 4;
 
@@ -24,11 +28,17 @@ export class AccountsingleComponent implements OnInit {
     account$: Observable<AccountListItem>;
     cards$: Observable<Card[]>;
 
+    clients: ThinClient[] = [];
+    formInSave = false;
+    addAgentForm: FormGroup;
+
     constructor(
+        private clientService: ClientsService,
         private accountService: AccountService,
         private cardService: CardService,
         private modalService: NgbModal,
         private notiService: NotificationService,
+        private fb: FormBuilder,
         private route: ActivatedRoute
     ) { }
 
@@ -36,6 +46,20 @@ export class AccountsingleComponent implements OnInit {
         this.accountId = this.route.snapshot.paramMap.get('id');
         this.getAccountData();
         this.refreshCardList();
+
+        this.clientService.getAllClients().subscribe(
+            (data: ResponseData) => {
+                this.clients = data.data;
+                this.clients.forEach(item =>
+                    item.search_str = `${item.first_name} ${item.surname} ${item.pesel}`
+                );
+            }
+        );
+
+        this.addAgentForm = this.fb.group({
+            'client': ['', [Validators.required]],
+            'client_id': ['', [Validators.required]]
+        });
     }
 
     getAccountData() {
@@ -147,6 +171,66 @@ export class AccountsingleComponent implements OnInit {
             );
 
         }
+    }
+
+    addAgent() {
+        const formValue = this.addAgentForm.value;
+        this.formInSave = true;
+        formValue.account_id = this.accountId;
+
+        this.accountService.addAgent(formValue).subscribe(
+            (data: ResponseData) => {
+                this.formInSave = false;
+                this.addAgentForm.reset();
+                this.getAccountData();
+                this.notiService.showNotification(data.notification || '', true);
+            },
+            (error) => {
+                const errorData: ResponseData = error.error;
+                this.formInSave = false;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+
+    }
+
+    removeAgent(account) {
+        this.accountService.removeAgent(account.id).subscribe(
+            (data: ResponseData) => {
+                this.formInSave = false;
+                this.notiService.showNotification(data.notification || '', true);
+                delete account.agent;
+            },
+            (error) => {
+                const errorData: ResponseData = error.error;
+                this.formInSave = false;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+
+    }
+
+    searchClient = (text$: Observable<string>) =>
+        text$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            map(term => term.length < 2 ? []
+                : this.clients.filter(client => client.search_str.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        )
+
+    searchClientFormat(value: ThinClient): string {
+        if (value) {
+            return `${value.first_name} ${value.surname} (${value.pesel})`;
+        } else {
+            return '';
+        }
+    }
+
+    selectClient(client: ThinClient) {
+        this.addAgentForm.setValue({
+            'client': this.searchClientFormat(client),
+            'client_id': client.id
+        });
     }
 
 }

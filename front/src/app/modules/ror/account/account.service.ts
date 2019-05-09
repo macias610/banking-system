@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {environment} from '../../../../environments/environment';
-import {ResponseData} from '../../../models/responseData';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { ResponseData } from '../../../models/responseData';
 
 
 @Injectable({
@@ -29,6 +29,16 @@ export class AccountService {
         delete account.client;
         return this.http
             .post<ResponseData>(`${environment.api_url}/account/save`, account);
+    }
+
+    addAgent(data: any): Observable<ResponseData> {
+        return this.http
+            .post<ResponseData>(`${environment.api_url}/account/agent`, data);
+    }
+
+    removeAgent(accountId: any): Observable<ResponseData> {
+        return this.http
+            .delete<ResponseData>(`${environment.api_url}/account/${accountId}/agent`);
     }
 
     changeAccountStatus(accountId: string): Observable<ResponseData> {

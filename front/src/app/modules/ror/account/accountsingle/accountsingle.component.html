@@ -7,11 +7,11 @@
       <div class="card">
         <div class="card-header clearfix">
           <h5 class="title">Account data</h5>
-          <!-- <form [formGroup]="addAgentForm" (ngSubmit)="addAgent()">
+          <form *ngIf="!account.agent" [formGroup]="addAgentForm" (ngSubmit)="addAgent()">
             <div class="row">
               <div class="col-md-8">
                 <div class="form-group">
-                  <label>Select client</label>
+                  <label>Select agent</label>
                   <input type="text" class="form-control" [ngbTypeahead]="searchClient"
                     [resultFormatter]="searchClientFormat" [inputFormatter]="searchClientFormat"
                     (selectItem)="selectClient($event.item)" formControlName="client" placeholder="Search client ..."
@@ -27,7 +27,7 @@
                 </div>
               </div>
             </div>
-          </form> -->
+          </form>
         </div>
         <div class="card-body">
           <div class="row">
@@ -71,6 +71,35 @@
               <div class="form-group">
                 <label>Owner pesel</label>
                 <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.owner.pesel">
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="account.agent">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent first name</label>
+                <input type="text" class="form-control" readonly="" placeholder="First_name"
+                  [value]="account.agent.first_name">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent surname</label>
+                <input type="text" class="form-control" readonly="" placeholder="Surname"
+                  [value]="account.agent.surname">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent pesel</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.agent.pesel">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" (click)="removeAgent(account)">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -195,7 +224,6 @@
                         <a class="dropdown-item" role="button" (click)="changeCardStatus(card)">Change status</a>
                         <a class="dropdown-item" role="button" (click)="showPinModal(card.id, content)">Change pin
                           code</a>
-                        <a class="dropdown-item" role="button">Remove card</a>
                       </div>
                     </div>
                   </td>
