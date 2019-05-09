@@ -85,8 +85,8 @@ public class MoneyTransactionService {
             transaction.setValue(-permanentTransaction.getValue());
         else
             transaction.setValue(permanentTransaction.getValue());
-        transaction.setSenderId(transfersAccountRepository.findByClientId_Id(permanentTransaction.getSenderId().getId()));
-        transaction.setReceiverId(transfersAccountRepository.findByClientId_Id(permanentTransaction.getReceiverId().getId()));
+        transaction.setSenderId(permanentTransaction.getSenderId());
+        transaction.setReceiverId(permanentTransaction.getReceiverId());
         transaction.setTransactionDate(transactionDate);
         transaction.setCreatedAt(new Date());
         transaction.setCreatedBy(userRepository.findById(systemId));

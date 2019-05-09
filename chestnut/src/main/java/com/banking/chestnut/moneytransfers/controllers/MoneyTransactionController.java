@@ -1,5 +1,6 @@
 package com.banking.chestnut.moneytransfers.controllers;
 
+import com.banking.chestnut.models.Account;
 import com.banking.chestnut.models.ResponseObject;
 import com.banking.chestnut.models.Transaction;
 import com.banking.chestnut.moneytransfers.DTO.TransactionDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,11 @@ public class MoneyTransactionController {
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity findByClientId(@PathVariable("clientId") final int clientId) {
-        List<TransactionDTO> transactionsDTO = moneyTransactionService.findAllBySenderId(transfersAccountService.findByClientId(clientId).getId());
-        transactionsDTO.addAll(moneyTransactionService.findAllByReceiverId(transfersAccountService.findByClientId(clientId).getId()));
+        List<TransactionDTO> transactionsDTO = new ArrayList<>();
+        for(Account account: transfersAccountService.findByClientId(clientId)) {
+            transactionsDTO.addAll(moneyTransactionService.findAllBySenderId(account.getId()));
+            transactionsDTO.addAll(moneyTransactionService.findAllByReceiverId(account.getId()));
+        }
         JsonNode returnData = mapper.valueToTree(transactionsDTO);
         if (transactionsDTO.isEmpty())
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);

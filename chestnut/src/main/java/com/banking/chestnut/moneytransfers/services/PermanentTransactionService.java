@@ -27,7 +27,7 @@ public class PermanentTransactionService {
         return prepareModel(permanentTransactionRepository.findById(id));
     }
 
-    public List<PermanentTransactionDTO> findBySenderIdOrReceiverId(int accountId) {
+    public List<PermanentTransactionDTO> findBySenderId(int accountId) {
         List<PermanentTransactions> transactions = permanentTransactionRepository.findBySenderId_Id(accountId);
         List<PermanentTransactionDTO> transactionsDTO = new ArrayList<>();
         for (PermanentTransactions t: transactions) {
