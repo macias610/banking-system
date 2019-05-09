@@ -34,7 +34,7 @@ export class TransferHistoryComponent implements OnInit {
 
     getTransferList() {
         this.transfers = this.service.getTransfers(this.accountId, this.dateStart, this.dateEnd).pipe(
-            map(item => item.data.reverse()),
+            map(item => item.data.sort((a, b) => (-1) * (a.id - b.id))),
             catchError(err => of([]))
         );
     }
