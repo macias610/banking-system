@@ -1,5 +1,6 @@
 package com.banking.chestnut.moneytransfers.controllers;
 
+import com.banking.chestnut.models.Account;
 import com.banking.chestnut.models.ResponseObject;
 import com.banking.chestnut.moneytransfers.DTO.PermanentTransactionDTO;
 import com.banking.chestnut.moneytransfers.services.PermanentTransactionService;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,10 @@ public class PermanentTransactionController {
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity findByClientId(@PathVariable("clientId") final int clientId) {
-        List<PermanentTransactionDTO> transactionsDTO = permanentTransactionService.findBySenderIdOrReceiverId(transfersAccountService.findByClientId(clientId).getId());
+        List<PermanentTransactionDTO> transactionsDTO = new ArrayList<>();
+        for(Account account: transfersAccountService.findByClientId(clientId)) {
+            transactionsDTO.addAll(permanentTransactionService.findBySenderId(account.getId()));
+        }
         JsonNode returnData = mapper.valueToTree(transactionsDTO);
         if (transactionsDTO.isEmpty())
             return new ResponseEntity(ResponseObject.createError("No content"), HttpStatus.NOT_FOUND);

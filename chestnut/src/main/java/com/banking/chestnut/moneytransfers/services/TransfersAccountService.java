@@ -19,7 +19,7 @@ public class TransfersAccountService {
 
     private final TransfersAccountRepository transfersAccountRepository;
 
-    public Account findByClientId(int clientId) {
+    public List<Account> findByClientId(int clientId) {
         return transfersAccountRepository.findByClientId_Id(clientId);
     }
 
