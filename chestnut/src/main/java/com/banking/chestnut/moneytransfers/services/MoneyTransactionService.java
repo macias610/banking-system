@@ -71,7 +71,7 @@ public class MoneyTransactionService {
             transaction.setValue(transactionDTO.getValue());
         transaction.setSenderId(transfersAccountRepository.findByNumberBankingAccount(transactionDTO.getSenderAccNumber()));
         transaction.setReceiverId(transfersAccountRepository.findByNumberBankingAccount(transactionDTO.getReceiverAccNumber()));
-        transaction.setTransactionDate(Date.from(transactionDTO.getTransactionDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        transaction.setTransactionDate(transactionDTO.getTransactionDate());
         transaction.setCreatedAt(new Date());
         transaction.setCreatedBy(userRepository.findById(systemId));
         transaction.setType(type);
@@ -97,13 +97,13 @@ public class MoneyTransactionService {
     private TransactionDTO prepareModel(Transaction transaction) {
         TransactionDTO dto = new TransactionDTO();
         dto.setId(transaction.getId());
-        dto.setReceiverAccNumber(transaction.getReceiverId().getNumberBankingAccount());
-        dto.setSenderAccNumber(transaction.getSenderId().getNumberBankingAccount());
-        dto.setTransactionDate(transaction.getTransactionDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        dto.setReceiverAccNumber(transaction.getReceiverId() != null ? transaction.getReceiverId().getNumberBankingAccount() : "");
+        dto.setSenderAccNumber(transaction.getSenderId() != null ? transaction.getSenderId().getNumberBankingAccount() : "");
+        dto.setTransactionDate(transaction.getTransactionDate());
         dto.setValue(transaction.getValue());
         dto.setTitle(transaction.getTitle());
-        dto.setSenderId(transaction.getSenderId().getId());
-        dto.setReceiverId(transaction.getReceiverId().getId());
+        dto.setSenderId(transaction.getSenderId() != null ? transaction.getSenderId().getId() : 0);
+        dto.setReceiverId(transaction.getReceiverId() != null ? transaction.getReceiverId().getId() : 0);
         return dto;
     }
 }

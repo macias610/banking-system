@@ -183,7 +183,7 @@ public class AccountController {
         }
     }
 
-    @GetMapping(value = "/transactions/{accountId}")
+    @PostMapping(value = "/transactions/{accountId}")
     @ResponseBody
     ResponseEntity getAccountTransactions(@PathVariable Integer accountId, @RequestBody(required = false) TransactionDto transactionDto){
         try {

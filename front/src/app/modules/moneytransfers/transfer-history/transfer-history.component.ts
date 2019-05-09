@@ -14,6 +14,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TransferHistoryComponent implements OnInit {
 
+    dateStart: string = '';
+    dateEnd: string = '';
     accountId: string;
     searchString: string;
     transfers: Observable<Transfer[]>;
@@ -27,12 +29,18 @@ export class TransferHistoryComponent implements OnInit {
     ngOnInit() {
         this.accountId = this.route.snapshot.paramMap.get('id');
         this.searchString = '';
-        this.transfers = this.service.getTransfers(this.accountId).pipe(
+        this.getTransferList();
+    }
+
+    getTransferList() {
+        this.transfers = this.service.getTransfers(this.accountId, this.dateStart, this.dateEnd).pipe(
             map(item => item.data.reverse()),
             catchError(err => of([]))
         );
     }
+
     searchInTable(searchItem: string) {
+        console.log(searchItem);
         searchItem = searchItem.replace(/ /g, '');
         searchItem = searchItem.toLocaleLowerCase();
         this.searchString = searchItem;
@@ -41,6 +49,10 @@ export class TransferHistoryComponent implements OnInit {
     transfersFilter(item: Transfer, search: string): boolean {
         const itemString = (item.title).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
+    }
+
+    searchDate() {
+        this.getTransferList();
     }
 
 }

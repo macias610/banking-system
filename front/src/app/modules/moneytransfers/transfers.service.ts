@@ -15,19 +15,24 @@ export class TransfersService {
     constructor(private http: HttpClient) {
     }
 
-    getTransfers(id: String): Observable<ResponseData> {
-        return this.http.get<ResponseData>(`${environment.api_url}/account/transactions/` + id);
+    getTransfers(id: string, dateStart: string, dateEnd: string): Observable<ResponseData> {
+        const data = {
+            startDate: dateStart,
+            endDate: dateEnd
+        };
+
+        return this.http.post<ResponseData>(`${environment.api_url}/account/transactions/${id}`, data);
     }
 
-    getDirectDebitsForClient(id: String): Observable<ResponseData> {
+    getDirectDebitsForClient(id: string): Observable<ResponseData> {
         return this.http.get<ResponseData>(`${environment.api_url}/directDebits/client/` + id);
     }
 
-    getPermanentTransfersForClient(id: String): Observable<ResponseData> {
+    getPermanentTransfersForClient(id: string): Observable<ResponseData> {
         return this.http.get<ResponseData>(`${environment.api_url}/permanentTransactions/client/` + id);
     }
 
-    getTransfer(id: String): Observable<ResponseData> {
+    getTransfer(id: string): Observable<ResponseData> {
         return this.http.get<ResponseData>(`${environment.api_url}/transactions/` + id);
     }
 
@@ -45,11 +50,11 @@ export class TransfersService {
         return this.http.post<ResponseData>(`${environment.api_url}/directDebits`, directDebitAgreement);
     }
 
-    cancelDirectDebit(id: String): Observable<ResponseData> {
+    cancelDirectDebit(id: string): Observable<ResponseData> {
         return this.http.put<ResponseData>(`${environment.api_url}/directDebits/` + id, null);
     }
 
-    cancelPermanentTransfer(id: String): Observable<ResponseData> {
+    cancelPermanentTransfer(id: string): Observable<ResponseData> {
         return this.http.put<ResponseData>(`${environment.api_url}/permanentTransactions/` + id, null);
     }
 

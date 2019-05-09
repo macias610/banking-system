@@ -92,13 +92,45 @@ public class AccountService implements IAccountService {
     @Override
     public List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId) {
         List<Transaction> transactions = findAllTransactionsByAccountId(accountId);
+        List<Transaction> transactionsForReturn = new ArrayList<>();
         if (transactionDto != null){
-            transactions = transactions.stream().filter(item -> (transactionDto.getType() != null && item.getType().equals(transactionDto.getType())
-                    || (transactionDto.getStartDate() != null && item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime())
-                    || (transactionDto.getEndDate() != null && item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())))
-                    .collect(Collectors.toList());
+            for (Transaction t: transactions) {
+                boolean isValid = true;
+
+                if (transactionDto.getType() != null){
+                    if (t.getType().equalsIgnoreCase(transactionDto.getType())){
+
+                    } else {
+                        isValid = false;
+                    }
+                }
+
+                if (transactionDto.getStartDate() != null){
+                    if (t.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime()){
+
+                    } else {
+                        isValid = false;
+                    }
+                }
+
+                if (transactionDto.getEndDate() != null){
+                    if (t.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime()){
+
+                    } else {
+                        isValid = false;
+                    }
+                }
+
+                if (isValid){
+                    transactionsForReturn.add(t);
+                }
+            }
+//            transactions = transactions.stream().filter(item -> (transactionDto.getType() != null && item.getType().equals(transactionDto.getType())
+//                    || (transactionDto.getStartDate() != null && item.getTransactionDate().getTime() >= transactionDto.getStartDate().getTime())
+//                    || (transactionDto.getEndDate() != null && item.getTransactionDate().getTime() <= transactionDto.getEndDate().getTime())))
+//                    .collect(Collectors.toList());
         }
-        return transactions;
+        return transactionsForReturn;
     }
 
     private List<Transaction> findAllTransactionsByAccountId(Integer accountId) {
