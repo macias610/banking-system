@@ -11,6 +11,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/bank', title: 'Bank', icon: 'business_bank', class: '' },
     { path: '/clients', title: 'Clients', icon: 'users_single-02', class: '' },
     { path: '/accounts', title: 'Accounts', icon: 'business_money-coins', class: '' },
+    { path: '/deposit-types', title: 'Deposit Types', icon: 'business_money-coins', class: '' },
 ];
 
 @Component({

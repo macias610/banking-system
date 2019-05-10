@@ -10,6 +10,7 @@ import { ClientsAddComponent } from '../../modules/ror/clients/clients-add/clien
 import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/clients-edit.component';
 import {DepositsAddComponent} from "../../modules/deposits/deposits-add/deposits-add.component";
 import {DepositsListComponent} from "../../modules/deposits/deposits-list/deposits-list.component";
+import { DepositTypesListComponent } from '../../modules/deposits/deposit-types-list/deposit-types-list.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -20,5 +21,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'client', component: ClientsAddComponent },
     { path: 'client/:id', component: ClientsEditComponent },
     { path: 'deposits/add/:id', component: DepositsAddComponent },
-    { path: 'deposits/:id', component: DepositsListComponent }
+    { path: 'deposits/:id', component: DepositsListComponent },
+    { path: 'deposit-types', component: DepositTypesListComponent },
 ];
