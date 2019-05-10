@@ -8,7 +8,7 @@
           <h4 class="card-title">Deposits</h4>
           <div class="row">
             <div class="col-md-6">
-              <a class="btn btn-info btn-round" [routerLink]="['/deposits/add', accountId]">Add deposit</a>
+              <a class="btn btn-info btn-round" [routerLink]="['/deposits/add', accountId, {currency: currency}]">Add deposit</a>
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@
                   {{ getDepositTypeInterestRate(deposit.depositTypeId) }} %
                 </td>
                 <td>
-                  {{ deposit.amount }}
+                  {{ deposit.amount }} {{ currency }}
                 </td>
                 <td>
                   {{ deposit.isActive }}

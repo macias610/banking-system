@@ -16,19 +16,21 @@ export class DepositsListComponent implements OnInit {
   deposits$: Observable<Deposit[]>;
   depositTypes: DepositType[];
   accountId: number;
+  currency: string;
   notification: Notification = new Notification();
   notificationTimer;
 
   constructor(private service: DepositsService, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.setAccountId();
+    this.setAccountData();
     this.getDepositTypes();
   }
 
-  setAccountId(): void {
+  setAccountData(): void {
     this.route.params.subscribe(params => {
       this.accountId = params['id'];
+      this.currency = params['currency'];
     });
   }
 

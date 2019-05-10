@@ -59,7 +59,7 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Make transfer</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" [routerLink]="['/deposits/', account.id]">Deposits</a>
+                        <a class="dropdown-item" [routerLink]="['/deposits/', account.id, {currency: account.currency}]">Deposits</a>
                       </div>
                     </div>
                   </td>

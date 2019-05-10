@@ -18,6 +18,7 @@ export class DepositsAddComponent implements OnInit {
   formInSave = false;
   createDepositForm: FormGroup;
   accountId: number;
+  currency: string;
   depositTypes: DepositType[];
   notification: Notification = new Notification();
   notificationTimer;
@@ -39,6 +40,7 @@ export class DepositsAddComponent implements OnInit {
   setAccountId(): void {
     this.route.params.subscribe(params => {
       this.accountId = params['id'];
+      this.currency = params['currency'];
     });
   }
 
@@ -50,7 +52,8 @@ export class DepositsAddComponent implements OnInit {
       'minAmount': '',
       'interestRate': '',
       'daysPeriod': '',
-      'capitalizationType': ''
+      'capitalizationType': '',
+      'currency': ''
     });
   }
 
@@ -77,6 +80,7 @@ export class DepositsAddComponent implements OnInit {
     this.createDepositForm.controls['interestRate'].setValue(selectedDepositType != undefined ? selectedDepositType.interestRate  + ' %': '');
     this.createDepositForm.controls['daysPeriod'].setValue(selectedDepositType != undefined ? selectedDepositType.daysPeriod : '');
     this.createDepositForm.controls['capitalizationType'].setValue(selectedDepositType != undefined ? selectedDepositType.capitalizationType : '');
+    this.createDepositForm.controls['currency'].setValue(selectedDepositType != undefined ? this.currency : '');
     this.createDepositForm.controls['amount'].setValue('');
   }
 
