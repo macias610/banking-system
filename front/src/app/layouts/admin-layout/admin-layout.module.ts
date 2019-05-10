@@ -22,6 +22,7 @@ import { CustomFilterPipe } from '../../shared/pipes/custom-filter.pipe';
 import { DepositsAddComponent } from "../../modules/deposits/deposits-add/deposits-add.component";
 import { DepositsListComponent } from "../../modules/deposits/deposits-list/deposits-list.component";
 import { DepositTypesListComponent } from '../../modules/deposits/deposit-types-list/deposit-types-list.component';
+import { DepositTypesAddComponent } from '../../modules/deposits/deposit-types-add/deposit-types-add.component';
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import { DepositTypesListComponent } from '../../modules/deposits/deposit-types-
         CustomFilterPipe,
         DepositsAddComponent,
         DepositsListComponent,
-        DepositTypesListComponent
+        DepositTypesListComponent,
+        DepositTypesAddComponent
     ],
     providers: [
         AccountService

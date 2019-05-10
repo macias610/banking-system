@@ -31,4 +31,9 @@ export class DepositsService {
   closeDeposit(depositId: number): Observable<ResponseData> {
     return this.http.patch<ResponseData>(`${environment.api_url}/deposit/${depositId}`, {});
   }
+
+  addDepositType(depositType: DepositType): Observable<ResponseData> {
+    return this.http
+      .post<ResponseData>(`${environment.api_url}/deposit-types/`, depositType);
+  }
 }

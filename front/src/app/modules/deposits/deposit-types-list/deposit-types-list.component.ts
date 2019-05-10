@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DepositType } from 'src/app/models/deposit/depositType';
+import { DepositType } from '../../../models/deposit/depositType';
 import { Observable } from 'rxjs';
 import { DepositsService } from '../deposits.service';
 import {map} from "rxjs/operators";

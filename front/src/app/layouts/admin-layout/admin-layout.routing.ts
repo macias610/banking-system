@@ -11,6 +11,7 @@ import { ClientsEditComponent } from '../../modules/ror/clients/clients-edit/cli
 import {DepositsAddComponent} from "../../modules/deposits/deposits-add/deposits-add.component";
 import {DepositsListComponent} from "../../modules/deposits/deposits-list/deposits-list.component";
 import { DepositTypesListComponent } from '../../modules/deposits/deposit-types-list/deposit-types-list.component';
+import { DepositTypesAddComponent } from '../../modules/deposits/deposit-types-add/deposit-types-add.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -23,4 +24,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'deposits/add/:id', component: DepositsAddComponent },
     { path: 'deposits/:id', component: DepositsListComponent },
     { path: 'deposit-types', component: DepositTypesListComponent },
+    { path: 'deposit-types/add', component: DepositTypesAddComponent },
 ];
