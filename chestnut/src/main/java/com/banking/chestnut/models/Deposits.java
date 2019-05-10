@@ -5,7 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 import static com.banking.chestnut.deposit.helpers.DateHelper.currentDate;
@@ -32,12 +32,10 @@ public class Deposits {
     private DepositTypes depositType;
     
     @Getter
-    @Temporal(TemporalType.DATE)
     private Date startDate;
     
     @Getter
     @Setter
-    @Temporal(TemporalType.DATE)
     private Date endDate;
     
     @Getter

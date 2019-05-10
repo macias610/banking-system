@@ -1,7 +1,5 @@
 package com.banking.chestnut;
 
-import com.banking.chestnut.deposit.repositories.DepositRepository;
-import com.banking.chestnut.models.Deposits;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

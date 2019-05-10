@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import static com.banking.chestnut.deposit.helpers.DateHelper.currentTimestamp;
 
 public class OperationFactory {
+    private OperationFactory(){}
     
     public static DepositOperations createOperation(OperationType operationType, Deposits deposits) {
         switch (operationType) {

@@ -34,7 +34,7 @@ public class DepositTypes {
     private Float minAmount;
     
     @Getter
-    private Float interestRate;
+    private Integer interestRate;
     
     @Getter
     private Integer daysPeriod;
