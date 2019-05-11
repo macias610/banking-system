@@ -38,9 +38,11 @@ export class DepositTypesAddComponent implements OnInit {
 
   correctMinAndMaxAmountValidator(formControl: FormControl): any {
     if (formControl.parent) {
-      if (formControl.value <= formControl.parent.get("minAmount").value) {
-        return { correct : false };
-      } 
+      if (parseFloat(formControl.parent.get("minAmount").value) < parseFloat(formControl.value)) {
+        return null;
+      } else {
+        return { correct: false };
+      }
     }
     return null;
   }

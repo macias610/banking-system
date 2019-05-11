@@ -65,9 +65,9 @@
                 </td>
                 <td class="text-right">
                   <div ngbDropdown class="dropdown" placement="bottom-right">
-                    <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
+                    <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle [disabled]='!deposit.isActive'>Actions</button>
                     <div ngbDropdownMenu>
-                      <a *ngIf="deposit.isActive" class="dropdown-item" [routerLink]='' (click)="closeDeposit(deposit.id)">Cancel deposit</a>
+                      <a class="dropdown-item" [routerLink]='' (click)="closeDeposit(deposit.id)">Cancel deposit</a>
                     </div>
                   </div>
                 </td>

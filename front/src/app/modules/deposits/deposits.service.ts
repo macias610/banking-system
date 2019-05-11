@@ -36,4 +36,8 @@ export class DepositsService {
     return this.http
       .post<ResponseData>(`${environment.api_url}/deposit-types/`, depositType);
   }
+
+  deleteDepositType(depositTypeId: number): Observable<ResponseData> {
+    return this.http.patch<ResponseData>(`${environment.api_url}/deposit-types/${depositTypeId}`, {});
+  }
 }
