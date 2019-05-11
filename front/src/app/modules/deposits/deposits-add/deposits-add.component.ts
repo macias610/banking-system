@@ -48,12 +48,12 @@ export class DepositsAddComponent implements OnInit {
     this.createDepositForm = this.fb.group({
       'depositType': ['', [Validators.required]],
       'amount': ['', [Validators.required, this.correctAmountValidator()]],
-      'maxAmount': '',
-      'minAmount': '',
-      'interestRate': '',
-      'daysPeriod': '',
-      'capitalizationType': '',
-      'currency': ''
+      'maxAmount': {value: '', disabled: true},
+      'minAmount': {value: '', disabled: true},
+      'interestRate': {value: '', disabled: true},
+      'daysPeriod': {value: '', disabled: true},
+      'capitalizationType': {value: '', disabled: true},
+      'currency': {value: '', disabled: true}
     });
   }
 
@@ -127,4 +127,8 @@ export class DepositsAddComponent implements OnInit {
     console.log(depositCreateDao);
     return depositCreateDao;
   }
+
+  get amount() { return this.createDepositForm.controls['amount']; }
+  get depositType() { return this.createDepositForm.controls['depositType']; }
+
 }

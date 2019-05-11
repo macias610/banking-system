@@ -26,15 +26,25 @@ export class DepositTypesAddComponent implements OnInit {
   }
 
   createAddDepositTypeForm(): void {
-    this.createDepositTypeForm = new FormGroup({
-      name: new FormControl('', [Validators.required]),
-      minAmount: new FormControl('', Validators.required),
-      maxAmount: new FormControl('', Validators.required),
-      interestRate: new FormControl('', [Validators.required, Validators.min(0.1), Validators.max(10)]),
-      daysPeriod: new FormControl('', [Validators.required, Validators.min(30), Validators.max(1000)]),
-      capitalizationType: new FormControl('', [Validators.required]),
+    this.createDepositTypeForm = this.fb.group({
+      'name': ['', [Validators.required]],
+      'minAmount': ['', [Validators.required, Validators.min(500), Validators.max(500000)]],
+      'maxAmount': ['', [Validators.required, Validators.min(500), Validators.max(500000), this.correctMinAndMaxAmountValidator]],
+      'interestRate': ['', [Validators.required, Validators.min(0.1), Validators.max(10)]],
+      'daysPeriod': ['', [Validators.required, Validators.min(30), Validators.max(1000)]],
+      'capitalizationType': ['', [Validators.required]],
     });
   }
+
+  correctMinAndMaxAmountValidator(formControl: FormControl): any {
+    if (formControl.parent) {
+      if (formControl.value <= formControl.parent.get("minAmount").value) {
+        return { correct : false };
+      } 
+    }
+    return null;
+  }
+   
 
   addDepositType() {
     const formValue = this.createDepositTypeForm.value;
