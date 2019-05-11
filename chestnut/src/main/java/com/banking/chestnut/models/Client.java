@@ -84,23 +84,6 @@ public class Client implements Serializable {
         this.id = id;
     }
 
-    public Client prepare(){
-        Client client = new Client(this.id);
-        client.setLocation(this.location);
-        client.getLocation().setCreatedBy(null);
-        client.getLocation().setClientId(null);
-        client.setClientInfoId(this.clientInfoId);
-        client.setBankId(this.bankId);
-        client.setUuid(this.uuid);
-        client.setClientStatus(this.clientStatus);
-        client.setClientTypeId(this.clientTypeId);
-        client.setIsActive(this.isActive);
-        client.setCreatedAt(this.createdAt);
-        client.setDocuments(this.documents);
-        client.setContacts(this.contacts);
-        return client;
-    }
-
 
     @Override
     public int hashCode() {

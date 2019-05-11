@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
 import { ActivatedRoute } from '@angular/router';
 import { ClientCreateDao } from '../../../../models/client/clientCreateDao';
 import { ResponseData } from '../../../../models/responseData';
+import { AccountService } from '../../account/account.service';
+import { Observable } from 'rxjs';
+import { AccountListItem } from '../../../../models/account/accountListItem';
+import { NotificationService } from '../../../../shared/services/notification.service';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'app-clients-edit',
@@ -13,13 +18,20 @@ import { ResponseData } from '../../../../models/responseData';
 })
 export class ClientsEditComponent implements OnInit {
 
+    accounts$: Observable<AccountListItem[]>;
     clientId: string;
     formInSave = false;
     editClientForm: FormGroup;
     notification: Notification = new Notification();
     notificationTimer;
 
-    constructor(private fb: FormBuilder, private service: ClientsService, private route: ActivatedRoute) { }
+    constructor(
+        private fb: FormBuilder,
+        private service: ClientsService,
+        private accountService: AccountService,
+        private notiService: NotificationService,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
         this.clientId = this.route.snapshot.paramMap.get('id');
@@ -46,6 +58,10 @@ export class ClientsEditComponent implements OnInit {
             (error) => {
                 // this.statuses = [];
             }
+        );
+
+        this.accounts$ = this.accountService.getAccountsForClient(this.clientId).pipe(
+            map(item => item.data)
         );
     }
 
@@ -123,39 +139,52 @@ export class ClientsEditComponent implements OnInit {
         }
     }
 
-    addNotification(error: boolean, msg: string) {
-        this.notification.message = msg;
-        this.notification.error = error;
-        if (this.notificationTimer) {
-            clearTimeout(this.notificationTimer);
-        }
-
-        this.notificationTimer = setTimeout(() => {
-            this.notification = new Notification();
-        }, 3000);
-    }
-
     editClient() {
         const formValue = this.editClientForm.value;
         this.formInSave = true;
 
         // edit client
-        // this.service.createClient(formValue).subscribe(
-        //     (data) => {
-        //         this.formInSave = false;
-        //         this.editClientForm.reset();
-        //         this.cleanFormArray(this.contactForms);
-        //         this.cleanFormArray(this.documentsForms);
+        this.service.editClient(this.clientId, formValue).subscribe(
+            (data) => {
+                this.formInSave = false;
 
-        //         this.addNotification(false, data.notification || '');
-        //     },
-        //     (error) => {
-        //         const errorData = error.error;
-        //         this.formInSave = false;
-        //         this.addNotification(true, errorData ? errorData.notification : '');
-        //     }
-        // );
+                this.notiService.showNotification(data.notification || '', true);
+            },
+            (error) => {
+                const errorData = error.error;
+                this.formInSave = false;
 
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+
+    }
+
+    changeAccountStatus(account: AccountListItem) {
+        this.accountService.changeAccountStatus(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_blocked = !account.is_blocked;
+
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+    }
+
+    removeAccount(account: AccountListItem) {
+        this.accountService.removeAccount(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_active = false;
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
     }
 
 }

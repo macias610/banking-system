@@ -1,0 +1,130 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Permanent transfers</h4>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <input type="text" class="form-control" [ngbTypeahead]="searchClient"
+                       [resultFormatter]="searchClientFormat" [inputFormatter]="searchClientFormat"
+                       (selectItem)="selectClient($event.item.id)" placeholder="Search client ..." value="">
+              </div>
+            </div>
+            <div class="col-md-5"></div>
+            <div class="col-md-3">
+              <div class="form-group" align="right">
+                <input type="text" value="" (input)="searchInTable($event.target.value)" placeholder="Search data"
+                       class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table">
+            <table class="table" *ngIf="(transfers | async) as transfers; else noResultsTransfers">
+              <thead class=" text-primary">
+              <th>
+                My account number
+              </th>
+              <th>
+                Receiver account number
+              </th>
+              <th>
+                title
+              </th>
+              <th>
+                value
+              </th>
+              <th>
+                from date
+              </th>
+              <th>
+                to date
+              </th>
+              <th>
+                interval
+              </th>
+              <th>
+                status
+              </th>
+              <th class="text-right">
+                Operations
+              </th>
+              </thead>
+              <tbody *ngIf="transfers.length > 0">
+              <tr *ngFor="let transfer of transfers | customFilter: transfersFilter : searchString">
+                <td>
+                  {{ transfer.senderAccNumber}}
+                </td>
+                <td>
+                  {{ transfer.receiverAccNumber }}
+                </td>
+                <td>
+                  {{ transfer.title }}
+                </td>
+                <td>
+                  {{ transfer.value }}
+                </td>
+                <td>
+                  {{ transfer.dateFrom | date:'dd/MM/yyyy'}}
+                </td>
+                <td>
+                  {{ transfer.dateTo | date:'dd/MM/yyyy'}}
+                </td>
+                <td>
+                  {{ transfer.interval }}
+                </td>
+                <td>
+                  {{ transfer.enabled?'enabled':'disabled' }}
+                </td>
+                <td class="text-right">
+                  <button class="btn btn-sm btn-danger" (click)="cancelPermanentTransaction(transfer)"
+                          *ngIf="transfer.enabled">disable </button>
+                </td>
+              </tr>
+              </tbody>
+              <tbody *ngIf="transfers.length === 0">
+              <tr>
+                <td colspan="4">
+                  No results
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noResultsTransfers>
+  <table class="table">
+    <thead class=" text-primary">
+    <th>
+      Account number
+    </th>
+    <th>
+      Provider
+    </th>
+    <th>
+      status
+    </th>
+    <th class="text-right">
+      Operations
+    </th>
+    </thead>
+    <tbody>
+    <tr>
+      <td colspan="4">
+        No results
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</ng-template>

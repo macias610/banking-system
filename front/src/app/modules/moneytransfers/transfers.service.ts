@@ -1,0 +1,68 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { TransferSendDao } from '../../models/transfer/transferSendDao';
+import { ResponseData } from '../../models/responseData';
+import { DirectDebitAgreement } from '../../models/transfer/directDebitAgreement';
+import { PermanentTransfer } from '../../models/transfer/permanentTransfer';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class TransfersService {
+
+    constructor(private http: HttpClient) {
+    }
+
+    getTransfers(id: string, dateStart: string, dateEnd: string): Observable<ResponseData> {
+        const data = {
+            startDate: dateStart,
+            endDate: dateEnd
+        };
+
+        return this.http.post<ResponseData>(`${environment.api_url}/account/transactions/${id}`, data);
+    }
+
+    getDirectDebitsForClient(id: string): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/directDebits/client/` + id);
+    }
+
+    getPermanentTransfersForClient(id: string): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/permanentTransactions/client/` + id);
+    }
+
+    getTransfer(id: string): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/transactions/` + id);
+    }
+
+    sendTransfer(transfer: TransferSendDao): Observable<ResponseData> {
+        return this.http
+            .post<ResponseData>(`${environment.api_url}/transactions`, transfer);
+    }
+
+    setPermanentTransfer(transfer: PermanentTransfer): Observable<ResponseData> {
+        return this.http
+            .post<ResponseData>(`${environment.api_url}/permanentTransactions`, transfer);
+    }
+
+    applyDirectDebitAgreement(directDebitAgreement: DirectDebitAgreement): Observable<ResponseData> {
+        return this.http.post<ResponseData>(`${environment.api_url}/directDebits`, directDebitAgreement);
+    }
+
+    cancelDirectDebit(id: string): Observable<ResponseData> {
+        return this.http.put<ResponseData>(`${environment.api_url}/directDebits/` + id, null);
+    }
+
+    cancelPermanentTransfer(id: string): Observable<ResponseData> {
+        return this.http.put<ResponseData>(`${environment.api_url}/permanentTransactions/` + id, null);
+    }
+
+    getProviders(): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/directDebits/providers`);
+    }
+
+    getDirectDebitsForProvider(providerId: string): Observable<ResponseData> {
+        return this.http.get<ResponseData>(`${environment.api_url}/directDebits/provider/` + providerId);
+    }
+}

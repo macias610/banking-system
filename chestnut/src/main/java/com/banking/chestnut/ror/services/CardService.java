@@ -3,6 +3,7 @@ package com.banking.chestnut.ror.services;
 import com.banking.chestnut.commonrepositories.UserRepository;
 import com.banking.chestnut.helper.BCryptUtility;
 import com.banking.chestnut.helper.NumericStringGenerator;
+import com.banking.chestnut.models.Account;
 import com.banking.chestnut.models.Card;
 import com.banking.chestnut.ror.repositories.CardRepository;
 import com.google.common.hash.Hashing;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,6 +60,11 @@ public class CardService implements ICardService {
     public Card editCard(Card card) {
         this.cardRepository.save(card);
         return card;
+    }
+
+    @Override
+    public List<Card> getByAccountId(Account account) {
+        return this.cardRepository.findAllByAccountId(account);
     }
 
     @Override

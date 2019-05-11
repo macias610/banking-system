@@ -48,14 +48,7 @@
                     {{ client.info.country }}
                   </td>
                   <td class="text-right">
-                    <div ngbDropdown class="dropdown" placement="bottom-right">
-                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
-                      <div ngbDropdownMenu>
-                        <a class="dropdown-item" [routerLink]="['/client', client.id]">Show</a>
-                        <a class="dropdown-item" [routerLink]="['/client', client.id]">Edit</a>
-                        <a class="dropdown-item" href="#">Remove</a>
-                      </div>
-                    </div>
+                    <button class="btn btn-sm btn-info" [routerLink]="['/client', client.id]">Show</button>
                   </td>
                 </tr>
               </tbody>

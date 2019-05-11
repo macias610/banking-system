@@ -1,124 +1,268 @@
 <div class="panel-header panel-header-sm">
 </div>
-<div class="main-content">
+<div class="main-content" *ngIf="(account$ | async) as account">
+
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-12 col-md-6">
       <div class="card">
-        <div class="card-header">
-          <h5 class="title">Edit Profile</h5>
-        </div>
-        <div class="card-body">
-          <form>
+        <div class="card-header clearfix">
+          <h5 class="title">Account data</h5>
+          <form *ngIf="!account.agent" [formGroup]="addAgentForm" (ngSubmit)="addAgent()">
             <div class="row">
-              <div class="col-md-5 pr-1">
+              <div class="col-md-8">
                 <div class="form-group">
-                  <label>Company (disabled)</label>
-                  <input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc.">
+                  <label>Select agent</label>
+                  <input type="text" class="form-control" [ngbTypeahead]="searchClient"
+                    [resultFormatter]="searchClientFormat" [inputFormatter]="searchClientFormat"
+                    (selectItem)="selectClient($event.item)" formControlName="client" placeholder="Search client ..."
+                    value="">
+                  <input type="hidden" formControlName="client_id">
                 </div>
               </div>
-              <div class="col-md-3 px-1">
+              <div class="col-md-4">
                 <div class="form-group">
-                  <label>Username</label>
-                  <input type="text" class="form-control" placeholder="Username" value="michael23">
-                </div>
-              </div>
-              <div class="col-md-4 pl-1">
-                <div class="form-group">
-                  <label for="email">Email address</label>
-                  <input name="email" id="email" type="email" class="form-control" placeholder="Email">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6 pr-1">
-                <div class="form-group">
-                  <label>First Name</label>
-                  <input type="text" class="form-control" placeholder="Company" value="Mike">
-                </div>
-              </div>
-              <div class="col-md-6 pl-1">
-                <div class="form-group">
-                  <label>Last Name</label>
-                  <input type="text" class="form-control" placeholder="Last Name" value="Andrew">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>Address</label>
-                  <input type="text" class="form-control" placeholder="Home Address"
-                    value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 pr-1">
-                <div class="form-group">
-                  <label>City</label>
-                  <input type="text" class="form-control" placeholder="City" value="Mike">
-                </div>
-              </div>
-              <div class="col-md-4 px-1">
-                <div class="form-group">
-                  <label>Country</label>
-                  <input type="text" class="form-control" placeholder="Country" value="Andrew">
-                </div>
-              </div>
-              <div class="col-md-4 pl-1">
-                <div class="form-group">
-                  <label>Postal Code</label>
-                  <input type="number" class="form-control" placeholder="ZIP Code">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label>About Me</label>
-                  <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description"
-                    value="Mike">Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</textarea>
+                  <div><label>&nbsp;</label></div>
+                  <button type="submit" [disabled]="addAgentForm.invalid" class="btn btn-info btn-round m-0">Add
+                    agent</button>
                 </div>
               </div>
             </div>
           </form>
         </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Number</label>
+                <input type="text" class="form-control" readonly="" placeholder="Number"
+                  [value]="account.number_banking_account | accountNumber">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>IBAN</label>
+                <input type="text" class="form-control" readonly="" placeholder="IBAN"
+                  [value]="account.iban | ibanNumber">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Currency</label>
+                <input type="text" class="form-control" readonly="" placeholder="Currency" [value]="account.currency">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Owner first name</label>
+                <input type="text" class="form-control" readonly="" placeholder="First_name"
+                  [value]="account.owner.first_name">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Owner surname</label>
+                <input type="text" class="form-control" readonly="" placeholder="Surname"
+                  [value]="account.owner.surname">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Owner pesel</label>
+                <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.owner.pesel">
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="account.agent">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent first name</label>
+                <input type="text" class="form-control" readonly="" placeholder="First_name"
+                  [value]="account.agent.first_name">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent surname</label>
+                <input type="text" class="form-control" readonly="" placeholder="Surname"
+                  [value]="account.agent.surname">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent pesel</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.agent.pesel">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" (click)="removeAgent(account)">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div class="card card-user">
-        <div class="image">
-          <img src="../assets/img/bg5.jpg" alt="...">
+    <div class="col-12 col-md-6">
+      <div class="card">
+        <div class="card-header clearfix">
+          <div>
+            <h5 class="title float-left">Account balance</h5>
+            <button class="btn btn-sm btn-danger float-right m-0 ml-1" title="Add CashOut" (click)="openCashOut()"
+              type="button">
+              <i class="now-ui-icons ui-1_simple-delete"></i>
+            </button>
+            <button class="btn btn-sm btn-info float-right m-0 ml-1" title="Add CashIn" (click)="openCashIn()"
+              type="button">
+              <i class="now-ui-icons ui-1_simple-add"></i>
+            </button>
+          </div>
+          <div *ngIf="selectedOperation">
+            <div class="input-group">
+              <input type="number" class="form-control" #amount [placeholder]="selectedOperationType + ' amount'"
+                placeholder=" amount">
+              <div class="input-group-append">
+                <button class="btn btn-info" type="button" (click)="addAmount(this.amount.value, account)">Save</button>
+                <button class="btn btn-danger" type="button" (click)="closeInput()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-body">
-          <div class="author">
-            <a href="#">
-              <img class="avatar border-gray" src="../assets/img/mike.jpg" alt="...">
-              <h5 class="title">Mike Andrew</h5>
-            </a>
-            <p class="description">
-              michael24
-            </p>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Available amount</label>
+                <input type="number" class="form-control" readonly="" placeholder="Available amount"
+                  [value]="account.available_amount">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Type</label>
+                <input type="text" class="form-control" readonly="" placeholder="TYPE" [value]="account.type">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Status</label>
+                <input type="text" class="form-control" readonly="" placeholder="Status"
+                  [value]="account.is_blocked ? 'LOCKED': 'NORMAL'">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label>Active</label>
+                <input type="text" class="form-control" readonly="" placeholder="Currency"
+                  [value]="account.is_active ? 'ACTIVE': 'INACTIVE'">
+              </div>
+            </div>
           </div>
-          <p class="description text-center">
-            "Lamborghini Mercy
-            <br> Your chick she so thirsty
-            <br> I'm in that two seat Lambo"
-          </p>
-        </div>
-        <hr>
-        <div class="button-container">
-          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-            <i class="fab fa-facebook-f"></i>
-          </button>
-          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-            <i class="fab fa-twitter"></i>
-          </button>
-          <button href="#" class="btn btn-neutral btn-icon btn-round btn-lg">
-            <i class="fab fa-google-plus-g"></i>
-          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- <div class="row" *ngIf="(cards$ | async) as cards"> -->
+  <div class="row">
+    <div class="col-12 col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Cards</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-info btn-round" [disabled]="account.is_blocked" (click)="addCard()">Add
+                card</button>
+            </div>
+            <div class="col-md-3"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table" *ngIf="(cards$ | async) as cards">
+            <table class="table">
+              <thead class=" text-primary">
+                <th>
+                  Number
+                </th>
+                <th>
+                  Type
+                </th>
+                <th>
+                  Validity date
+                </th>
+                <th>
+                  Status
+                </th>
+                <th class="text-right">
+                  Operations
+                </th>
+              </thead>
+              <tbody *ngIf="cards.length > 0">
+                <tr *ngFor="let card of cards">
+                  <td>
+                    {{ card.number }}
+                  </td>
+                  <td>
+                    {{ card.type }}
+                  </td>
+                  <td>
+                    {{ card.validityDate | date:'MM/yyyy' }}
+                  </td>
+                  <td>
+                    {{ card.status ? 'Active' : 'Inactive' }}
+                  </td>
+                  <td class="text-right">
+                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle
+                        [disabled]="account.is_blocked">Actions</button>
+                      <div ngbDropdownMenu>
+                        <a class="dropdown-item" role="button" (click)="changeCardStatus(card)">Change status</a>
+                        <a class="dropdown-item" role="button" (click)="showPinModal(card.id, content)">Change pin
+                          code</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="cards.length === 0">
+                <tr>
+                  <td colspan="5">
+                    No results
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-transfer-history></app-transfer-history>
+
 </div>
+
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">Set new pin code</h5>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label>New pin CODE</label>
+      <input #pinCode class="form-control" placeholder="0000" name="pin" type="number" min="1111" max="9999">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info btn-round" (click)="modal.close(this.pinCode.value)">Save</button>
+  </div>
+</ng-template>

@@ -20,3 +20,20 @@
   text-decoration: none;
   background-color: #86c1ff !important;
 }
+
+.locked {
+  text-decoration: line-through;
+}
+
+.input-group>.input-group-append>.btn {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.transfer-out {
+  background-color: rgba(255, 54, 54, 0.2);
+}
+
+.transfer-in {
+  background-color: rgba(0, 181, 39, 0.4)
+}
