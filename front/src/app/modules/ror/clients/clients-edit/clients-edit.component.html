@@ -169,7 +169,6 @@
 
   </div>
 
-
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -186,37 +185,42 @@
                 <th>
                   Balance
                 </th>
+                <th>
+                  Status
+                </th>
                 <th class="text-right">
                   Operations
                 </th>
               </thead>
               <tbody *ngIf="accounts.length > 0">
-                <tr *ngFor="let account of accounts">
+                <tr *ngFor="let account of accounts" [ngClass]="{'locked': account.is_blocked}">
                   <td>
                     {{ account.number_banking_account | accountNumber }}
                   </td>
                   <td>
                     {{ account.available_amount }} {{ account.currency }}
                   </td>
+                  <td>
+                    {{ account.is_blocked ? 'Locked' : 'Normal' }}
+                  </td>
                   <td class="text-right">
-                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                    <div ngbDropdown class="dropdown" *ngIf="account.is_active" placement="bottom-right">
                       <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
                       <div ngbDropdownMenu>
                         <a class="dropdown-item" [routerLink]="['/accounts', account.id]">Show</a>
-                        <a class="dropdown-item" href="#">Edit</a>
-                        <a class="dropdown-item" href="#">Remove</a>
+                        <a class="dropdown-item" role="button" (click)="changeAccountStatus(account)">Change status</a>
+                        <a class="dropdown-item" role="button" (click)="removeAccount(account)">Remove</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Generate history</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Make transfer</a>
+                        <a class="dropdown-item" [routerLink]="['/transfersend', account.id]">Make transfer</a>
                       </div>
                     </div>
+                    <button disabled class="btn btn-sm btn-danger" *ngIf="!account.is_active">Account removed</button>
                   </td>
                 </tr>
               </tbody>
               <tbody *ngIf="accounts.length === 0">
                 <tr>
-                  <td colspan="3">
+                  <td colspan="4">
                     No results
                   </td>
                 </tr>

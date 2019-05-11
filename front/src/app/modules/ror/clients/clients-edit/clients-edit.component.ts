@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientsService } from '../clients.service';
 import { Notification } from '../../../../models/notification';
 import { ActivatedRoute } from '@angular/router';
@@ -158,6 +158,33 @@ export class ClientsEditComponent implements OnInit {
             }
         );
 
+    }
+
+    changeAccountStatus(account: AccountListItem) {
+        this.accountService.changeAccountStatus(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_blocked = !account.is_blocked;
+
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+    }
+
+    removeAccount(account: AccountListItem) {
+        this.accountService.removeAccount(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_active = false;
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
     }
 
 }

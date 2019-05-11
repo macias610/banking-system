@@ -5,9 +5,8 @@ import com.banking.chestnut.models.AccountInfo;
 import com.banking.chestnut.models.ClientInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.modelmapper.ModelMapper;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
@@ -37,14 +36,11 @@ public class AccountDto implements Serializable {
     @JsonProperty("type")
     private String type;
 
-    @JsonProperty("first_name")
-    private String firstName;
+    @JsonProperty("owner")
+    private ClientAccountDto owner;
 
-    @JsonProperty("surname")
-    private String surname;
-
-    @JsonProperty("pesel")
-    private Long pesel;
+    @JsonProperty("agent")
+    private ClientAccountDto agent;
 
     @JsonProperty("available_amount")
     private Long availableAmount;
@@ -55,12 +51,16 @@ public class AccountDto implements Serializable {
     public AccountDto(Account account) {
         assignClientData(account.getClientId().getClientInfoId());
         assignAccountData(account, account.getInfoId());
+        if(account.getAgentId() != null)
+            assignAgentData(account.getAgentId().getClientInfoId());
     }
 
     public void assignClientData(ClientInfo clientInfo){
-        this.firstName = clientInfo.getFirstName();
-        this.surname = clientInfo.getSurname();
-        this.pesel = clientInfo.getPesel();
+        this.owner = new ModelMapper().map(clientInfo, ClientAccountDto.class);
+    }
+
+    public void assignAgentData(ClientInfo clientInfo){
+        this.agent = new ModelMapper().map(clientInfo, ClientAccountDto.class);
     }
 
     public void assignAccountData(Account account, AccountInfo accountInfo){

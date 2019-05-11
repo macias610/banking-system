@@ -9,5 +9,6 @@ public class TransactionSideDto implements Serializable {
 
     private String numberClientAccount;
     private String numberBankingAccount;
+    private String currency;
 
 }

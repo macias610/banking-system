@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { Notification } from '../../../../models/notification';
-import { ResponseData } from '../../../../models/responseData';
-import { AccountService } from '../account.service';
-import { ClientsService } from '../../clients/clients.service';
-import { ThinClient } from '../../../../models/client/thinClient';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { NotificationService } from '../../../../shared/services/notification.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ResponseData} from '../../../../models/responseData';
+import {AccountService} from '../account.service';
+import {ClientsService} from '../../clients/clients.service';
+import {ThinClient} from '../../../../models/client/thinClient';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {NotificationService} from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-account-add',
@@ -76,13 +75,13 @@ export class AccountAddComponent implements OnInit {
 
         this.service.createAccount(formValue).subscribe(
             (data: ResponseData) => {
-                this.formInSave = true;
+                this.formInSave = false;
                 this.createAccountForm.reset();
                 this.router.navigateByUrl('/accounts');
             },
             (error) => {
                 const errorData: ResponseData = error.error;
-                this.formInSave = true;
+                this.formInSave = false;
                 this.notiService.showNotification(errorData.notification || '', false);
             }
         );

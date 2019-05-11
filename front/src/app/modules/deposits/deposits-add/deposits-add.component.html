@@ -1,0 +1,108 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="title">Add new deposit</h5>
+        </div>
+        <div class="card-body">
+          <div class="alert text-center"
+               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+               *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <form [formGroup]="createDepositForm" (ngSubmit)="addDeposit()">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Deposit type</label>
+                  <select name="" formControlName="depositType" class="form-control" (change)="onChange($event.target.value)" >
+                    <option value="">-- Select deposit type--</option>
+                    <option *ngFor="let type of depositTypes" [value]="type.id">{{type.name}}</option>
+                  </select>
+                  <div *ngIf="depositType.invalid && (depositType.dirty || depositType.touched)">
+                    <div *ngIf="depositType.errors.required" class="error-message">
+                      Deposit type is required
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Min amount</label>
+                  <input name="" formControlName="minAmount" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Max amount</label>
+                  <input name="" formControlName="maxAmount" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Interest rate</label>
+                  <input name="" formControlName="interestRate" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Days</label>
+                  <input name="" formControlName="daysPeriod" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Capitalization</label>
+                  <input name="" formControlName="capitalizationType" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Currency</label>
+                  <input name="" formControlName="currency" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Amount</label>
+                  <input name="" formControlName="amount" class="form-control">
+                  <div *ngIf="amount.invalid && (amount.dirty || amount.touched)">
+                    <div *ngIf="amount.errors.required" class="error-message">
+                      Amount is required
+                    </div>
+                    <div *ngIf="depositType.value != '' && amount.invalid && !amount.errors.required" class="error-message">
+                      Amount must be at greater than Min amount and smaller than Max amount
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="text-right">
+              <button type="submit" [disabled]="createDepositForm.invalid || formInSave"
+                      class="btn btn-lg btn-info btn-round">Add deposit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

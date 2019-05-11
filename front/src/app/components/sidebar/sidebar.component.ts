@@ -8,9 +8,14 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/dashboard', title: 'Dashboard', icon: 'design_app', class: '' },
-    { path: '/bank', title: 'Bank', icon: 'business_bank', class: '' },
     { path: '/clients', title: 'Clients', icon: 'users_single-02', class: '' },
     { path: '/accounts', title: 'Accounts', icon: 'business_money-coins', class: '' },
+    { path: '/directdebitagreement', title: 'direct debit agreement', icon: 'business_money-coins', class: '' },
+    { path: '/directdebitlist', title: 'active direct debits', icon: 'business_money-coins', class: '' },
+    { path: '/directdebitsend', title: 'send direct debit', icon: 'business_money-coins', class: '' },
+    { path: '/permanentTransferAdd', title: 'set permanent transfer', icon: 'business_money-coins', class: '' },
+    { path: '/permanentTransferList', title: 'permanent transfer', icon: 'business_money-coins', class: '' },
+    { path: '/deposit-types', title: 'Deposit Types', icon: 'business_money-coins', class: '' },
 ];
 
 @Component({

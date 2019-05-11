@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../account.service';
-import { Observable } from 'rxjs';
-import { catchError, map, switchMap, filter, flatMap, tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
-import { Account } from '../../../../models/account';
-import { AccountListItem } from '../../../../models/account/accountListItem';
-import { NotificationService } from '../../../../shared/services/notification.service';
+import {Component, OnInit} from '@angular/core';
+import {AccountService} from '../account.service';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
+import {AccountListItem} from '../../../../models/account/accountListItem';
+import {NotificationService} from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-account',
@@ -37,7 +36,8 @@ export class AccountComponent implements OnInit {
     }
 
     accountFilter(item: AccountListItem, search: string): boolean {
-        const itemString = (item.number_banking_account + '' + item.first_name + '' + item.surname).toLocaleLowerCase();
+        const itemString = (item.number_banking_account + '' +
+            item.owner.first_name + '' + item.owner.surname + '' + item.owner.pesel).toLocaleLowerCase();
         return itemString.indexOf(search) >= 0;
     }
 
@@ -47,6 +47,19 @@ export class AccountComponent implements OnInit {
                 this.notiService.showNotification(data.notification || '', true);
                 account.is_blocked = !account.is_blocked;
 
+            },
+            (error) => {
+                const errorData = error.error;
+                this.notiService.showNotification(errorData.notification || '', false);
+            }
+        );
+    }
+
+    removeAccount(account: AccountListItem) {
+        this.service.removeAccount(account.id).subscribe(
+            (data) => {
+                this.notiService.showNotification(data.notification || '', true);
+                account.is_active = false;
             },
             (error) => {
                 const errorData = error.error;

@@ -13,6 +13,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 /**
@@ -31,6 +40,13 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
+    @OneToMany(mappedBy = "account",
+                  fetch = FetchType.LAZY,
+                  cascade = CascadeType.ALL,
+                  orphanRemoval = true)
+    private Set<Deposits> deposits;
+    
     @Size(max = 255)
     @Column(name = "type")
     private String type;
@@ -53,6 +69,11 @@ public class Account implements Serializable {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     @ManyToOne
     private Client clientId;
+
+    @JoinColumn(name = "agent_id", referencedColumnName = "id")
+    @ManyToOne(optional = true)
+    private Client agentId;
+
     @JoinColumn(name = "info_id", referencedColumnName = "id")
     @ManyToOne
     private AccountInfo infoId;
@@ -92,7 +113,7 @@ public class Account implements Serializable {
     public Account(Integer id) {
         this.id = id;
     }
-
+    
     public Integer getId() {
         return id;
     }
@@ -163,6 +184,14 @@ public class Account implements Serializable {
 
     public void setClientId(Client clientId) {
         this.clientId = clientId;
+    }
+
+    public Client getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(Client agentId) {
+        this.agentId = agentId;
     }
 
     public AccountInfo getInfoId() {

@@ -1,0 +1,89 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Deposit types</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <a class="btn btn-info btn-round" routerLink="/deposit-types/add">Add deposit type</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+            <div class="alert text-center"
+                [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+                *ngIf="notification && notification.message">
+              <span>{{ notification.message }}</span>
+            </div>
+          <div class="table">
+            <table class="table" *ngIf="(depositTypes$ | async) as depositTypes">
+              <thead class="text-primary">
+              <th>
+                Name
+              </th>
+              <th>
+                Min amount
+              </th>
+              <th>
+                Max amount
+              </th>
+              <th>
+                Interest rate
+              </th>
+              <th>
+                Days period
+              </th>
+              <th>
+                Capitalization type
+              </th>
+              <th class="text-right">
+                Operations
+              </th>
+              </thead>
+              <tbody *ngIf="depositTypes.length > 0">
+              <tr *ngFor="let type of depositTypes">
+                <td>
+                  {{ type.name }}
+                </td>
+                <td>
+                  {{ type.minAmount }}
+                </td>
+                <td>
+                  {{ type.maxAmount }}
+                </td>
+                <td>
+                  {{ type.interestRate }} %
+                </td>
+                <td>
+                  {{ type.daysPeriod }}
+                </td>
+                <td>
+                  {{ type.capitalizationType }}
+                </td>
+                <td class="text-right">
+                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle>Actions</button>
+                      <div ngbDropdownMenu>
+                        <a class="dropdown-item" [routerLink]='' (click)="deleteDepositType(type.id)">Delete deposit type</a>
+                      </div>
+                    </div>
+                  </td>
+              </tr>
+              </tbody>
+              <tbody *ngIf="depositTypes.length === 0">
+              <tr>
+                <td colspan="6">
+                  No results
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

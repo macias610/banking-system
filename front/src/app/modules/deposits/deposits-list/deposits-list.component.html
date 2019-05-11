@@ -1,0 +1,89 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Deposits</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <a class="btn btn-info btn-round" [routerLink]="['/deposits/add', accountId, {currency: currency}]">Add deposit</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="alert text-center"
+               [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+               *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <div class="table">
+            <table class="table" *ngIf="(deposits$ | async) as deposits">
+              <thead class=" text-primary">
+              <th>
+                Name
+              </th>
+              <th>
+                Start date
+              </th>
+              <th>
+                End date
+              </th>
+              <th>
+                Interest rate
+              </th>
+              <th>
+                Amount
+              </th>
+              <th>
+                Active
+              </th>
+              <th class="text-right">
+                Operations
+              </th>
+              </thead>
+              <tbody *ngIf="deposits.length > 0">
+              <tr *ngFor="let deposit of deposits">
+                <td>
+                  {{ getDepositTypeName(deposit.depositTypeId) }}
+                </td>
+                <td>
+                  {{ deposit.startDate }}
+                </td>
+                <td>
+                  {{ deposit.endDate }}
+                </td>
+                <td>
+                  {{ getDepositTypeInterestRate(deposit.depositTypeId) }} %
+                </td>
+                <td>
+                  {{ deposit.amount }} {{ currency }}
+                </td>
+                <td>
+                  {{ deposit.isActive }}
+                </td>
+                <td class="text-right">
+                  <div ngbDropdown class="dropdown" placement="bottom-right">
+                    <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle [disabled]='!deposit.isActive'>Actions</button>
+                    <div ngbDropdownMenu>
+                      <a class="dropdown-item" [routerLink]='' (click)="closeDeposit(deposit.id)">Cancel deposit</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+              <tbody *ngIf="deposits.length === 0">
+              <tr>
+                <td colspan="6">
+                  No results
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

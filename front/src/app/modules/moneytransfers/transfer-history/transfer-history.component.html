@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">Transfer history</h4>
+        <div class="row">
+          <div class="col-md-3"></div>
+          <div class="col-md-3">
+            <div class="form-group" align="right">
+              <input type="date" [(ngModel)]="dateStart" (input)="searchDate()" placeholder="Date start"
+                class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group" align="right">
+              <input type="date" [(ngModel)]="dateEnd" (input)="searchDate()" placeholder="Date end"
+                class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group" align="right">
+              <input type="text" value="" (input)="searchInTable($event.target.value)" placeholder="Search data"
+                class="form-control" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table">
+          <table class="table" *ngIf="(transfers | async) as transfers">
+            <thead class=" text-primary">
+              <th>
+                Date
+              </th>
+              <th>
+                Title
+              </th>
+              <th>
+                Sum
+              </th>
+              <th class="text-right">
+                Operations
+              </th>
+            </thead>
+            <tbody *ngIf="transfers.length > 0">
+              <tr *ngFor="let transfer of transfers | customFilter: transfersFilter : searchString"
+                [ngClass]="{'transfer-out': transfer.type === 'outgoing', 'transfer-in': transfer.type === 'incoming'}">
+                <td>
+                  {{ transfer.createdAt }}
+                </td>
+                <td>
+                  {{ transfer.title }}
+                </td>
+                <td *ngIf="transfer.sender">
+                  {{ transfer.value.toFixed(2) }} {{ transfer.sender?.currency }}
+                </td>
+                <td *ngIf="!transfer.sender && transfer.receiver">
+                  {{ transfer.value.toFixed(2) }} {{ transfer.receiver?.currency }}
+                </td>
+                <td class="text-right">
+                  <a class="btn btn-sm btn-info" [routerLink]="['/transfers', transfer.id]">Show</a>
+                </td>
+              </tr>
+            </tbody>
+
+            <tbody *ngIf="transfers.length === 0">
+              <tr>
+                <td colspan="4">
+                  No results
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

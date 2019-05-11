@@ -38,7 +38,13 @@ public class User implements Serializable {
     @JoinColumn(name = "bank_id", referencedColumnName = "id")
     @ManyToOne
     private Banks bankId;
-
+    
+    @OneToMany(mappedBy = "deletedBy")
+    private Set<Deposits> deposits;
+    
+    @OneToMany(mappedBy = "deletedBy")
+    private Set<DepositTypes> depositTypes;
+    
     public User() {
     }
 

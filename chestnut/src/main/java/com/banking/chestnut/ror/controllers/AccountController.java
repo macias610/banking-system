@@ -87,6 +87,47 @@ public class AccountController {
         }
     }
 
+    @PostMapping(value = "/agent")
+    @ResponseBody
+    ResponseEntity addAccountAgent(@RequestBody AgentAccountDto agentAccountDto){
+        try {
+            Optional<Account> account = this.accountService.getById(agentAccountDto.getAccountId());
+            Optional<Client> agent = this.clientService.getById(agentAccountDto.getClientId());
+            if(!account.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
+            if(!agent.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Agent not found"), HttpStatus.NOT_FOUND);
+
+            if (account.get().getClientId().getId().equals(agent.get().getId())){
+                return new ResponseEntity<>(ResponseObject.createError("Agent is the same as owner"), HttpStatus.NOT_FOUND);
+            }
+
+            account.get().setAgentId(agent.get());
+            this.accountService.editAccount(account.get());
+            return new ResponseEntity(ResponseObject.createSuccess("Agent assigned to account"), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during assiging agent account"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @DeleteMapping(value = "{accountId}/agent")
+    @ResponseBody
+    ResponseEntity deleteAccountAgent(@PathVariable Integer accountId){
+        try {
+            Optional<Account> account = this.accountService.getById(accountId);
+            if(!account.isPresent())
+                return new ResponseEntity<>(ResponseObject.createError("Account not found"), HttpStatus.NOT_FOUND);
+
+            account.get().setAgentId(null);
+            this.accountService.editAccount(account.get());
+            return new ResponseEntity(ResponseObject.createSuccess("Delete agent from account"), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(ResponseObject.createError("Error during assiging agent account"), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PatchMapping(value = "/delete/{accountId}")
     @ResponseBody
     ResponseEntity deleteAccount(@PathVariable Integer accountId){
@@ -159,9 +200,9 @@ public class AccountController {
         }
     }
 
-    @GetMapping(value = "/transactions/{accountId}")
+    @PostMapping(value = "/transactions/{accountId}")
     @ResponseBody
-    ResponseEntity getAccountTransactions(@PathVariable Integer accountId, @RequestBody TransactionDto transactionDto){
+    ResponseEntity getAccountTransactions(@PathVariable Integer accountId, @RequestBody(required = false) TransactionDto transactionDto){
         try {
             Optional<Account> account = this.accountService.getById(accountId);
             if(!account.isPresent())

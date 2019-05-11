@@ -15,4 +15,5 @@ public interface IAccountService {
     List<Transaction> getTransactionsByAccount(TransactionDto transactionDto, Integer accountId);
     Optional<Account> getById(Integer id);
     List<Account> getAll();
+    List<Account> getClientAccounts(Integer clientId);
 }

@@ -73,7 +73,7 @@ public class Client implements Serializable {
     private List<Document> documents;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "clientId")
+    @OneToMany(mappedBy = "clientId", fetch = FetchType.LAZY)
     private List<Account> accounts;
 
     public Client() {

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ClientsService } from '../clients.service';
-import { Notification } from '../../../../models/notification';
-import { ResponseData } from '../../../../models/responseData';
-import { NotificationService } from '../../../../shared/services/notification.service';
+import {Component, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ClientsService} from '../clients.service';
+import {ResponseData} from '../../../../models/responseData';
+import {NotificationService} from '../../../../shared/services/notification.service';
 
 @Component({
     selector: 'app-clients-add',
@@ -90,7 +89,7 @@ export class ClientsAddComponent implements OnInit {
 
         this.service.createClient(formValue).subscribe(
             (data: ResponseData) => {
-                this.formInSave = true;
+                this.formInSave = false;
                 this.createClientForm.reset();
                 this.cleanFormArray(this.contactForms);
                 this.cleanFormArray(this.documentsForms);
@@ -102,7 +101,7 @@ export class ClientsAddComponent implements OnInit {
             },
             (error) => {
                 const errorData: ResponseData = error.error;
-                this.formInSave = true;
+                this.formInSave = false;
 
                 this.notiService.showNotification(errorData.notification || '', false);
             }

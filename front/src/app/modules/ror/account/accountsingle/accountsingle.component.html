@@ -5,8 +5,29 @@
   <div class="row">
     <div class="col-12 col-md-6">
       <div class="card">
-        <div class="card-header">
+        <div class="card-header clearfix">
           <h5 class="title">Account data</h5>
+          <form *ngIf="!account.agent" [formGroup]="addAgentForm" (ngSubmit)="addAgent()">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Select agent</label>
+                  <input type="text" class="form-control" [ngbTypeahead]="searchClient"
+                    [resultFormatter]="searchClientFormat" [inputFormatter]="searchClientFormat"
+                    (selectItem)="selectClient($event.item)" formControlName="client" placeholder="Search client ..."
+                    value="">
+                  <input type="hidden" formControlName="client_id">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <div><label>&nbsp;</label></div>
+                  <button type="submit" [disabled]="addAgentForm.invalid" class="btn btn-info btn-round m-0">Add
+                    agent</button>
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
         <div class="card-body">
           <div class="row">
@@ -36,19 +57,49 @@
               <div class="form-group">
                 <label>Owner first name</label>
                 <input type="text" class="form-control" readonly="" placeholder="First_name"
-                  [value]="account.first_name">
+                  [value]="account.owner.first_name">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label>Owner surname</label>
-                <input type="text" class="form-control" readonly="" placeholder="Surname" [value]="account.surname">
+                <input type="text" class="form-control" readonly="" placeholder="Surname"
+                  [value]="account.owner.surname">
               </div>
             </div>
             <div class="col-md-4">
               <div class="form-group">
                 <label>Owner pesel</label>
-                <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.pesel">
+                <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.owner.pesel">
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="account.agent">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent first name</label>
+                <input type="text" class="form-control" readonly="" placeholder="First_name"
+                  [value]="account.agent.first_name">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent surname</label>
+                <input type="text" class="form-control" readonly="" placeholder="Surname"
+                  [value]="account.agent.surname">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Agent pesel</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" readonly="" placeholder="Pesel" [value]="account.agent.pesel">
+                  <div class="input-group-append">
+                    <button class="btn btn-danger" type="button" (click)="removeAgent(account)">
+                      <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -57,8 +108,30 @@
     </div>
     <div class="col-12 col-md-6">
       <div class="card">
-        <div class="card-header">
-          <h5 class="title">Account balance</h5>
+        <div class="card-header clearfix">
+          <div>
+            <h5 class="title float-left">Account balance</h5>
+            <button class="btn btn-sm btn-danger float-right m-0 ml-1" title="Add CashOut" (click)="openCashOut()"
+              type="button">
+              <i class="now-ui-icons ui-1_simple-delete"></i>
+            </button>
+            <button class="btn btn-sm btn-info float-right m-0 ml-1" title="Add CashIn" (click)="openCashIn()"
+              type="button">
+              <i class="now-ui-icons ui-1_simple-add"></i>
+            </button>
+          </div>
+          <div *ngIf="selectedOperation">
+            <div class="input-group">
+              <input type="number" class="form-control" #amount [placeholder]="selectedOperationType + ' amount'"
+                placeholder=" amount">
+              <div class="input-group-append">
+                <button class="btn btn-info" type="button" (click)="addAmount(this.amount.value, account)">Save</button>
+                <button class="btn btn-danger" type="button" (click)="closeInput()">
+                  <i class="now-ui-icons ui-1_simple-remove"></i>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           <div class="row">
@@ -151,7 +224,6 @@
                         <a class="dropdown-item" role="button" (click)="changeCardStatus(card)">Change status</a>
                         <a class="dropdown-item" role="button" (click)="showPinModal(card.id, content)">Change pin
                           code</a>
-                        <a class="dropdown-item" role="button">Remove card</a>
                       </div>
                     </div>
                   </td>
@@ -171,7 +243,11 @@
     </div>
   </div>
 
+  <app-transfer-history></app-transfer-history>
+
 </div>
+
+
 
 <ng-template #content let-modal>
   <div class="modal-header">

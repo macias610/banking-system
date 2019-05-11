@@ -17,6 +17,8 @@
 # IDEs and editors
 /.idea
 
+/my_sql
+
 /chestnut/src/main/resources/application.properties
 
 # misc
