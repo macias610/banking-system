@@ -106,7 +106,7 @@ public class DepositService {
             Long accountBalanceAfterDepositCreation = (long) (accountInfo.getAvailableAmount() - depositDto.getAmount());
             accountInfo.setAvailableAmount(accountBalanceAfterDepositCreation);
         } else {
-            throw new UnsupportedOperationException("Account balance is to low to make an operation");
+            throw new UnsupportedOperationException("Account balance is too low to make an operation");
         }
         account.setInfoId(accountInfo);
     }
