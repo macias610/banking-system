@@ -102,17 +102,17 @@ public class DepositService {
     
     private void reduceAccountBalanceByDepositAmount(DepositDto depositDto, Account account) {
         AccountInfo accountInfo = account.getInfoId();
-        if (isBalanceEnoughToCreateDeposit(accountInfo, depositDto)){
+        if (isBalanceEnoughToCreateDeposit(accountInfo, depositDto)) {
             Long accountBalanceAfterDepositCreation = (long) (accountInfo.getAvailableAmount() - depositDto.getAmount());
             accountInfo.setAvailableAmount(accountBalanceAfterDepositCreation);
         } else {
-            throw new UnsupportedOperationException("Account balance is too low to make an operation");
+            throw new UnsupportedOperationException("Account balance is to low to make an operation");
         }
         account.setInfoId(accountInfo);
     }
     
-    private Boolean isBalanceEnoughToCreateDeposit(AccountInfo accountInfo, DepositDto depositDto){
-        if (accountInfo.getAvailableAmount() >= depositDto.getAmount()){
+    private Boolean isBalanceEnoughToCreateDeposit(AccountInfo accountInfo, DepositDto depositDto) {
+        if (accountInfo.getAvailableAmount() >= depositDto.getAmount()) {
             return true;
         } else {
             return false;

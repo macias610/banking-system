@@ -9,6 +9,7 @@ public enum Messages {
     ADD_DEPOSIT_SUCCESS("Deposit created");
     
     private String message;
+    
     Messages(String message) {
         this.message = message;
     }

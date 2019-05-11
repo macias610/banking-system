@@ -6,8 +6,7 @@ import com.banking.chestnut.models.DepositCapitalizations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CapitalizationService {
@@ -23,6 +22,11 @@ public class CapitalizationService {
     public DepositCapitalizations getCapitalizationByType(CapitalizationType type) {
         return capitalizationRepository.findByType(type).
                       orElseThrow(() -> new NoSuchElementException("Cannot find capitalization with type: " + type));
+    }
+    
+    public List<DepositCapitalizations> getAllActiveCapitalization() {
+        return Optional.of((ArrayList<DepositCapitalizations>) capitalizationRepository.findAll()).
+                      orElseThrow(() -> new NoSuchElementException("Cannot find any option of capitalization"));
     }
     
     public DepositCapitalizations addCapitalization(DepositCapitalizations depositCapitalizations) {

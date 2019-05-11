@@ -59,8 +59,8 @@ public class DepositTypeService {
         return new DepositTypeDto(depositTypes);
     }
     
-    public Set<DepositTypeDto> getAllDepositTypes(){
-        List<DepositTypes> depositTypes = Optional.of((ArrayList<DepositTypes>) depositTypeRepository.findAll()).orElseThrow(() -> new NoSuchElementException("Cannot find any deposit types"));
+    public Set<DepositTypeDto> getAllActiveDepositTypes() {
+        List<DepositTypes> depositTypes = depositTypeRepository.findAllByDeletedAt(null).orElseThrow(() -> new NoSuchElementException("Cannot find any deposit types"));
         return depositTypes.stream().map(DepositTypeDto::new).collect(Collectors.toSet());
     }
 }

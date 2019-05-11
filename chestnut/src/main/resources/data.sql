@@ -78,6 +78,8 @@ INSERT IGNORE INTO `account_info` (`id`, `available_amount`, `locked_amount`) VA
 --
 
 INSERT INTO `deposit_capitalizations` (`capitalization_id`,`days_period`,`type`) VALUES (1,30,'MONTHLY');
+INSERT INTO `deposit_capitalizations` (`capitalization_id`,`days_period`,`type`) VALUES (2,90,'QUARTERLY');
+INSERT INTO `deposit_capitalizations` (`capitalization_id`,`days_period`,`type`) VALUES (3,365,'ANNUAL');
 --INSERT INTO `currencies` (`id`, `name`) VALUES(1,	'DOLAR');
 INSERT INTO `deposits`(`deposit_id`,`end_date`,`is_active`,`start_date`,`account_id`,`deposit_type_id`,`amount`, `deleted_by`, `deleted_at`) VALUES (1,'2019-04-05',CONV('1', 2, 10) + 0,'2019-04-05',1,1,4000, NULL, NULL);
 INSERT INTO `deposit_types`(`deposit_type_id`,`max_amount`,`days_period`,`interest_rate`,`min_amount`,`name`,`capitalization_id`, `deleted_by`, `deleted_at`) VALUES (1,5000,120,3,1000,'5000+',1, NULL, NULL);
