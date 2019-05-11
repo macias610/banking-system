@@ -4,6 +4,7 @@ import { DepositsService } from '../deposits.service';
 import { ResponseData } from '../../../models/responseData';
 import { Notification } from "../../../models/notification";
 import { DepositType } from '../../../models/deposit/depositType';
+import { DepositCapitalization } from '../../../models/deposit/depositCapitalization';
 
 @Component({
   selector: 'app-deposit-types-add',
@@ -18,11 +19,13 @@ export class DepositTypesAddComponent implements OnInit {
   currency: string;
   notification: Notification = new Notification();
   notificationTimer;
+  capitalizationTypes: DepositCapitalization[];
 
   constructor(private fb: FormBuilder, private service: DepositsService) {}
 
   ngOnInit() {
     this.createAddDepositTypeForm();
+    this.getCapitalizationTypes();
   }
 
   createAddDepositTypeForm(): void {
@@ -85,6 +88,14 @@ export class DepositTypesAddComponent implements OnInit {
     formValue['interestRate'], formValue['daysPeriod'], formValue['capitalizationType']);
     console.log(depositTypeCreateDao);
     return depositTypeCreateDao;
+  }
+
+  getCapitalizationTypes(): void {
+    this.service.getCapitalizationTypes().subscribe(
+      (responseDate: ResponseData) => {
+        this.capitalizationTypes = responseDate['data'];
+      }
+    );
   }
 
   get name() { return this.createDepositTypeForm.controls['name']; }

@@ -40,4 +40,8 @@ export class DepositsService {
   deleteDepositType(depositTypeId: number): Observable<ResponseData> {
     return this.http.patch<ResponseData>(`${environment.api_url}/deposit-types/${depositTypeId}`, {});
   }
+
+  getCapitalizationTypes(): Observable<ResponseData> {
+    return this.http.get<ResponseData>(`${environment.api_url}/capitalization`);
+  }
 }
