@@ -120,7 +120,7 @@ export class DepositsAddComponent implements OnInit {
     const todayDate: Date = new Date();
     const format = 'yyyy-MM-dd';
     const locale = 'en-US';
-    const depositEndDate = this.addDays(todayDate, this.createDepositForm.controls['daysPeriod'].value)
+    const depositEndDate = this.addDays(this.createDepositForm.controls['daysPeriod'].value)
     const depositCreateDao = new Deposit(null, this.accountId, formValue['depositType'],
       formatDate(todayDate, format, locale), formatDate(depositEndDate, format, locale),
       Number.parseFloat(formValue['amount']), true);
@@ -128,9 +128,10 @@ export class DepositsAddComponent implements OnInit {
     return depositCreateDao;
   }
 
-  addDays(date: Date, days: any): Date {
-    date.setDate(date.getDate() + parseInt(days));
-    return date;
+  addDays(days: any): Date {
+    let todayDate = new Date();
+    todayDate.setDate(todayDate.getDate() + parseInt(days));
+    return todayDate;
   }
 
   get amount() { return this.createDepositForm.controls['amount']; }
