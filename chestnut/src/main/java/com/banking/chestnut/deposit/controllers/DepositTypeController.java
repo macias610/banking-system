@@ -39,8 +39,19 @@ DepositTypeController {
         }
     }
     
-    @GetMapping()
+    @GetMapping("/all")
     ResponseEntity getAllDepositTypes() {
+        try {
+            Set<DepositTypeDto> depositTypeDto = depositTypeService.getAllDepositTypes();
+            ResponseObject success = createSuccess("", createJsonNodeFrom(depositTypeDto));
+            return ResponseEntity.ok().body(success);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("")
+    ResponseEntity getActiveDepositTypes() {
         try {
             Set<DepositTypeDto> depositTypeDto = depositTypeService.getAllActiveDepositTypes();
             ResponseObject success = createSuccess("", createJsonNodeFrom(depositTypeDto));
@@ -49,7 +60,7 @@ DepositTypeController {
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
-    
+
     @PostMapping()
     public ResponseEntity createDepositType(@RequestBody DepositTypeDto depositTypeDto) {
         

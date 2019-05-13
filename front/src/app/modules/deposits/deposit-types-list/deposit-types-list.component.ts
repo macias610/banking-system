@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DepositType } from '../../../models/deposit/depositType';
-import { Observable } from 'rxjs';
 import { DepositsService } from '../deposits.service';
-import { map } from "rxjs/operators";
 import { Notification } from "../../../models/notification";
 import { ResponseData } from '../../../models/responseData';
 
@@ -23,7 +21,7 @@ export class DepositTypesListComponent implements OnInit {
   }
 
   getDepositTypes(): void {
-    this.service.getDepositTypes().subscribe((data: ResponseData) => {
+    this.service.getActiveDepositTypes().subscribe((data: ResponseData) => {
       this.depositTypes = data['data'];
     },
     (error) => {

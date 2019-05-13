@@ -19,9 +19,14 @@ export class DepositsService {
       .post<ResponseData>(`${environment.api_url}/deposit/`, deposit);
   }
 
-  getDepositTypes(): Observable<ResponseData> {
+  getActiveDepositTypes(): Observable<ResponseData> {
     return this.http
       .get<ResponseData>(`${environment.api_url}/deposit-types`);
+  }
+
+  getDepositTypes(): Observable<ResponseData> {
+    return this.http
+      .get<ResponseData>(`${environment.api_url}/deposit-types/all`);
   }
 
   getDeposits(accountId: number): Observable<ResponseData> {

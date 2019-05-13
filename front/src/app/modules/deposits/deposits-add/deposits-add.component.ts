@@ -32,7 +32,7 @@ export class DepositsAddComponent implements OnInit {
   }
 
   getDepositTypes(): void {
-    this.service.getDepositTypes().subscribe(responseData =>
+    this.service.getActiveDepositTypes().subscribe(responseData =>
       this.depositTypes = responseData['data']
     );
   }
