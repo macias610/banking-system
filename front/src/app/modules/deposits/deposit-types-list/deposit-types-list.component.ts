@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DepositType } from '../../../models/deposit/depositType';
-import { Observable } from 'rxjs';
 import { DepositsService } from '../deposits.service';
-import { map } from "rxjs/operators";
 import { Notification } from "../../../models/notification";
+import { ResponseData } from '../../../models/responseData';
 
 @Component({
   selector: 'app-deposit-types-list',
@@ -11,7 +10,7 @@ import { Notification } from "../../../models/notification";
   styleUrls: ['./deposit-types-list.component.scss']
 })
 export class DepositTypesListComponent implements OnInit {
-  depositTypes$: Observable<DepositType[]>;
+  depositTypes: DepositType[];
   notification: Notification = new Notification();
   notificationTimer;
 
@@ -22,9 +21,12 @@ export class DepositTypesListComponent implements OnInit {
   }
 
   getDepositTypes(): void {
-    this.depositTypes$ = this.service.getDepositTypes().pipe(
-     map(item => item.data)
-   );
+    this.service.getActiveDepositTypes().subscribe((data: ResponseData) => {
+      this.depositTypes = data['data'];
+    },
+    (error) => {
+      this.depositTypes = [];
+    });
  }
 
   deleteDepositType(depositTypeId: number): void {
