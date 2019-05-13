@@ -33,7 +33,7 @@ public class DepositsProfitScheduler {
     Integer systemUserId;
     
     @Transactional
-    @Scheduled(fixedDelay = 5000, fixedRate = 5000)
+    @Scheduled(fixedRate = 5000)
 //    @Scheduled(cron = "0 0 10 * * *") //everyday at 10 am
     public void processProfitsFromEndedDeposits() {
         

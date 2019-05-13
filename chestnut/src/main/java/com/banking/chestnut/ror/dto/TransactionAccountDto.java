@@ -13,7 +13,7 @@ public class TransactionAccountDto implements Serializable {
     private TransactionSideDto sender;
     private TransactionSideDto receiver;
 
-    @JsonFormat(pattern="dd.MM.YYYY HH:mm", timezone = "Europe/Budapest")
+//    @JsonFormat(pattern="dd.MM.YYYY HH:mm", timezone = "Europe/Budapest")
     private Date createdAt;
     private String title;
     private String type;

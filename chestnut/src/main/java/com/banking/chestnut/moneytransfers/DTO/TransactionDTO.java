@@ -15,7 +15,7 @@ public class TransactionDTO {
 
     private int id;
 
-    @JsonFormat(pattern="dd.MM.YYYY HH:mm", timezone = "Europe/Budapest")
+//    @JsonFormat(pattern="dd.MM.YYYY HH:mm", timezone = "Europe/Budapest")
     private Date transactionDate;
     private long value;
     private String senderAccNumber;

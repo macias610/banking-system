@@ -48,7 +48,7 @@
               <tr *ngFor="let transfer of transfers | customFilter: transfersFilter : searchString"
                 [ngClass]="{'transfer-out': transfer.type === 'outgoing', 'transfer-in': transfer.type === 'incoming'}">
                 <td>
-                  {{ transfer.createdAt }}
+                  {{ transfer.createdAt | date }}
                 </td>
                 <td>
                   {{ transfer.title }}
