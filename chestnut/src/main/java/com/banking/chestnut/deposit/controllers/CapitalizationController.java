@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
 import static com.banking.chestnut.models.ResponseObject.createError;
@@ -35,4 +37,18 @@ public class CapitalizationController {
             return ResponseEntity.status(NOT_FOUND).body(error);
         }
     }
+    
+    @GetMapping("")
+    public ResponseEntity getAllActiveCapitalizations() {
+        try {
+            List<DepositCapitalizations> depositCapitalizations = capitalizationService.getAllActiveCapitalization();
+            ResponseObject success = createSuccess("", createJsonNodeFrom(depositCapitalizations));
+            return ResponseEntity.ok().body(success);
+        } catch (NoSuchElementException e) {
+            ResponseObject error = createError(e.getMessage());
+            return ResponseEntity.status(NOT_FOUND).body(error);
+        }
+    }
+    
+    
 }

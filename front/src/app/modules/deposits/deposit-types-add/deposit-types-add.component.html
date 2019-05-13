@@ -98,7 +98,10 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Capitalization type *</label>
-                  <input formControlName="capitalizationType" class="form-control">
+                  <select name="" formControlName="capitalizationType" class="form-control">
+                    <option value="">-- Select capitalization type--</option>
+                    <option *ngFor="let type of capitalizationTypes" [value]="type.type">{{type.type}}</option>
+                  </select>
                   <div *ngIf="capitalizationType.invalid && (capitalizationType.dirty || capitalizationType.touched)">
                     <div *ngIf="capitalizationType.errors.required" class="error-message">
                       Capitalization type is required

@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/operation")
@@ -27,7 +27,7 @@ public class OperationsController {
     public ResponseEntity getOperationsByDepositId(@PathVariable Integer id) {
         try {
             Set<DepositOperationDto> depositOperations = operationService.getOperationsByDepositId(id);
-            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositOperations));
+            ResponseObject success = ResponseObject.createSuccess("", createJsonNodeFrom(depositOperations));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
@@ -38,7 +38,7 @@ public class OperationsController {
     public ResponseEntity getOperationsByAccountId(@PathVariable Integer id) {
         try {
             Set<DepositOperationDto> depositOperations = operationService.getOperationsByAccountId(id);
-            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(depositOperations));
+            ResponseObject success = ResponseObject.createSuccess("", createJsonNodeFrom(depositOperations));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());

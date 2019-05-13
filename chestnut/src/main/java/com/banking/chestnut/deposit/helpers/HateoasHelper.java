@@ -6,10 +6,11 @@ import static org.springframework.web.util.UriComponentsBuilder.fromPath;
 
 public class HateoasHelper {
     
-    private HateoasHelper (){}
+    private HateoasHelper() {
+    }
     
-    public static URI getUriWithPathAndParams(String path, Object ... params){
+    public static URI getUriWithPathAndParams(String path, Object... params) {
         return fromPath(path).buildAndExpand(params).toUri();
-    
+        
     }
 }

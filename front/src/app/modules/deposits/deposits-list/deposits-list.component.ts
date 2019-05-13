@@ -3,9 +3,8 @@ import {DepositsService} from "../deposits.service";
 import {Deposit} from "../../../models/deposit/deposit";
 import {ActivatedRoute} from "@angular/router";
 import {DepositType} from "../../../models/deposit/depositType";
-import {map} from "rxjs/operators";
-import {Observable} from "rxjs";
 import {Notification} from "../../../models/notification";
+import { ResponseData } from '../../../models/responseData';
 
 @Component({
   selector: 'app-deposits-list',
@@ -13,7 +12,7 @@ import {Notification} from "../../../models/notification";
   styleUrls: ['./deposits-list.component.scss']
 })
 export class DepositsListComponent implements OnInit {
-  deposits$: Observable<Deposit[]>;
+  deposits: Deposit[];
   depositTypes: DepositType[];
   accountId: number;
   currency: string;
@@ -35,15 +34,22 @@ export class DepositsListComponent implements OnInit {
   }
 
   getDeposits(): void {
-     this.deposits$ = this.service.getDeposits(this.accountId).pipe(
-      map(item => item.data)
-    );
+    this.service.getDeposits(this.accountId).subscribe((data: ResponseData) => {
+      this.deposits = data['data'];
+      console.log(this.deposits);
+    }, 
+    (error) => {
+      this.deposits = [];
+    })
   }
 
   getDepositTypes(): void {
     this.service.getDepositTypes().subscribe(responseData => {
         this.depositTypes = responseData['data'];
         this.getDeposits();
+      },
+      (error) => {
+        this.depositTypes = [];
       }
     );
   }

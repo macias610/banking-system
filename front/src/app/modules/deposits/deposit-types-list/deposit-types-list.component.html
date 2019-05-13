@@ -19,7 +19,7 @@
               <span>{{ notification.message }}</span>
             </div>
           <div class="table">
-            <table class="table" *ngIf="(depositTypes$ | async) as depositTypes">
+            <table class="table" *ngIf="depositTypes">
               <thead class="text-primary">
               <th>
                 Name
@@ -75,7 +75,7 @@
               </tbody>
               <tbody *ngIf="depositTypes.length === 0">
               <tr>
-                <td colspan="6">
+                <td colspan="7">
                   No results
                 </td>
               </tr>

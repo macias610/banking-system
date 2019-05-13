@@ -11,15 +11,13 @@ import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-import static com.banking.chestnut.deposit.helpers.Messages.*;
 import static com.banking.chestnut.deposit.helpers.HateoasHelper.getUriWithPathAndParams;
 import static com.banking.chestnut.deposit.helpers.JsonNodeCreator.createJsonNodeFrom;
-import static com.banking.chestnut.models.ResponseObject.*;
+import static com.banking.chestnut.deposit.helpers.Messages.*;
+import static com.banking.chestnut.models.ResponseObject.createError;
 import static com.banking.chestnut.models.ResponseObject.createSuccess;
 import static java.lang.String.valueOf;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.NOT_MODIFIED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/deposit")
@@ -56,14 +54,14 @@ public class DepositController {
     public ResponseEntity addDeposit(@RequestBody DepositDto depositDto) {
         try {
             DepositDto createdDeposit = depositService.addDeposit(depositDto);
-            URI uriForFetchingCreatedDeposit = getUriWithPathAndParams("/deposits/{id}",createdDeposit.getId());
+            URI uriForFetchingCreatedDeposit = getUriWithPathAndParams("/deposits/{id}", createdDeposit.getId());
             String successMessage = valueOf(ADD_DEPOSIT_SUCCESS);
             ResponseObject success = createSuccess(successMessage, createJsonNodeFrom(createdDeposit));
             return ResponseEntity.created(uriForFetchingCreatedDeposit).body(success);
         } catch (NoSuchElementException | UnsupportedOperationException e) {
             ResponseObject error = createError(e.getMessage());
             return ResponseEntity.badRequest().body(error);
-        } catch (Exception e){
+        } catch (Exception e) {
             String errorMessage = valueOf(ADD_DEPOSIT_ERROR);
             ResponseObject error = createError(errorMessage);
             return ResponseEntity.badRequest().body(error);
