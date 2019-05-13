@@ -10,4 +10,5 @@ import java.util.Set;
 @Repository
 public interface PaymentScheduleRepository extends CrudRepository<PaymentSchedule, Integer> {
     Optional<Set<PaymentSchedule>> findAllByCreditId(Integer id);
+
 }

@@ -14,6 +14,24 @@ public class DateHelper {
         );
     }
 
+    public static Date addMonths(Date date, long months){
+        LocalDate now = date.toLocalDate();
+        LocalDate newDate = now.plusMonths(months);
+
+
+        Date finalDate = Date.valueOf(
+                newDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        );
+
+//        Date finalDate = Date.valueOf(
+//                LocalDate.now(ZoneId.of("Europe/Warsaw")).
+//                        format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+//        );
+
+
+        return finalDate;
+    }
+
     public static LocalDateTime currentTimestamp() {
         return LocalDateTime.now(ZoneId.of("Europe/Warsaw"));
     }

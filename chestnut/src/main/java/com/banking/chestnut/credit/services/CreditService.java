@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.NoSuchElementException;
 
 import static com.banking.chestnut.credit.helpers.DateHelper.currentDate;
+import static com.banking.chestnut.credit.helpers.DateHelper.addMonths;
 
 @Service
 public class CreditService {
@@ -54,9 +55,10 @@ public class CreditService {
             addedCredit.setCreated_by(userRepository.findById(cashierId).get());
             addedCredit.setCreated_at(currentDate());
             //TODO
-            addedCredit.setExpiration_at(currentDate());
+            addedCredit.setExpiration_at(addMonths(addedCredit.getCreated_at() ,Long.parseLong(creditType.getLoan_period())));
             creditRepository.save(addedCredit);
             addCreditValueToAccountBallance(creditDto,account);
+            paymentScheduleService.createPaymentSchedule(addedCredit);
         }
         else{
             throw new UnsupportedOperationException("Credit value is incorrect for the selected Credit Type");

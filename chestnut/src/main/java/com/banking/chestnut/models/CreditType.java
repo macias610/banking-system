@@ -18,7 +18,7 @@ import java.util.Set;
 public class CreditType {
 
     @Id
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "credit_type_id")
     private Integer id;
 

@@ -9,7 +9,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 import javax.persistence.*;
-import java.util.Date;
+//import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 import static com.banking.chestnut.credit.helpers.DateHelper.currentDate;
@@ -38,13 +39,13 @@ public class Credits {
 
     private Boolean isActive;
 
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     private Date created_at;
 
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     private Date expiration_at;
 
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date deleted_at;
 

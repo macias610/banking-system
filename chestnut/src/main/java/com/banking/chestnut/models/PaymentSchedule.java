@@ -20,7 +20,7 @@ public class PaymentSchedule {
 
 
     @Id
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_schedule_id")
     private Integer id;
 
