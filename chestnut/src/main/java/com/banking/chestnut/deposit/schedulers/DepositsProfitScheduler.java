@@ -6,6 +6,8 @@ import com.banking.chestnut.deposit.services.DepositService;
 import com.banking.chestnut.models.AccountInfo;
 import com.banking.chestnut.models.Deposits;
 import com.banking.chestnut.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +24,10 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Configuration
 @EnableScheduling
 public class DepositsProfitScheduler {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(DepositsProfitScheduler.class);
+
+
     @Autowired
     DepositService depositService;
     
@@ -33,23 +38,23 @@ public class DepositsProfitScheduler {
     Integer systemUserId;
     
     @Transactional
-    @Scheduled(fixedDelay = 5000, fixedRate = 5000)
+    @Scheduled(fixedRate = 5000)
 //    @Scheduled(cron = "0 0 10 * * *") //everyday at 10 am
     public void processProfitsFromEndedDeposits() {
-        
+
         Set<Deposits> activeDeposits = depositService.getAllActiveDeposits();
-        
+
         Set<Deposits> endedDeposits = findEndedDeposits(activeDeposits);
-        
+
         endedDeposits.stream().forEach(endedDeposit -> {
-    
+
             Long depositPeriod;
-            if(endedDeposit.getDepositType().getName() == "Test"){
+            if (endedDeposit.getDepositType().getName().equals("Test")) {
                 depositPeriod = 30l;
             } else {
                 depositPeriod = calculateDepositPeriod(endedDeposit);
             }
-            
+
             Integer capitalizationPeriod = endedDeposit.getDepositType().getCapitalization().getDaysPeriod();
             Double earningsFromDeposit = calculateEarningsFromDeposit(endedDeposit, depositPeriod, capitalizationPeriod);
             AccountInfo accountInfo = endedDeposit.getAccount().getInfoId();
@@ -57,8 +62,9 @@ public class DepositsProfitScheduler {
             endedDeposit.setDeletedBy(getSystemUser());
             endedDeposit.setDeletedAt(currentTimestamp());
             endedDeposit.setIsActive(false);
+            log.info("Deposit ended - " + endedDeposit.getDepositType().getName() + " : earnings - " + earningsFromDeposit);
         });
-        
+        log.info("Scheduler");
     }
     
     private User getSystemUser() {
