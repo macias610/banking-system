@@ -55,4 +55,8 @@ export class TransferHistoryComponent implements OnInit {
         this.getTransferList();
     }
 
+    refresh() {
+        this.getTransferList();
+    }
+
 }
