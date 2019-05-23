@@ -66,7 +66,7 @@ INSERT IGNORE INTO `contacts` (`id`, `created_at`, `type`, `value`, `client_id`,
 INSERT IGNORE INTO `accounts` (`id`, `currency`, `iban`, `is_active`, `is_blocked`, `number_banking_account`, `number_client_account`, `type`, `client_id`, `info_id`) VALUES
 (1, 'PLN', 'PL08249000058429035340935700', 1, 0, '08249000058429035340935700', '8429035340935700', 'provider', '3', '1');
 INSERT IGNORE INTO `account_info` (`id`, `available_amount`, `locked_amount`) VALUES
-(1, 7000, 500);
+(1, 700000, 500);
 
 INSERT IGNORE INTO `accounts` (`id`, `currency`, `iban`, `is_active`, `is_blocked`, `number_banking_account`, `number_client_account`, `type`, `client_id`, `info_id`) VALUES
 (2, 'PLN', 'PL20249000053905104997884646', 1, 0, '20249000053905104997884646', '3905104997884646', 'INDIVIDUAL', '1', '2');
@@ -86,4 +86,17 @@ INSERT IGNORE INTO `deposit_types`(`deposit_type_id`,`max_amount`,`days_period`,
 -- Zrzut danych tabeli `creditType`
 --
 INSERT IGNORE INTO `credit_type` (`credit_type_id`, `info`, `interest_rate`, `loan_period`, `max_value`, `min_value`, `name`) VALUES
-(1, '1', 1, '1', 100, 1, '1');
+(1, '1', 10, '6', 10000, 1, '1');
+
+INSERT IGNORE INTO `credits` (`credit_id`, `created_at`, `deleted_at`, `deleted_by`, `expiration_at`, `is_active`, `value`, `account_id`, `created_by`, `credit_balance_id`, `credit_type_id`) VALUES ('1', '2019-05-13', NULL, NULL, '2019-11-13', b'1', '3000', '1', '1', '1', '1');
+
+INSERT IGNORE INTO `payment_schedule` (`is_active`, `payment_assets`, `payment_date`, `payment_interest`, `credit_id`) VALUES (b'1', '500', '2019-04-12', '50', '1');
+INSERT IGNORE INTO `payment_schedule` (`is_active`, `payment_assets`, `payment_date`, `payment_interest`, `credit_id`) VALUES (b'1', '500', '2019-04-12', '50', '1');
+INSERT IGNORE INTO `payment_schedule` (`is_active`, `payment_assets`, `payment_date`, `payment_interest`, `credit_id`) VALUES (b'1', '500', '2019-04-12', '50', '1');
+INSERT IGNORE INTO `payment_schedule` (`is_active`, `payment_assets`, `payment_date`, `payment_interest`, `credit_id`) VALUES (b'1', '500', '2019-04-12', '50', '1');
+INSERT IGNORE INTO `payment_schedule` (`is_active`, `payment_assets`, `payment_date`, `payment_interest`, `credit_id`) VALUES (b'1', '500', '2019-04-12', '50', '1');
+INSERT IGNORE INTO `payment_schedule` (`is_active`, `payment_assets`, `payment_date`, `payment_interest`, `credit_id`) VALUES (b'1', '500', '2019-04-12', '50', '1');
+
+INSERT IGNORE INTO `credit_balance` (`credit_balance_id`, `debt_asset`, `debt_interest`, `payments_left`) VALUES ('1', '3000', '300', '6');
+
+INSERT IGNORE INTO `transactions` (`id`, `created_at`, `is_foreign`, `is_transfer_client_acconuts`, `is_via_bank`, `title`, `transaction_date`, `type`, `value`, `created_by`, `receiver_id`, `sender_id`) VALUES (NULL, '2019-04-12', '', false, false, 'Credit 2019-04-12', '2019-04-12', 'outgoing', '3000', '1', '1', NULL);

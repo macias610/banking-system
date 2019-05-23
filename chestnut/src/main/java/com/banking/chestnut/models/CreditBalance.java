@@ -7,29 +7,27 @@ import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class CreditBalance {
 
     @Id
-    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "credit_balance_id")
     private Integer id;
 
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-    @JsonIdentityReference(alwaysAsId = true)
-    @NonNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "credit_id")
-    private Credits credit;
+    @JsonIgnore
+    @OneToMany(mappedBy = "creditBalance",
+            fetch = FetchType.LAZY)
+    private Set<Credits> credits;
 
     private Float debt_asset;
 
     private Float debt_interest;
-
-    private Boolean is_overdue;
 
     private Long payments_left;
 }

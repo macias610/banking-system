@@ -4,7 +4,10 @@ import com.banking.chestnut.credit.helpers.HateoasHelper;
 import com.banking.chestnut.credit.services.CreditTypeService;
 import com.banking.chestnut.models.CreditType;
 import com.banking.chestnut.models.ResponseObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -27,6 +31,8 @@ import static org.springframework.http.HttpStatus.NOT_MODIFIED;
 @RequestMapping("/creditType")
 public class CreditTypeController {
 
+    private static ObjectMapper mapper = new ObjectMapper();
+
     @Autowired
     CreditTypeService creditTypeService;
 
@@ -34,11 +40,11 @@ public class CreditTypeController {
     public ResponseEntity getCreditTypeById(@PathVariable Integer id) {
     try {
         CreditType creditType = creditTypeService.getCreditTypeById(id);
-        ResponseObject success = createSuccess("", createJsonNodeFrom(creditType));
-        return ResponseEntity.ok().body(success);
+        JsonNode returnData = mapper.valueToTree(creditType);
+        return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
     } catch (NoSuchElementException e) {
         ResponseObject error = createError(e.getMessage());
-        return ResponseEntity.status(NOT_FOUND).body(error);
+        return new ResponseEntity<>(ResponseObject.createError("CREDIT TYPE NOT FOUND"), HttpStatus.NOT_FOUND);
     }
     }
 
@@ -46,10 +52,10 @@ public class CreditTypeController {
     ResponseEntity getAllCreditTypes() {
         try {
             List<CreditType> creditType = creditTypeService.getAllCreditTypes();
-            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(creditType));
-            return ResponseEntity.ok().body(success);
+            JsonNode returnData = mapper.valueToTree(creditType);
+            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
+            return new ResponseEntity<>(ResponseObject.createError("Error during fetch credit type data "), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -58,16 +64,13 @@ public class CreditTypeController {
 
         try {
             CreditType addedCreditType = creditTypeService.addCreditType(creditType);
-            URI uriForFetchingCreatedDepositType = HateoasHelper.getUriWithPathAndParams("/creditType/{id}",addedCreditType.getId());
             String successMessage = String.valueOf(ADD_CREDIT_TYPE_SUCCESS);
-            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(addedCreditType));
-            return ResponseEntity.created(uriForFetchingCreatedDepositType).body(success);
+            return  new ResponseEntity<>(ResponseObject.createSuccess(successMessage), HttpStatus.CREATED);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             String errorMessage = String.valueOf(CREATE_CREDIT_TYPE_ERROR);
-            ResponseObject error = ResponseObject.createError(errorMessage);
-            return ResponseEntity.badRequest().body(error);
+            return new ResponseEntity<>(ResponseObject.createError(errorMessage), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -75,11 +78,9 @@ public class CreditTypeController {
     public ResponseEntity deleteCreditTypeById(@PathVariable Integer id) {
         try {
             creditTypeService.deleteCreditTypeById(id);
-            String successMessage = String.valueOf(DELETE_CREDIT_TYPE_SUCCESS);
-            ResponseObject success = ResponseObject.createSuccess("",createJsonNodeFrom(successMessage));
-            return ResponseEntity.ok().body(success);
+            return new ResponseEntity<>(ResponseObject.createSuccess("Credit type deleted"), HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
+            return new ResponseEntity<>(ResponseObject.createError("Credit type not found"), HttpStatus.NOT_FOUND);
         }
         }
 

@@ -37,8 +37,8 @@ public class DepositsProfitScheduler {
     Integer systemUserId;
     
     @Transactional
-//    @Scheduled(initialDelay = 5000,fixedDelay = 5000) //once per 5 sec
-    @Scheduled(cron = "0 0 10 1 * ?") //on the first day of the month at 10 am
+    @Scheduled(initialDelay = 5000,fixedDelay = 5000) //once per 5 sec
+//    @Scheduled(cron = "0 0 10 1 * ?") //on the first day of the month at 10 am
     public void processProfitsFromEndedDeposits(){
     
         Set<Deposits> activeDeposits = depositService.getAllActiveDeposits();
@@ -46,7 +46,6 @@ public class DepositsProfitScheduler {
         Set<Deposits> endedDeposits = findEndedDeposits(activeDeposits);
     
         endedDeposits.stream().forEach(endedDeposit -> {
-            
             Long depositPeriod = calculateDepositPeriod(endedDeposit);
             Integer capitalizationPeriod = endedDeposit.getDepositType().getCapitalization().getDaysPeriod();
             Double earningsFromDeposit = calculateEarningsFromDeposit(endedDeposit, depositPeriod, capitalizationPeriod);

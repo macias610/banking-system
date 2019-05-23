@@ -9,5 +9,4 @@ import java.util.Set;
 
 @Repository
 public interface CreditBalanceRepository extends CrudRepository<CreditBalance, Integer> {
-    Optional<Set<CreditBalance>> findAllByCreditId(Integer id);
 }

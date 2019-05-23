@@ -38,5 +38,7 @@ public class PaymentSchedule {
 
     private Float payment_interest;
 
+    private boolean isActive;
+
 }
 

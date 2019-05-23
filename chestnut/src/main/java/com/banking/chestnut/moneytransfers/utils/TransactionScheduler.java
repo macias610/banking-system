@@ -43,6 +43,8 @@ public class TransactionScheduler {
                 permanentTransactionService.updateNextDate(t.getId());
             }
         }
+
+
         log.info("Task executed at {}", dateFormat.format(new Date()));
     }
 }

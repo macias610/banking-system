@@ -5,6 +5,8 @@ import com.banking.chestnut.credit.services.CreditService;
 import com.banking.chestnut.models.CreditType;
 import com.banking.chestnut.models.Credits;
 import com.banking.chestnut.models.ResponseObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/credit")
 public class CreditController {
 
+    private static ObjectMapper mapper = new ObjectMapper();
+
     @Autowired
     CreditService creditService;
 
@@ -34,11 +38,10 @@ public class CreditController {
     ResponseEntity getCreditById(@PathVariable Integer id) {
         try {
             CreditDto credit = creditService.getCreditById(id);
-            ResponseObject responseBody = createSuccess("", createJsonNodeFrom(credit));
-            return ResponseEntity.ok().body(responseBody);
+            JsonNode returnData = mapper.valueToTree(credit);
+            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
         } catch (NoSuchElementException e) {
-            ResponseObject error = createError(e.getMessage());
-            return ResponseEntity.status(NOT_FOUND).body(error);
+            return new ResponseEntity<>(ResponseObject.createError("CREDIT NOT FOUND"), HttpStatus.NOT_FOUND);
         }
     }
 

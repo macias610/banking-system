@@ -35,6 +35,10 @@ public class Credits {
     @JoinColumn(name = "credit_type_id")
     private CreditType creditType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "credit_balance_id")
+    private CreditBalance creditBalance;
+
     private Long value;
 
     private Boolean isActive;
@@ -54,11 +58,6 @@ public class Credits {
     private User created_by;
 
     private Long deleted_by;
-
-    @OneToMany(mappedBy = "credit",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private Set<CreditBalance> creditBalance;
 
     @OneToMany(mappedBy = "credit",
             cascade = CascadeType.ALL,
