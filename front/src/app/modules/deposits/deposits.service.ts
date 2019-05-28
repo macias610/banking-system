@@ -19,9 +19,14 @@ export class DepositsService {
       .post<ResponseData>(`${environment.api_url}/deposit/`, deposit);
   }
 
-  getDepositTypes(): Observable<ResponseData> {
+  getActiveDepositTypes(): Observable<ResponseData> {
     return this.http
       .get<ResponseData>(`${environment.api_url}/deposit-types`);
+  }
+
+  getDepositTypes(): Observable<ResponseData> {
+    return this.http
+      .get<ResponseData>(`${environment.api_url}/deposit-types/all`);
   }
 
   getDeposits(accountId: number): Observable<ResponseData> {
@@ -39,5 +44,9 @@ export class DepositsService {
 
   deleteDepositType(depositTypeId: number): Observable<ResponseData> {
     return this.http.patch<ResponseData>(`${environment.api_url}/deposit-types/${depositTypeId}`, {});
+  }
+
+  getCapitalizationTypes(): Observable<ResponseData> {
+    return this.http.get<ResponseData>(`${environment.api_url}/capitalization`);
   }
 }

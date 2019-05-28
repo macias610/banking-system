@@ -71,14 +71,16 @@ public class TransactionController {
 
     private Transaction prepareTransaction(OverflowDto overflowDto, Account sender, Account receiver){
         Transaction transaction = new Transaction();
-        transaction.setType(overflowDto.getType());
         transaction.setIsTransferClientAcconuts(false);
         transaction.setIsForeign(false);
         transaction.setIsViaBank(false);
-        if(overflowDto.getType().equals("CASH_IN"))
+        if(overflowDto.getType().equals("CASH_IN")) {
+            transaction.setType("incoming");
             transaction.setTitle("Cash " + overflowDto.getType() + " to " + receiver.getNumberBankingAccount());
-        else if(overflowDto.getType().equals("CASH_OUT"))
+        } else if(overflowDto.getType().equals("CASH_OUT")) {
+            transaction.setType("outgoing");
             transaction.setTitle("Cash " + overflowDto.getType() + " from " + sender.getNumberBankingAccount());
+        }
         transaction.setValue(overflowDto.getValue());
         transaction.setSenderId(sender);
         transaction.setReceiverId(receiver);

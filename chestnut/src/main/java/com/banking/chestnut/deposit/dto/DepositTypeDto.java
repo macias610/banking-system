@@ -3,15 +3,13 @@ package com.banking.chestnut.deposit.dto;
 import com.banking.chestnut.models.CapitalizationType;
 import com.banking.chestnut.models.DepositTypes;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.SwaggerDefinition;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.*;
+import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 @Data
 @NoArgsConstructor
