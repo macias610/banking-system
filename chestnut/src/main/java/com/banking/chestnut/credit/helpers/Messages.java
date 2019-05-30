@@ -6,7 +6,9 @@ public enum Messages {
     DELETE_CREDIT_TYPE_SUCCESS("Credit type deleted"),
     DELETE_CREDIT_TYPE_ERROR("Credit type not found"),
     ADD_CREDIT_TYPE_SUCCESS("Credit type created"),
-    CLOSE_CREDIT_SUCCESS("Credit closed"),
+    CLOSE_CREDIT_SUCCESS("Credit closed successfully"),
+    CLOSE_CREDIT_ERROR("Error while closing Credit"),
+    REMIT_CREDIT_SUCCESS("Credit remitted successfully"),
     ADD_CREDIT_SUCCESS("Credit created");
 
     private String message;

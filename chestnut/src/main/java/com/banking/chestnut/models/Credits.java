@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import javax.persistence.*;
 //import java.util.Date;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static com.banking.chestnut.credit.helpers.DateHelper.currentDate;
@@ -50,14 +51,16 @@ public class Credits {
     private Date expiration_at;
 
     //@Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date deleted_at;
+    //@JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime deleted_at;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", referencedColumnName = "id")
     private User created_by;
 
-    private Long deleted_by;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
+    private User deletedBy;
 
     @OneToMany(mappedBy = "credit",
             cascade = CascadeType.ALL,

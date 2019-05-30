@@ -23,10 +23,13 @@ public class CreditDto {
 
     private Long value;
 
+    private Boolean isActive;
+
 
     public CreditDto(Credits credits) {
         this.accountId = credits.getAccount().getId();
         this.creditTypeId = credits.getCreditType().getId();
         this.value = credits.getValue();
+        this.isActive = credits.getIsActive();
     }
 }

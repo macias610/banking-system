@@ -7,6 +7,7 @@ public enum Messages {
     ADD_DEPOSIT_TYPE_SUCCESS("Deposit type created"),
     CLOSE_DEPOSIT_SUCCESS("Deposit closed"),
     ADD_DEPOSIT_SUCCESS("Deposit created");
+
     
     private String message;
     

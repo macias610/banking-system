@@ -9,6 +9,7 @@ import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -39,5 +40,11 @@ public class CreditType {
 
     private Float interest_rate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deleted_by", referencedColumnName = "id")
+    private User deletedBy;
+
+   // @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
 }
 

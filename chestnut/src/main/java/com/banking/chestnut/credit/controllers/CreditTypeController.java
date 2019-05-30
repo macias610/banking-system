@@ -1,5 +1,6 @@
 package com.banking.chestnut.credit.controllers;
 
+import com.banking.chestnut.credit.dto.CreditTypeDto;
 import com.banking.chestnut.credit.helpers.HateoasHelper;
 import com.banking.chestnut.credit.services.CreditTypeService;
 import com.banking.chestnut.models.CreditType;
@@ -24,6 +25,7 @@ import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNode
 import static com.banking.chestnut.credit.helpers.Messages.*;
 import static com.banking.chestnut.models.ResponseObject.createError;
 import static com.banking.chestnut.models.ResponseObject.createSuccess;
+import static java.lang.String.valueOf;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NOT_MODIFIED;
 
@@ -75,13 +77,26 @@ public class CreditTypeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteCreditTypeById(@PathVariable Integer id) {
+    public ResponseEntity deleteCreditTypeByIdOld(@PathVariable Integer id) {
         try {
             creditTypeService.deleteCreditTypeById(id);
             return new ResponseEntity<>(ResponseObject.createSuccess("Credit type deleted"), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(ResponseObject.createError("Credit type not found"), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity deleteCreditTypeById(@PathVariable Integer id) {
+        try {
+            CreditTypeDto creditType = creditTypeService.deleteCreditTypeById(id);
+            String successMessage = valueOf(DELETE_CREDIT_TYPE_SUCCESS);
+            ResponseObject success = createSuccess(successMessage, createJsonNodeFrom(creditType));
+            return  ResponseEntity.ok().body(success);
+        } catch (NoSuchElementException e) {
+            ResponseObject error = ResponseObject.createError(e.getMessage());
+            return  ResponseEntity.status(NOT_MODIFIED).body(error);
         }
+    }
 
 }

@@ -57,7 +57,7 @@ public class CreditScheduler {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Transactional
-    @Scheduled(cron = "*/1000 * * * * ?")
+    @Scheduled(cron = "*/10 * * * * ?")
 //    @Scheduled(initialDelay = 5000,fixedDelay = 5000) //once per 5 sec
 //    @Scheduled(cron = "0 0 10 1 * ?") //on the first day of the month at 10 am
     public void processCreditPayments(){
@@ -70,33 +70,35 @@ public class CreditScheduler {
         List<PaymentSchedule> endedPaymentSchedules = findEndedPaymentSchedule(activePaymentSchedules);
         endedPaymentSchedules.stream().forEach(endedPaymentSchedule -> {
         Credits credits = endedPaymentSchedule.getCredit();
-        Float valueFromDebtAsset = endedPaymentSchedule.getCredit().getCreditBalance().getDebt_asset();
-        Float valueFromInterestAsset = endedPaymentSchedule.getCredit().getCreditBalance().getDebt_interest();
-        credits.getCreditBalance().setDebt_asset(valueFromDebtAsset - endedPaymentSchedule.getPayment_assets());
-        credits.getCreditBalance().setDebt_interest(valueFromInterestAsset - endedPaymentSchedule.getPayment_interest());
-        Long paymentsLeftFromCreditBalance = credits.getCreditBalance().getPayments_left();
-        credits.getCreditBalance().setPayments_left(paymentsLeftFromCreditBalance - 1);
-        AccountInfo accountInfo = credits.getAccount().getInfoId();
-        accountInfo.setAvailableAmount(accountInfo.getAvailableAmount() - endedPaymentSchedule.getPayment_assets().longValue() - endedPaymentSchedule.getPayment_interest().longValue());
-        endedPaymentSchedule.setActive(false);
-        if(endedPaymentSchedule.getCredit().getCreditBalance().getPayments_left() < 1) {
-            Credits credit = endedPaymentSchedule.getCredit();
-            credit.setIsActive(false);
-            }
+        if(credits.getIsActive()){
+            Float valueFromDebtAsset = endedPaymentSchedule.getCredit().getCreditBalance().getDebt_asset();
+            Float valueFromInterestAsset = endedPaymentSchedule.getCredit().getCreditBalance().getDebt_interest();
+            credits.getCreditBalance().setDebt_asset(valueFromDebtAsset - endedPaymentSchedule.getPayment_assets());
+            credits.getCreditBalance().setDebt_interest(valueFromInterestAsset - endedPaymentSchedule.getPayment_interest());
+            Long paymentsLeftFromCreditBalance = credits.getCreditBalance().getPayments_left();
+            credits.getCreditBalance().setPayments_left(paymentsLeftFromCreditBalance - 1);
+            AccountInfo accountInfo = credits.getAccount().getInfoId();
+            accountInfo.setAvailableAmount(accountInfo.getAvailableAmount() - endedPaymentSchedule.getPayment_assets().longValue() - endedPaymentSchedule.getPayment_interest().longValue());
+            endedPaymentSchedule.setActive(false);
+            if(endedPaymentSchedule.getCredit().getCreditBalance().getPayments_left() < 1) {
+                Credits credit = endedPaymentSchedule.getCredit();
+                credit.setIsActive(false);
+                }
 
-            //id 	created_at 	is_foreign 	is_transfer_client_acconuts 	is_via_bank 	title 	transaction_date 	type 	value 	created_by 	receiver_id 	sender_id
-            Transaction transaction = new Transaction();
-            transaction.setCreatedAt(DateHelper.currentDate());
-            transaction.setIsForeign(false);
-            transaction.setIsTransferClientAcconuts(false);
-            transaction.setIsViaBank(false);
-            transaction.setTitle("Payment from "+endedPaymentSchedule.getPayment_date());
-            transaction.setTransactionDate(DateHelper.currentDate());
-            transaction.setType("incoming");
-            transaction.setValue(endedPaymentSchedule.getPayment_assets().longValue()+endedPaymentSchedule.getPayment_interest().longValue());
-            transaction.setCreatedBy(userRepository.findById(cashierId).get());
-            transaction.setSenderId(endedPaymentSchedule.getCredit().getAccount());
-            transactionRepository.save(transaction);
+                //id 	created_at 	is_foreign 	is_transfer_client_acconuts 	is_via_bank 	title 	transaction_date 	type 	value 	created_by 	receiver_id 	sender_id
+                Transaction transaction = new Transaction();
+                transaction.setCreatedAt(DateHelper.currentDate());
+                transaction.setIsForeign(false);
+                transaction.setIsTransferClientAcconuts(false);
+                transaction.setIsViaBank(false);
+                transaction.setTitle("Payment from "+endedPaymentSchedule.getPayment_date());
+                transaction.setTransactionDate(DateHelper.currentDate());
+                transaction.setType("incoming");
+                transaction.setValue(endedPaymentSchedule.getPayment_assets().longValue()+endedPaymentSchedule.getPayment_interest().longValue());
+                transaction.setCreatedBy(userRepository.findById(cashierId).get());
+                transaction.setSenderId(endedPaymentSchedule.getCredit().getAccount());
+                transactionRepository.save(transaction);
+        }
 
 
         });

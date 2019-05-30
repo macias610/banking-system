@@ -88,8 +88,8 @@ INSERT IGNORE INTO `deposit_types`(`deposit_type_id`,`max_amount`,`days_period`,
 --
 -- Zrzut danych tabeli `creditType`
 --
-INSERT IGNORE INTO `credit_type` (`credit_type_id`, `info`, `interest_rate`, `loan_period`, `max_value`, `min_value`, `name`) VALUES
-(1, '1', 10, '6', 10000, 1, '1');
+INSERT IGNORE INTO `credit_type` (`credit_type_id`, `info`, `interest_rate`, `loan_period`, `max_value`, `min_value`, `name`, `deleted_by`, `deleted_at`) VALUES
+(1, '1', 10, '6', 10000, 1, '1', NULL, NULL);
 
 INSERT IGNORE INTO `credits` (`credit_id`, `created_at`, `deleted_at`, `deleted_by`, `expiration_at`, `is_active`, `value`, `account_id`, `created_by`, `credit_balance_id`, `credit_type_id`) VALUES ('1', '2019-05-13', NULL, NULL, '2019-11-13', b'1', '3000', '1', '1', '1', '1');
 

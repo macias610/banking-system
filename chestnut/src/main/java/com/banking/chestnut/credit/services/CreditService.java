@@ -5,7 +5,6 @@ import com.banking.chestnut.credit.dto.CreditDto;
 import com.banking.chestnut.credit.repositories.CreditRepository;
 import com.banking.chestnut.credit.repositories.CreditTypeRepository;
 import com.banking.chestnut.models.*;
-import com.banking.chestnut.moneytransfers.DTO.TransactionDTO;
 import com.banking.chestnut.ror.repositories.AccountRepository;
 import com.banking.chestnut.ror.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.banking.chestnut.credit.helpers.DateHelper.currentDate;
 import static com.banking.chestnut.credit.helpers.DateHelper.addMonths;
+import static com.banking.chestnut.credit.helpers.DateHelper.currentTimestamp;
 
 @Service
 public class CreditService {
@@ -49,9 +47,19 @@ public class CreditService {
     @Autowired
     TransactionRepository transactionRepository;
 
-    public CreditDto getCreditById(Integer id){
+    public Credits getCreditById(Integer id){
         Credits credit = creditRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Credit not found"));
+        return credit;
+    }
+
+    public CreditDto getCreditDtoById(Integer id){
+        Credits credit = getCreditById(id);
         return new CreditDto(credit);
+    }
+
+    public Set<CreditDto> getCreditsByAccountId(Integer id) {
+        Set<Credits> credits = creditRepository.findAllByAccountId(id).orElseThrow(NoSuchElementException::new);
+        return credits.stream().map(c -> new CreditDto(c)).collect(Collectors.toSet());
     }
 
     @Transactional
@@ -121,4 +129,31 @@ public class CreditService {
         }
     }
 
+    @Transactional
+    public CreditDto closeCreditWithId(Integer id) throws NoSuchElementException {
+        Credits creditsToClose = getCreditById(id);
+        //wycofanie kasy z konta
+        creditBalanceService.closeCreditWithId(creditsToClose.getId());
+        creditsToClose.setExpiration_at(currentDate());
+        creditsToClose.setIsActive(false);
+        creditsToClose.setDeleted_at(currentTimestamp());
+        User user = userRepository.findById(cashierId).
+                orElseThrow(() -> new NoSuchElementException("Cannot find User with id: " + cashierId));
+        creditsToClose.setDeletedBy(user);
+        return new CreditDto(creditsToClose);
+    }
+
+    @Transactional
+    public CreditDto remitCreditWithId(Integer id) throws NoSuchElementException {
+        Credits creditsToRemit = getCreditById(id);
+        //umorzenie dlugu wobec banku
+        creditBalanceService.remitCreditWithId(creditsToRemit.getId());
+        creditsToRemit.setExpiration_at(currentDate());
+        creditsToRemit.setIsActive(false);
+        creditsToRemit.setDeleted_at(currentTimestamp());
+        User user = userRepository.findById(cashierId).
+                orElseThrow(() -> new NoSuchElementException("Cannot find User with id: " + cashierId));
+        creditsToRemit.setDeletedBy(user);
+        return new CreditDto(creditsToRemit);
+    }
 }
