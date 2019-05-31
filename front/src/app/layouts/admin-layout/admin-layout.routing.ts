@@ -19,6 +19,10 @@ import { DepositsAddComponent } from "../../modules/deposits/deposits-add/deposi
 import { DepositsListComponent } from "../../modules/deposits/deposits-list/deposits-list.component";
 import { DepositTypesListComponent } from '../../modules/deposits/deposit-types-list/deposit-types-list.component';
 import { DepositTypesAddComponent } from '../../modules/deposits/deposit-types-add/deposit-types-add.component';
+import { CreditTypesListComponent } from '../../modules/credits/credit-types-list/credit-types-list.component';
+import { CreditTypesAddComponent } from '../../modules/credits/credit-types-add/credit-types-add.component';
+import { CreditsListComponent } from '../../modules/credits/credits-list/credits-list.component';
+import { CreditsAddComponent } from '../../modules/credits/credits-add/credits-add.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -39,4 +43,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'deposits/:id', component: DepositsListComponent },
     { path: 'deposit-types', component: DepositTypesListComponent },
     { path: 'deposit-types/add', component: DepositTypesAddComponent },
+    { path: 'credit-types', component: CreditTypesListComponent},
+    { path: 'credit-types/add', component: CreditTypesAddComponent},
+    { path: 'credit/:id', component: CreditsListComponent},
+    { path: 'credit/add/:id', component: CreditsAddComponent},
 ];

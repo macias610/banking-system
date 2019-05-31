@@ -16,6 +16,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/permanentTransferAdd', title: 'set permanent transfer', icon: 'business_money-coins', class: '' },
     { path: '/permanentTransferList', title: 'permanent transfer', icon: 'business_money-coins', class: '' },
     { path: '/deposit-types', title: 'Deposit Types', icon: 'business_money-coins', class: '' },
+    { path: '/credit-types', title: 'Credit Types', icon: 'business_money-coins', class: ''},
 ];
 
 @Component({

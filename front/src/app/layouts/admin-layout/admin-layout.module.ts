@@ -33,6 +33,10 @@ import {DepositsAddComponent} from "../../modules/deposits/deposits-add/deposits
 import {DepositsListComponent} from "../../modules/deposits/deposits-list/deposits-list.component";
 import {DepositTypesListComponent} from '../../modules/deposits/deposit-types-list/deposit-types-list.component';
 import {DepositTypesAddComponent} from '../../modules/deposits/deposit-types-add/deposit-types-add.component';
+import { CreditsListComponent } from '../../modules/credits/credits-list/credits-list.component';
+import { CreditTypesListComponent } from '../../modules/credits/credit-types-list/credit-types-list.component';
+import { CreditTypesAddComponent } from '../../modules/credits/credit-types-add/credit-types-add.component';
+import { CreditsAddComponent } from '../../modules/credits/credits-add/credits-add.component';
 
 @NgModule({
     imports: [
@@ -69,7 +73,11 @@ import {DepositTypesAddComponent} from '../../modules/deposits/deposit-types-add
         DepositsAddComponent,
         DepositsListComponent,
         DepositTypesListComponent,
-        DepositTypesAddComponent
+        DepositTypesAddComponent,
+        CreditsListComponent,
+        CreditTypesListComponent,
+        CreditTypesAddComponent,
+        CreditsAddComponent,
     ],
     providers: [
         AccountService,

@@ -1,0 +1,66 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">Credits</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <a class="btn btn-info btn-round" [routerLink]="['credit/add', accountId]">Add credit</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="alert text-center"
+              [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+              *ngIf="notification && notification.message">
+            <span>{{ notification.message }}</span>
+          </div>
+          <div class="table">
+            <table class="table" *ngIf="credits">
+              <thead class="text-primary">
+                <th>Credit type</th>
+                <th>Creation date</th>
+                <th>Expiration date</th>
+                <th>Value</th>
+                <th>Interest rate</th>
+                <th>Asset debt</th>
+                <th>Interest debt</th>
+                <th class="text-right">Operations</th>
+              </thead>
+              <tbody *ngIf="credits.length >0">
+                <tr *ngFor="let credit of credits">
+                  <td>{{ getCreditTypeName(credit.creditTypeId) }}</td>
+                  <td>{{ credit.created_at }}</td>
+                  <td>{{ credit.expiration_at }}</td>
+                  <td>{{ credit.value }}</td>
+                  <td>{{ getCreditTypeInterestRate(credit.creditTypeId) }} %</td>
+                  <td>{{ getCreditBalanceAssets(credit.creditBalanceId) }}</td>
+                  <td>{{ getCreditBalanceInterest(credit.creditBalanceId) }}</td>
+                  <td class="text-right">
+                    <div ngbDropdown class="dropdown" placement="bottom-right">
+                      <button class="btn btn-sm btn-info dropdown-toggle" ngbDropdownToggle [disabled]='!credit.isActive'>Actions</button>
+                      <div ngbDropdownMenu>
+                        <a class="dropdown-item" [routerLink]='' (click)="closeCredit(credit.id)">Cancel credit</a>
+                        <a class="dropdown-item" [routerLink]='' (click)="remitCredit(credit.id)">Remit credit</a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="credits.length === 0">
+                <tr>
+                  <td colspan="8">
+                    No results
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
