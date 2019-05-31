@@ -10,9 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static com.banking.chestnut.credit.helpers.HateoasHelper.getUriWithPathAndParams;
 import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNodeFrom;
 import static com.banking.chestnut.credit.helpers.Messages.*;
 import static com.banking.chestnut.models.ResponseObject.createError;
@@ -44,7 +46,9 @@ public class CreditController {
     @GetMapping(value = "account/{id}")
     ResponseEntity getCreditByAccountId(@PathVariable Integer id){
         try {
+            System.out.println("getting credits from service");
             Set<CreditDto> credits = creditService.getCreditsByAccountId(id);
+            System.out.println("got credits from service");
             ResponseObject success = createSuccess("", createJsonNodeFrom(credits));
             return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e){
@@ -56,9 +60,16 @@ public class CreditController {
     @PostMapping()
     public ResponseEntity addCredit(@RequestBody CreditDto creditDto) {
         try {
-            creditService.addCredit(creditDto);
-            String successMessage = String.valueOf(ADD_CREDIT_SUCCESS);
-            return  new ResponseEntity<>(ResponseObject.createSuccess(successMessage), HttpStatus.CREATED);
+            CreditDto createdCredit = creditService.addCredit(creditDto);
+//            String successMessage = String.valueOf(ADD_CREDIT_SUCCESS);
+//            return  new ResponseEntity<>(ResponseObject.createSuccess(successMessage), HttpStatus.CREATED);
+            URI uriForFetchingCreatedCredit = getUriWithPathAndParams("/credit/{id}", createdCredit.getId());
+            String successMessage = valueOf(ADD_CREDIT_SUCCESS);
+            ResponseObject success = createSuccess(successMessage, createJsonNodeFrom(createdCredit));
+            return ResponseEntity.created(uriForFetchingCreatedCredit).body(success);
+        } catch (NoSuchElementException | UnsupportedOperationException e) {
+            ResponseObject error = createError(e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         } catch (Exception e){
             e.printStackTrace();
             String errorMessage = String.valueOf(ADD_CREDIT_ERROR);

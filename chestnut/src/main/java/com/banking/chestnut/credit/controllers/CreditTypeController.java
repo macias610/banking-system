@@ -50,7 +50,7 @@ public class CreditTypeController {
     }
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     ResponseEntity getAllCreditTypes() {
         try {
             List<CreditType> creditType = creditTypeService.getAllCreditTypes();
@@ -58,6 +58,17 @@ public class CreditTypeController {
             return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(ResponseObject.createError("Error during fetch credit type data "), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping()
+    ResponseEntity getActiveCreditTypes() {
+        try {
+            Set<CreditTypeDto> creditTypeDto = creditTypeService.getAllActivecreditTypes();
+            ResponseObject success = createSuccess("", createJsonNodeFrom(creditTypeDto));
+            return ResponseEntity.ok().body(success);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
 

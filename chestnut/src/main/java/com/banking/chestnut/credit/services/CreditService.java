@@ -58,12 +58,14 @@ public class CreditService {
     }
 
     public Set<CreditDto> getCreditsByAccountId(Integer id) {
+        System.out.println("before finallbyaccount");
         Set<Credits> credits = creditRepository.findAllByAccountId(id).orElseThrow(NoSuchElementException::new);
+        System.out.println("after finallbyaccount");
         return credits.stream().map(c -> new CreditDto(c)).collect(Collectors.toSet());
     }
 
     @Transactional
-    public void addCredit(CreditDto creditDto){
+    public CreditDto addCredit(CreditDto creditDto){
         Account account = accountsRepository.findById(creditDto.getAccountId()).orElseThrow(() -> new NoSuchElementException("Cannot find Account with id: " + creditDto.getAccountId()));
         CreditType creditType = creditTypeRepository.findById(creditDto.getCreditTypeId()).orElseThrow(() -> new NoSuchElementException("Cannot find Credit Type with id: " + creditDto.getCreditTypeId()));
         if (isCreditValueCorrectForCreditType(creditDto)){
@@ -73,6 +75,7 @@ public class CreditService {
             addedCredit.setCreated_at(currentDate());
             addedCredit.setExpiration_at(addMonths(addedCredit.getCreated_at() ,Long.parseLong(creditType.getLoan_period())));
             creditRepository.save(addedCredit);
+            creditDto.setId(addedCredit.getId());
             addCreditValueToAccountBallance(creditDto,account);
             paymentScheduleService.createPaymentSchedule(addedCredit);
             creditBalanceService.createCreditBalance(addedCredit);
@@ -89,6 +92,7 @@ public class CreditService {
             transaction.setCreatedBy(userRepository.findById(cashierId).get());
             transaction.setReceiverId(addedCredit.getAccount());
             transactionRepository.save(transaction);
+            return creditDto;
         }
         else{
             throw new UnsupportedOperationException("Credit value is incorrect for the selected Credit Type");

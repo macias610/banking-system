@@ -55,4 +55,8 @@ public class CreditTypeService {
         return new CreditTypeDto(creditType);
     }
 
+    public Set<CreditTypeDto> getAllActivecreditTypes() {
+        List<CreditType> creditTypes = creditTypeRepository.findAllByDeletedAt(null).orElseThrow(() -> new NoSuchElementException("Cannot find any credit types"));
+        return creditTypes.stream().map(CreditTypeDto::new).collect(Collectors.toSet());
+    }
 }

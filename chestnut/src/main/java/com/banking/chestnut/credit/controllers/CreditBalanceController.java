@@ -1,5 +1,6 @@
 package com.banking.chestnut.credit.controllers;
 
+import com.banking.chestnut.credit.dto.CreditBalanceDto;
 import com.banking.chestnut.credit.services.CreditBalanceService;
 import com.banking.chestnut.models.CreditBalance;
 import com.banking.chestnut.models.ResponseObject;
@@ -13,6 +14,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNodeFrom;
 import static com.banking.chestnut.models.ResponseObject.createError;
@@ -31,11 +33,22 @@ public class CreditBalanceController {
     @GetMapping("/{id}")
     public ResponseEntity getCreditBalanceById(@PathVariable Integer id) {
         try {
-            CreditBalance creditBalance = creditBalanceService.getCreditBalanceById(id);
+            CreditBalanceDto creditBalance = creditBalanceService.getCreditBalanceById(id);
             JsonNode returnData = mapper.valueToTree(creditBalance);
             return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(ResponseObject.createError("CREDIT BALANCE NOT FOUND"), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity getAllCreditBalances() {
+        try {
+            Set<CreditBalanceDto> creditBalanceDto = creditBalanceService.getAllCreditBalances();
+            ResponseObject success = createSuccess("", createJsonNodeFrom(creditBalanceDto));
+            return ResponseEntity.ok().body(success);
+        } catch (NoSuchElementException  e) {
+            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
 

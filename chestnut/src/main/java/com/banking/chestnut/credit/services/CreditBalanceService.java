@@ -1,6 +1,7 @@
 package com.banking.chestnut.credit.services;
 
 import com.banking.chestnut.commonrepositories.UserRepository;
+import com.banking.chestnut.credit.dto.CreditBalanceDto;
 import com.banking.chestnut.credit.helpers.DateHelper;
 import com.banking.chestnut.credit.repositories.CreditBalanceRepository;
 import com.banking.chestnut.credit.repositories.CreditRepository;
@@ -42,8 +43,14 @@ public class CreditBalanceService {
     @Autowired
     CreditService creditService;
 
-    public CreditBalance getCreditBalanceById(Integer id) {
-        return creditBalanceRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Can't find balance for credit with id: " + id));
+    public CreditBalanceDto getCreditBalanceById(Integer id) {
+        CreditBalance creditBalance = creditBalanceRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Can't find balance for credit with id: " + id));
+        return new CreditBalanceDto(creditBalance);
+    }
+
+    public Set<CreditBalanceDto> getAllCreditBalances() {
+        List<CreditBalance> creditBalances = Optional.of((ArrayList<CreditBalance>) creditBalanceRepository.findAll()).orElseThrow(() -> new NoSuchElementException("Cannot find any credit balances"));
+        return creditBalances.stream().map(CreditBalanceDto::new).collect(Collectors.toSet());
     }
 
     public void createCreditBalance(Credits credit){
