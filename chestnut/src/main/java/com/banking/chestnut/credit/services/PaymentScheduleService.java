@@ -1,6 +1,7 @@
 package com.banking.chestnut.credit.services;
 
 import com.banking.chestnut.commonrepositories.UserRepository;
+import com.banking.chestnut.credit.dto.PaymentScheduleDto;
 import com.banking.chestnut.credit.repositories.PaymentScheduleRepository;
 import com.banking.chestnut.deposit.dto.DepositOperationDto;
 import com.banking.chestnut.models.Credits;
@@ -53,8 +54,9 @@ public class PaymentScheduleService {
         return activePaymentSchedule;
     }
 
-    public List<PaymentSchedule> getAllPaymentSchedulesByCreditId(Integer id) {
+    public Set<PaymentScheduleDto> getAllPaymentSchedulesByCreditId(Integer id) {
         List<PaymentSchedule> paymentSchedules = paymentScheduleRepository.findAllByCreditId(id);
-        return paymentSchedules;
+//        return paymentSchedules;
+        return paymentSchedules.stream().map(PaymentScheduleDto::new).collect(Collectors.toSet());
     }
 }

@@ -34,9 +34,10 @@ public class CreditTypeService {
         return creditTypeRepository.save(creditType);
     }
 
-    public List<CreditType> getAllCreditTypes(){
-        List<CreditType> creditType = Optional.of((ArrayList<CreditType>) creditTypeRepository.findAll()).orElseThrow(() -> new NoSuchElementException("Cannot find any credit type"));
-        return creditType;
+    public Set<CreditTypeDto> getAllCreditTypes(){
+//        List<CreditType> creditType = Optional.of((ArrayList<CreditType>) creditTypeRepository.findAll()).orElseThrow(() -> new NoSuchElementException("Cannot find any credit type"));
+        List<CreditType> creditTypes = Optional.of((ArrayList<CreditType>) creditTypeRepository.findAll()).orElseThrow(() -> new NoSuchElementException("Cannot find any credit type"));
+        return creditTypes.stream().map(CreditTypeDto::new).collect(Collectors.toSet());
     }
 
     @Transactional

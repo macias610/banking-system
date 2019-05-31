@@ -1,5 +1,6 @@
 package com.banking.chestnut.credit.controllers;
 
+import com.banking.chestnut.credit.dto.PaymentScheduleDto;
 import com.banking.chestnut.credit.services.CreditService;
 import com.banking.chestnut.credit.services.PaymentScheduleService;
 import com.banking.chestnut.models.PaymentSchedule;
@@ -15,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static com.banking.chestnut.credit.helpers.JsonNodeCreator.createJsonNodeFrom;
 import static com.banking.chestnut.models.ResponseObject.createError;
@@ -45,9 +47,12 @@ public class PaymentScheduleController {
     @GetMapping("/creditId/{id}")
     ResponseEntity getAllPaymentSchedulesByCreditId(@PathVariable Integer id) {
         try {
-            List<PaymentSchedule> paymentSchedules = paymentScheduleService.getAllPaymentSchedulesByCreditId(id);
-            JsonNode returnData = mapper.valueToTree(paymentSchedules);
-            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+//            List<PaymentSchedule> paymentSchedules = paymentScheduleService.getAllPaymentSchedulesByCreditId(id);
+            Set<PaymentScheduleDto> paymentSchedules = paymentScheduleService.getAllPaymentSchedulesByCreditId(id);
+//            JsonNode returnData = mapper.valueToTree(paymentSchedules);
+//            return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
+            ResponseObject success = createSuccess("", createJsonNodeFrom(paymentSchedules));
+            return ResponseEntity.ok().body(success);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(ResponseObject.createError("CAN'T FIND CREDIT ID "), HttpStatus.BAD_REQUEST);
         }

@@ -9,7 +9,7 @@ import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
@@ -31,7 +31,7 @@ public class PaymentSchedule {
     @JoinColumn(name = "credit_id")
     private Credits credit;
 
-    @Temporal(TemporalType.DATE)
+//    @Temporal(TemporalType.DATE)
     private Date payment_date;
 
     private Float payment_assets;

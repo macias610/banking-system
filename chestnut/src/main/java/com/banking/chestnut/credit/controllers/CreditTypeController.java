@@ -53,7 +53,8 @@ public class CreditTypeController {
     @GetMapping("/all")
     ResponseEntity getAllCreditTypes() {
         try {
-            List<CreditType> creditType = creditTypeService.getAllCreditTypes();
+//            List<CreditType> creditType = creditTypeService.getAllCreditTypes();
+            Set<CreditTypeDto> creditType = creditTypeService.getAllCreditTypes();
             JsonNode returnData = mapper.valueToTree(creditType);
             return new ResponseEntity<>(ResponseObject.createSuccess("", returnData), HttpStatus.OK);
         } catch (NoSuchElementException e) {
