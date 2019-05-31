@@ -23,6 +23,7 @@ import { CreditTypesListComponent } from '../../modules/credits/credit-types-lis
 import { CreditTypesAddComponent } from '../../modules/credits/credit-types-add/credit-types-add.component';
 import { CreditsListComponent } from '../../modules/credits/credits-list/credits-list.component';
 import { CreditsAddComponent } from '../../modules/credits/credits-add/credits-add.component';
+import { PaymentSchedulesListComponent } from '../../modules/credits/payment-schedules-list/payment-schedules-list.component';
 
 export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
@@ -47,4 +48,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'credit-types/add', component: CreditTypesAddComponent},
     { path: 'credit/:id', component: CreditsListComponent},
     { path: 'credit/add/:id', component: CreditsAddComponent},
+    { path: 'payment-schedule/:id', component: PaymentSchedulesListComponent},
 ];

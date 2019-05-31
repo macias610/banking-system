@@ -1,0 +1,45 @@
+<div class="panel-header panel-header-sm">
+  </div>
+  <div class="main-content">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Payment Schedule</h4>
+          </div>
+          <div class="card-body">
+            <div class="alert text-center"
+                [ngClass]="{'alert-info': !notification.error, 'alert-danger': notification.error}"
+                *ngIf="notification && notification.message">
+              <span>{{ notification.message }}</span>
+            </div>
+            <div class="table">
+              <table class="table" *ngIf="paymentSchedules">
+                <thead class="text-primary">
+                  <th>Payment date</th>
+                  <th>Payment assets</th>
+                  <th>Payment interest</th>
+                  <th>Paid</th>
+                </thead>
+                <tbody *ngIf="paymentSchedules.length >0">
+                  <tr *ngFor="let payment of paymentSchedules">
+                    <td>{{ payment.payment_date }}</td>
+                    <td>{{ payment.payment_assets }}</td>
+                    <td>{{ payment.payment_interest }}</td>
+                    <td>{{ getPaymentStatus(payment.id) }}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="paymentSchedules.length === 0">
+                  <tr>
+                    <td colspan="4">
+                      No results
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -53,4 +53,9 @@ export class CreditsService {
     return this.http
     .get<ResponseData>(`${environment.api_url}/creditBalance`);
   }
+
+  getPaymentSchedules(creditId: number): Observable<ResponseData> {
+    return this.http
+      .get<ResponseData>(`${environment.api_url}/paymentSchedule/creditId/${creditId}`);
+  }
 }

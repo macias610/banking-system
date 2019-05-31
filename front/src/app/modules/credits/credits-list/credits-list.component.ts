@@ -93,15 +93,17 @@ export class CreditsListComponent implements OnInit {
       (data) => {
         this.addNotification(false, data.notification || '');
         this.getCredits();
+        this.getCreditBalances();
       }
     )
   }
-
+  
   remitCredit(creditId: number): void {
     this.service.remitCredit(creditId).subscribe(
       (data) => {
         this.addNotification(false, data.notification || '');
         this.getCredits();
+        this.getCreditBalances();
       }
     )
   }

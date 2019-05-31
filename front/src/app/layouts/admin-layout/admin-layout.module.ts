@@ -37,6 +37,7 @@ import { CreditsListComponent } from '../../modules/credits/credits-list/credits
 import { CreditTypesListComponent } from '../../modules/credits/credit-types-list/credit-types-list.component';
 import { CreditTypesAddComponent } from '../../modules/credits/credit-types-add/credit-types-add.component';
 import { CreditsAddComponent } from '../../modules/credits/credits-add/credits-add.component';
+import { PaymentSchedulesListComponent } from '../../modules/credits/payment-schedules-list/payment-schedules-list.component';
 
 @NgModule({
     imports: [
@@ -78,6 +79,7 @@ import { CreditsAddComponent } from '../../modules/credits/credits-add/credits-a
         CreditTypesListComponent,
         CreditTypesAddComponent,
         CreditsAddComponent,
+        PaymentSchedulesListComponent
     ],
     providers: [
         AccountService,

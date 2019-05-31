@@ -34,7 +34,7 @@
               <div class="col-md-4">
                 <div class="form-group">
                   <label>Info</label>
-                  <input name="" formControlName="info" class="form-control">
+                  <input name="" formControlName="creditInfo" class="form-control">
                 </div>
               </div>
             </div>
@@ -79,7 +79,7 @@
                     <div *ngIf="value.errors.required" class="error-message">
                       Value is required
                     </div>
-                    <div *ngIf="creditType.value != '' && value.invalid && !amount.errors.required" class="error-message">
+                    <div *ngIf="creditType.value != '' && value.invalid && !value.errors.required" class="error-message">
                       Value must be between Mix and Max values
                     </div>
                   </div>

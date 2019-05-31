@@ -30,12 +30,11 @@ export class CreditsAddComponent implements OnInit {
   }
 
   getCreditTypes(): void {
-    this.service.getCreditTypes().subscribe(responseData => {
+    this.service.getActiveCreditTypes().subscribe(responseData => {
       this.creditTypes = responseData['data'];
-      },
-      (error) => {
-        this.creditTypes = [];
-      },
+      console.log(this.creditTypes);
+      
+      }
     );
   }
 
@@ -122,4 +121,7 @@ export class CreditsAddComponent implements OnInit {
       return creditCreateDao;
   }
 
+  get value() {return this.createCreditForm.controls['value'];}
+  get creditType() {return this.createCreditForm.controls['creditType'];}
+  
 }
